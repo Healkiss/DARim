@@ -1,0 +1,34 @@
+{
+    "name" : "DARim",
+    "description" : "Time manager",
+    "version": "0.1.0",
+    "type" : "project",
+    "license" : [
+        "MIT"
+    ],
+    "authors": [
+        {
+            "name": "François SCHNEIDER",
+            "email": "full-autof@hotmail.fr",
+            "homepage": "http://www.blog.bellone.org",
+            "role": "Developer"
+        }
+    ],
+    "require" : {
+        "php" : ">=5.3.3",
+        "healkiss/listitems": "dev-master",
+        "twig/extensions" : "1.0.*"
+    },
+    "autoload" : {
+        "psr-0" : {
+            "" : "src/"
+        }
+    },
+    "config" : {
+        "bin-dir" : "bin"
+    },
+    "scripts" : {
+    },
+    "extra" : {
+    }
+}
