@@ -1,7 +1,15 @@
-<?php require_once 'vendor/autoload.php'; ?>
+<?php
+require_once 'vendor/autoload.php';
+require_once 'src/classes/conBdd.php';
 
-<?php $loader = new Twig_Loader_Filesystem('src/views'); ?>
+$loader = new Twig_Loader_Filesystem('src/views');
 
-<?php $twig = new Twig_Environment($loader); ?>
+$twig = new Twig_Environment($loader);
 
-<?php echo $twig->render('index.html.twig', array('text' => 'Hello world!')); ?>
+$conBdd = new conBDD();
+$reponse =  $conBdd->connexion->query("SELECT * FROM client WHERE 1 = 1");
+$clients = $reponse->fetchAll();
+
+echo $twig->render('index.html.twig', array('clients' => $clients));
+
+?>

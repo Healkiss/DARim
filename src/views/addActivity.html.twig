@@ -1,0 +1,17 @@
+<h3>Créer une Activité</h3>
+<form>
+<select class="selectpicker">
+{% for client in clients %}
+	<option>{{ client['name'] }} ({{ client['ref'] }})</option>
+{% endfor %}
+</select>
+<select class="selectpicker">
+	<option>Développement</option>
+	<option>Relationnel client</option>
+	<option>R&D</option>
+	<option>Reunion interne</option>
+</select>
+<input type="text" id="task" placeholder="Tache">
+<input type="text" id="comment" placeholder="Commentaire">
+<button submit>Créer</button>
+</form>

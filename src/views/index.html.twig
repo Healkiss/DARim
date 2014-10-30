@@ -1,91 +1,71 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<!--[if IE 8]> <html lang="fr" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="fr" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="fr"> <!--<![endif]-->
 <html xmlns="http://www.w3.org/1999/xhtml" class="no-js" lang="fr">
     <head>
-       <meta charset="utf-8" />
-       <title>DARim</title>
-       <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-       <meta content="" name="description" />
-       <meta content="" name="author" />
-       <!-- BEGIN GLOBAL MANDATORY STYLES -->
-       {% include 'stylesheets.html.twig' %}
+        <meta charset="utf-8" />
+        <title>DARim</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        {% include 'stylesheets.html.twig' %}
         <!-- END THEME STYLES -->
 
-       <!-- END GLOBAL MANDATORY STYLES -->
-       <!-- BEGIN PAGE LEVEL STYLES --> 
-       <!-- END PAGE LEVEL STYLES -->
-       <link rel="shortcut icon" href="favicon.ico" />
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN PAGE LEVEL STYLES --> 
+        <!-- END PAGE LEVEL STYLES -->
+        <link rel="shortcut icon" href="favicon.ico" />
     </head>
 
-<body class="page-header-fixed page-quick-sidebar-over-content">
+<body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
     {{ coucou }}
-    <!-- BEGIN HEADER -->
-    <div class="page-header navbar navbar-fixed-top">
-        <!-- BEGIN HEADER INNER -->
-        <div class="page-header-inner">
-            <!-- BEGIN LOGO -->
-            <div class="page-logo">
-                <a href="index.html.twig">
-                    <img src="../public/img/minilogo.png" alt="logo" class="logo-default" style="width:40px;height:46px;margin-left:-20px!important;margin-top: 0px!important;"/>
-                </a>
-                <div class="menu-toggler sidebar-toggler hide">
-                    <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
-                </div>
-            </div>
-            <!-- END LOGO -->
-
-           <!-- BEGIN TOP NAVIGATION MENU -->
-            <div class="top-menu">
-            </div>
-            <!-- END TOP NAVIGATION MENU -->
-        </div>
-        <!-- END HEADER INNER -->
+   <div class="page-header navbar navbar-fixed-top">
+    <!-- BEGIN HEADER INNER -->
+    <div class="page-header-inner">
     </div>
-    <!-- END HEADER -->
+    <!-- END HEADER INNER -->
+</div>
+<!-- END HEADER -->
     <div class="clearfix">
     </div>
     <!-- BEGIN CONTAINER -->
     <div class="page-container">
-
-        <!-- BEGIN FOOTER -->
-        <div class="footer">
-           <div class="footer-inner">
-                DARim 2014. All rights reserved.
-                <br>
-                Ce site est actuellement en bêta, merci de signaler toute erreur à full-autof@hotmail.fr
-           </div>
-           <div class="footer-tools">
-              <span class="go-top">
-              <i class="icon-angle-up"></i>
-              </span>
-           </div>
+        <div class="page-content-wrapper">
+            <div class="page-content" style="min-height:940px">
+                <div>
+                    {% include "addActivity.html.twig" %}
+                </div>
+                <div>
+                    {% include "listActivity.html.twig" %}
+                </div>
+                <div class="col-md-2">
+                </div>
+                <div>
+                    {% include "diary.html.twig" %}
+                </div>
+            </div>
         </div>
-        <!-- END FOOTER -->
-        <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-        <!-- BEGIN CORE PLUGINS -->
-        <script src="../public/metronic/assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-        <script src="../public/metronic/assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-        <!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-        <script src="../public/metronic/assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>      
-        <script src="../public/metronic/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <!--[if lt IE 9]>
-        <script src="assets/plugins/excanvas.min.js"></script>
-        <script src="assets/plugins/respond.min.js"></script>  
-        <![endif]-->   
-        <script src="../public/metronic/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <script src="../public/metronic/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
-        <!-- END CORE PLUGINS -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <!-- END PAGE LEVEL SCRIPTS -->  
-        <script>
-          jQuery(document).ready(function() {
-          });
-        </script>
-        <!-- END JAVASCRIPTS -->
+    </div>
+    <!-- BEGIN FOOTER -->
+    <div class="page-footer">
+        <div class="footer-inner">
+            DARim 2014. All rights reserved.
+            <br>
+            Ce site est actuellement en bêta, merci de signaler toute erreur à full-autof@hotmail.fr
+        </div>
+        <div class="footer-tools">
+          <span class="go-top">
+          <i class="icon-angle-up"></i>
+          </span>
+        </div>
+    </div>
+    <!-- END FOOTER -->
+
+    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+    {% include 'javascripts.html.twig' %}
+    <!-- END JAVASCRIPTS -->
 
     </body>
 
