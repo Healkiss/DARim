@@ -17,7 +17,8 @@
     "require" : {
         "healkiss/listitems": "dev-master",
         "twig/extensions" : "1.0.*",
-        "twig/twig": "1.*"
+        "twig/twig": "1.*",
+        "symfony/yaml": "*"
     },
     "autoload" : {
         "psr-0" : {
