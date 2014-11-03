@@ -1,17 +1,26 @@
 <h3>Créer une Activité</h3>
 <form>
-<select class="selectpicker">
-{% for client in clients %}
-	<option>{{ client['name'] }} ({{ client['ref'] }})</option>
-{% endfor %}
-</select>
-<select class="selectpicker">
-	<option>Développement</option>
-	<option>Relationnel client</option>
-	<option>R&D</option>
-	<option>Reunion interne</option>
-</select>
-<input type="text" id="task" placeholder="Tache">
-<input type="text" id="comment" placeholder="Commentaire">
-<button submit>Créer</button>
+	<div class="col-md-1">
+		<select class="selectpicker" name="client" title='Client' data-style="btn-primary" data-live-search="true">
+			{% for client in clients %}
+			<option value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="col-md-1">
+		<select class="selectpicker" name="activityType" title='Type' data-style="btn-info">
+			{% for activityType in activitiesType %}
+				<option value="{{ activityType['id'] }}">{{ activityType['name'] }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	<div class="col-md-1">
+		<input type="text" id="task" class="form-control" placeholder="Tache">
+	</div>
+	<div class="col-md-1">
+		<input type="text" id="comment" class="form-control" placeholder="Commentaire">
+	</div>
+	<div class="col-md-1">
+		<button type="submit" class="btn blue">Créer</button>
+	</div>
 </form>
