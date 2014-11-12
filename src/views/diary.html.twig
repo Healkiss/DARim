@@ -1,45 +1,46 @@
-<h3>Journal du {{ "now"|date("d/m/Y") }}</h3>
 <div style='border-width:1px;border-color:black;min-height:600px;border-style:solid;'>
-    <div class='run table' style='font-size:1.2em;font-weight:bold;'>
-        <div class='cell text-left'>
-            Client-Type
-        </div>
-        <div class='cell text-center'>
-            Tache - 
-            Commentaire
-        </div>
-        <div class='cell text-right'>
-            Debut
-        </div>
-        <div class='cell text-right'>
-            Fin
-        </div>
-    </div>
+    <table>
+        <caption>Journal du {{ "now"|date("d/m/Y") }}</caption>
+        <tr>
+            <th>
+                Client-Type
+            </th>
+            <th>
+                Tache - Commentaire
+            </th>
+            <th>
+                Debut
+            </th>
+            <th>
+                Fin
+            </th>
+        </tr>
     {% for run in diary %}
         {% set isFinish = (run['end'] != "0000-00-00 00:00:00") %}
-        <div class='activity table dailyRow' data-runId='{{ run['id'] }}' data-isfinish='{{isFinish}}' style='border-top: 1px solid green;font-size:1em;'>
-            <div class='cell text-left'>
+        <tr class='activity table dailyRow' data-runId='{{ run['id'] }}' data-isfinish='{{isFinish}}' style='border-top: 1px solid green;font-size:1em;'>
+            <td>
                 {{ run['client_name'] }} 
                 ({{ run['client_ref'] }}-
                 {{ run['client_ref2'] }})
                 -{{ run['activityType_name'] }})
-            </div>
-            <div class='cell text-center'>
+            </td>
+            <td>
                 {{ run['task'] }}-
                 {{ run['commentary'] }}
-            </div>
-            <div class='cell text-right'>
+            </td>
+            <td>
                 {{ run['start']|date("H:i:s") }}
-            </div>
-            <div class='cell text-right'>
+            </td>
+            <td>
                 {% if run['end'] != 0 %}
                     {{ run['end']|date("H:i:s") }}
                 {% else %}
                     n/a
                 {% endif %}
-            </div>
-        </div>
+            </td>
+        </tr>
     {% endfor %}
+    </table>
     <div style='position:absolute; right:50px; bottom:0;'>
         <h3>Temps total : {{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s</h3>
     </div>
