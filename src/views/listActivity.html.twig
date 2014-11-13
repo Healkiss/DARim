@@ -1,30 +1,32 @@
-<h3>Mes Activités</h3>
 <div style='border-width:1px;border-color:black;min-height:600px;border-style:solid;'>
-    <div class='activity table' style='font-size:1.2em;font-weight:bold;'>
-        <div class='cell text-left'>
-            Client-Type
-        </div>
-        <div class='cell text-center'>
-            Tache
-        </div>
-        <div class='cell text-right'>
-            Commentaire
-        </div>
-    </div>
-    {% for activity in activities %}
-        <div class='activity table activityRow' data-activityId='{{ activity['id'] }} ' style='border-top: 1px solid green;font-size:1em;'>
-            <div class='cell text-left'>
-                {{ activity['client_name'] }} 
-                ({{ activity['client_ref'] }}-
-                {{ activity['client_ref2'] }})
-                -{{ activity['activityType_name'] }})
-            </div>
-            <div class='cell text-center'>
-                {{ activity['task'] }}
-            </div>
-            <div class='cell text-right rightCell'>
-                {{ activity['commentary'] }}
-            </div>
-        </div>
-    {% endfor %}
+    <table>
+        <caption>Mes Activités</caption>
+        <tr>
+            <th>
+                Client-Type
+            </th>
+            <th>
+                Tache
+            </th>
+            <th>
+                Commentaire
+            </th>
+        </tr>
+        {% for activity in activities %}
+            <tr class='activity table activityRow' data-activityId='{{ activity['id'] }} ' style='border-top: 1px solid green;font-size:1em;'>
+                <td>
+                    {{ activity['client_name'] }} 
+                    ({{ activity['client_ref'] }}-
+                    {{ activity['client_ref2'] }})
+                    -{{ activity['activityType_name'] }})
+                </td>
+                <td>
+                    {{ activity['task'] }}
+                </td>
+                <td>
+                    {{ activity['commentary'] }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 </div>
