@@ -1,5 +1,5 @@
-<h3>Créer une Activité</h3>
 <form>
+	<div class="my-form">
 		<select class="selectpicker" name="client" title='Client' data-style="btn-primary" data-live-search="true" method="post">
 			{% for client in clients %}
 			<option value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>
@@ -10,8 +10,11 @@
 				<option value="{{ activityType['id'] }}">{{ activityType['name'] }}</option>
 			{% endfor %}
 		</select>
-		<input type="text" name="task" id="task" class="control" placeholder="Tache" required>
-		<input type="text" name="comment" id="comment" class="control" placeholder="Commentaire" required>
-		<button type="submit" name="submit" value="submit" class="btn blue">Créer</button>
-		<button type="submit" name="submit" value="submitAndBegin" class="btn blue">Créer et commencer</button>
+		<input type="text" name="task" id="task" class="my-input" placeholder="Tache" required>
+
+		<input type="text" name="comment" id="comment" class="my-input" placeholder="Commentaire" required>
+    	<button name="submit" value="submitAndBegin" class="btn btn-success" type="button">Start</button>
+    	<button type="submit" name="submit" value="submit" class="btn btn-primary">TODO</button>
+  	</div>
+		{#<button type="submit" name="submit" value="stop" class='btn red btn_end_run'>Stop</button>#}
 </form>
