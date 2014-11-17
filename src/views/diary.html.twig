@@ -15,31 +15,31 @@
                 Fin
             </th>
         </tr>
-    {% for run in diary %}
-        {% set isFinish = (run['end'] != "0000-00-00 00:00:00") %}
-        <tr class='activity dailyRow' data-runId='{{ run['id'] }}' data-isfinish='{{isFinish}}' style='height:41px;border-top: 1px solid green;font-size:1em;'>
+    {% for activity in diary %}
+        {% set isFinish = (activity['end'] != "0000-00-00 00:00:00") %}
+        <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='height:41px;border-top: 1px solid green;font-size:1em;'>
             <td>
-                {{ run['client_name'] }} 
-                ({{run['client_ref2']}}-{{run['client_ref']}})
-                {% if run['activityType_name'] == "Développement" %}
+                {{ activity['client_name'] }} 
+                ({{activity['client_ref2']}}-{{activity['client_ref']}})
+                {% if activity['activityType_name'] == "Développement" %}
                 <span class="label label-primary">Développement</span>
-                {% elseif run['activityType_name'] == "Relationnel client" %}
+                {% elseif activity['activityType_name'] == "Relationnel client" %}
                 <span class="label label-info">Relationnel client</span>
-                {% elseif run['activityType_name'] == "R&D" %}
+                {% elseif activity['activityType_name'] == "R&D" %}
                 <span class="label label-warning">R&D</span>
-                {% elseif run['activityType_name'] == "Reunion interne" %}
+                {% elseif activity['activityType_name'] == "Reunion interne" %}
                 <span class="label label-success">Reunion interne</span>
                 {% endif %}
             </td>
             <td>
-                {{ run['task'] }}/{{ run['commentary'] }}
+                {{ activity['task'] }}/{{ activity['commentary'] }}
             </td>
             <td>
-                {{ run['start']|date("H\\hi") }}
+                {{ activity['start']|date("H\\hi") }}
             </td>
             <td>
-                {% if run['end'] != 0 %}
-                    {{ run['end']|date("H\\hi") }}
+                {% if activity['end'] != 0 %}
+                    {{ activity['end']|date("H\\hi") }}
                 {% else %}
                     n/a
                 {% endif %}

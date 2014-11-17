@@ -50,29 +50,28 @@ $response =  $conBdd->connexion->query("SELECT * FROM client");
 $clients = $response->fetchAll();
 $response =  $conBdd->connexion->query("SELECT * FROM activityType");
 $activitiesType = $response->fetchAll();
-//runs
+//activities
 $query = '
     SELECT
-        run.id AS id,
-        run.start AS start,
-        run.end AS end,
         activity.commentary AS commentary,
         activity.task AS task,
+        activity.id AS id,
         activityType.name AS activityType_name,
         client.name AS client_name,
         client.ref AS client_ref,
-        client.ref2 AS client_ref2
-    FROM run
-    LEFT JOIN activity AS activity ON (run.activity_id = activity.id)
-    LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
+        client.ref2 AS client_ref2,
+        activity.start AS start,
+        activity.end AS end
+    FROM activity
+    LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id AND activity.isTodo = 0)
     LEFT JOIN client AS client ON (client.id = activity.client_id)
 ';
 $response =  $conBdd->connexion->query($query);
-$runs = $response->fetchAll();
+$activities = $response->fetchAll();
 $diary = array();
-foreach($runs as $run) {
-    if (date('Ymd') == date('Ymd', strtotime($run['start']))){
-        $diary[] = $run;
+foreach($activities as $activity) {
+    if (date('Ymd') == date('Ymd', strtotime($activity['start']))){
+        $diary[] = $activity;
     }
 }
 
@@ -95,7 +94,7 @@ $worktimeToday = toTime($worktimeToday);
 //tasks
 $tasks = array();
 
-//activities
+//todos
 $query = '
     SELECT
         activity.commentary AS commentary,
@@ -104,15 +103,17 @@ $query = '
         activityType.name AS activityType_name,
         client.name AS client_name,
         client.ref AS client_ref,
-        client.ref2 AS client_ref2
+        client.ref2 AS client_ref2,
+        activity.start AS start,
+        activity.end AS end
     FROM activity
-    LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
+    LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id AND activity.isTodo = 1)
     LEFT JOIN client AS client ON (client.id = activity.client_id)
 ';
 try
 { 
 $response =  $conBdd->connexion->query($query);
-$activities = $response->fetchAll();
+$todos = $response->fetchAll();
 }
 catch (PDOException $e)
 {
@@ -122,8 +123,8 @@ catch (PDOException $e)
 echo $twig->render('base.html.twig', array(
 		'clients' => $clients,
 		'activitiesType' => $activitiesType,
-        'activities' => $activities,
-		'diary' => $diary,
+        'todos' => $todos,
+		'activities' => $activities,
         'worktimeToday' => $worktimeToday
 	));
 
