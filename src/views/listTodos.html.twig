@@ -12,8 +12,8 @@
                 Commentaire
             </th>
         </tr>
-        {% for activity in activities %}
-            <tr class='activity activityRow' data-activityId='{{ activity['id'] }} ' style='border-top: 1px solid green;font-size:1em;height:40px;'>
+        {% for todo in todos %}
+            <tr class='activity activityRow' data-activityId='{{ todo['id'] }} ' style='height:41px;border-top: 1px solid green;font-size:1em;'>
                 <td>
                     {{ todo['client_name'] }}
                     ({{ todo['client_ref2'] }}-{{ todo['client_ref'] }})

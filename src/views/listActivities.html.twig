@@ -15,7 +15,7 @@
                 Fin
             </th>
         </tr>
-    {% for activity in diary %}
+    {% for activity in activities %}
         {% set isFinish = (activity['end'] != "0000-00-00 00:00:00") %}
         <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='height:41px;border-top: 1px solid green;font-size:1em;'>
             <td>
