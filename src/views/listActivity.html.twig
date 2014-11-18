@@ -1,5 +1,5 @@
 <div style='border-width:1px;border-color:black;min-height:600px;border-style:solid;'>
-    <table>
+    <table width='100%'>
         <caption>Mes Activités</caption>
         <tr>
             <th>
@@ -13,7 +13,7 @@
             </th>
         </tr>
         {% for activity in activities %}
-            <tr class='activity table activityRow' data-activityId='{{ activity['id'] }} ' style='border-top: 1px solid green;font-size:1em;'>
+            <tr class='activity activityRow' data-activityId='{{ activity['id'] }} ' style='border-top: 1px solid green;font-size:1em;height:40px;'>
                 <td>
                     {{ activity['client_name'] }} 
                     ({{ activity['client_ref'] }}-
