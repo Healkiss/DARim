@@ -1,23 +1,23 @@
-<div style='border-width:1px;border-color:black;min-height:600px;border-style:solid;'>
+<div style='border-width:1px;border-color:black;min-height:600px;'>
     <table style="width:100%;">
-        <caption>Aujoud'hui ({{ "now"|date("d/m/Y") }})</caption>
+        <caption><h3><b>Aujoud'hui ({{ "now"|date("d/m/Y") }})</b></h3></caption>
         <tr>
             <th>
-                Client-Type
+                Client
             </th>
             <th>
                 Tache/Commentaire
             </th>
             <th>
-                Debut
+                Debut-Fin
             </th>
             <th>
-                Fin
+                Temps
             </th>
         </tr>
     {% for activity in activities %}
         {% set isFinish = (activity['end'] != "0000-00-00 00:00:00") %}
-        <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='height:41px;border-top: 1px solid green;font-size:1em;'>
+        <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' data-start='{{activity['start']}}' data-end='{{activity['end']}}' style='height:41px;border-top: 1px solid grey;font-size:1em;'>
             <td>
                 {{ activity['client_name'] }} 
                 ({{activity['client_ref2']}}-{{activity['client_ref']}})
@@ -35,13 +35,18 @@
                 {{ activity['task'] }}/{{ activity['commentary'] }}
             </td>
             <td>
-                {{ activity['start']|date("H\\hi") }}
-            </td>
-            <td>
+                <span class="timebound startTime">{{ activity['start']|date("H\\hi") }}</span> -
+                <span class="timebound endTime">
                 {% if activity['end'] != 0 %}
                     {{ activity['end']|date("H\\hi") }}
                 {% else %}
                     n/a
+                {% endif %}
+                </span>
+            </td>
+            <td>
+                {% if activity['timeSpend'] %}
+                {{ activity['timeSpend']|date_modify("-1 hour")|date("H\\hi") }}
                 {% endif %}
             </td>
         </tr>
@@ -50,4 +55,7 @@
     <div style='position:absolute; right:50px; bottom:0;'>
         <h3>Temps total : {{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s</h3>
     </div>
+    </div>
+        <button class='btn_etat btn btn-success btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:16px;width:80px;height:40px'>Exporter</button>
+    <div>
 </div>

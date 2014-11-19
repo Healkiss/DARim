@@ -8,6 +8,9 @@ $twig->getExtension('core')->setTimezone('Europe/Paris');
 
 $conBdd = new conBDD();
 
+function exportDay() {
+    //fputcsv();
+}
 function toTime($tmp){
     $retour['second'] = $tmp % 60;
  
@@ -63,11 +66,13 @@ $query = '
         client.ref AS client_ref,
         client.ref2 AS client_ref2,
         activity.start AS start,
-        activity.end AS end
+        activity.end AS end,
+        TIMESTAMPDIFF(SECOND, start, end) AS timeSpend
     FROM activity
     LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
     LEFT JOIN client AS client ON (client.id = activity.client_id)
     WHERE activity.isTodo = 0
+    ORDER BY start
 ';
 $response =  $conBdd->connexion->query($query);
 $activities = $response->fetchAll();
@@ -114,6 +119,7 @@ $query = '
     LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
     LEFT JOIN client AS client ON (client.id = activity.client_id)
     WHERE activity.isTodo = 1
+    ORDER BY start
 ';
 try
 { 

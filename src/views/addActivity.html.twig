@@ -1,11 +1,11 @@
 <form>
 	<div class="my-form">
-		<select class="selectpicker" name="client" title='Client' data-style="btn-primary" data-live-search="true" method="post">
+		<select class="selectpicker" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
 			{% for client in clients %}
 			<option value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>
 			{% endfor %}
 		</select>
-		<select class="selectpicker" name="activityType" title='Type' data-style="btn-info">
+		<select class="selectpicker" name="activityType" title='Type' data-style="btn-default">
 			{% for activityType in activitiesType %}
 				<option value="{{ activityType['id'] }}">{{ activityType['name'] }}</option>
 			{% endfor %}

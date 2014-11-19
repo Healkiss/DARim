@@ -1,6 +1,6 @@
-<div style='border-width:1px;border-color:black;min-height:600px;border-style:solid;'>
+<div style='border-width:1px;border-color:black;min-height:600px;'>
     <table style="width:100%;">
-        <caption>TODO</caption>
+        <caption><h3><b>TODO</b></h3></caption>
         <tr>
             <th>
                 Client
@@ -13,7 +13,7 @@
             </th>
         </tr>
         {% for todo in todos %}
-            <tr class='activity activityRow' data-activityId='{{ todo['id'] }} ' style='height:41px;border-top: 1px solid green;font-size:1em;'>
+            <tr class='activity todoRow' data-activityId='{{ todo['id'] }} ' style='psotion:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
                 <td>
                     {{ todo['client_name'] }}
                     ({{ todo['client_ref2'] }}-{{ todo['client_ref'] }})

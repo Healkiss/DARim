@@ -10,7 +10,11 @@ function start_activity($conBdd) {
     if($runRunning)
         end_run($conBdd, $runRunning);
     $now = time();
-    $stmt =  $conBdd->connexion->prepare('INSERT INTO run (activity_id) VALUES (:activity_id)');
+    $stmt =  $conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 0 FROM activity WHERE id = (:activity_id)');
+    $stmt->execute(array(
+        'activity_id'=> $activity
+        ));
+    $stmt =  $conBdd->connexion->prepare('DELETE FROM activity WHERE id = :activity_id');
     $stmt->execute(array(
         'activity_id'=> $activity
         ));
@@ -19,9 +23,56 @@ function start_activity($conBdd) {
 function end_run($conBdd, $run) {
     echo $run;
     $now = time();
-    $stmt =  $conBdd->connexion->prepare('UPDATE run SET end = NOW() WHERE id = :run_id');
+    $stmt =  $conBdd->connexion->prepare('UPDATE activity SET end = NOW() WHERE id = :run_id');
     $stmt->execute(array(
         'run_id'=> $run
+        ));
+    $response =  $conBdd->connexion->query("SELECT * FROM run");
+    $runs = $response->fetchAll();
+    $diary = array();
+    $worktimeToday = '0';
+    foreach($runs as $run) {
+        if (date('Ymd') == date('Ymd', strtotime($run['start'])) && $run['start'] != 0 ){
+            $diary[] = $run;
+        }
+    }
+    foreach($diary as $dayrun) {
+        $worktimeToday = $dayrun['end'] - $dayrun['end'];
+    }
+    return $worktimeToday;
+}
+function change_start_activity($conBdd, $activity, $newTime) {
+    echo $activity;
+    $now = time();
+    $newTime = strtotime($newTime);
+    echo $newTime;
+    $stmt =  $conBdd->connexion->prepare('UPDATE activity SET start = FROM_UNIXTIME(:start) WHERE id = :activity_id');
+    $stmt->execute(array(
+        'activity_id'=> $activity,
+        'start'=> $newTime
+        ));
+    $response =  $conBdd->connexion->query("SELECT * FROM run");
+    $runs = $response->fetchAll();
+    $diary = array();
+    $worktimeToday = '0';
+    foreach($runs as $run) {
+        if (date('Ymd') == date('Ymd', strtotime($run['start'])) && $run['start'] != 0 ){
+            $diary[] = $run;
+        }
+    }
+    foreach($diary as $dayrun) {
+        $worktimeToday = $dayrun['end'] - $dayrun['end'];
+    }
+    return $worktimeToday;
+}
+function change_end_activity($conBdd, $activity, $newTime) {
+    $now = time();
+    $newTime = strtotime($newTime);
+    echo $newTime;
+    $stmt =  $conBdd->connexion->prepare('UPDATE activity SET end = FROM_UNIXTIME(:end) WHERE id = :activity_id');
+    $stmt->execute(array(
+        'activity_id'=> $activity,
+        'end'=> $newTime
         ));
     $response =  $conBdd->connexion->query("SELECT * FROM run");
     $runs = $response->fetchAll();
@@ -50,6 +101,14 @@ if(isset($_GET['action'])) {
             break;
         case 'end_run':
             end_run($conBdd, $_GET['runId']);
+            echo "end_run";
+            break;
+        case 'change_start_activity':
+            change_start_activity($conBdd, $_GET['activityId'], $_GET['newTime']);
+            echo "end_run";
+            break;
+        case 'change_end_activity':
+            change_end_activity($conBdd, $_GET['activityId'], $_GET['newTime']);
             echo "end_run";
             break;
     }
