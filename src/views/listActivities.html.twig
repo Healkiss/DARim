@@ -31,7 +31,7 @@
                 <span class="label label-success">Reunion interne</span>
                 {% endif %}
             </td>
-            <td>
+            <td class='taskComment'>
                 {{ activity['task'] }}/{{ activity['commentary'] }}
             </td>
             <td>
@@ -57,5 +57,6 @@
     </div>
     </div>
         <button class='btn btn-success btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:16px;width:80px;height:40px'>Exporter</button>
+        <button id='copy' class='btn btn-success btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:100px;width:80px;height:40px'>Copier</button>
     <div>
 </div>

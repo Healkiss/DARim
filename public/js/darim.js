@@ -37,17 +37,21 @@ $(document).ready(function() {
         var changeStart = $(this).hasClass('startTime');
         var btn_etat = '';
         if(changeStart) {
-            btn_etat += "<input class='change_time_input change_start_time btn_etat' type='time' name='boundTime' style='position:absolute;right:86px;'>";
-            btn_etat += "<button class='btn_etat btn btn-info btn_edit_bound_activity btn_edit_start_activity' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>";
+            btn_etat += "<input class='change_time_input change_start_time edit_box' type='time' name='boundTime' style='position:absolute;right:86px;'>";
+            btn_etat += "<button class='edit_box btn btn-info btn_edit_bound_activity btn_edit_start_activity' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>";
         } else{
-            btn_etat += "<input class='change_time_input change_end_time btn_etat' type='time' name='boundTime' style='position:absolute;right:86px;'>";
-            btn_etat += "<button class='btn_etat btn btn-info btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>";
+            btn_etat += "<input class='change_time_input change_end_time edit_box' type='time' name='boundTime' style='position:absolute;right:86px;'>";
+            btn_etat += "<button class='edit_box btn btn-info btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>";
         }
         var $btnEtat = $(btn_etat);
         $(this).parent('td').parent('.dailyRow').append($btnEtat);
         var time = $(this).text().trim().replace('h',':');
         $btnEtat.val(time);
         $btnEtat.select();
+        $btnEtat.select();
+    });
+    $(document).on('click', ':not(.edit_box)', function() {
+       // $('.edit_box').remove();
     });
     function edit_bound_activity(elem) {
         var activityId = $(elem).parent('.dailyRow').data('activityid');
