@@ -15,8 +15,18 @@
             path: 'public/js/jquery.clipboard.swf',
             copy: function() {
                 console.log('Text copied. Try to paste it now!');
-                return $('.taskComment').text();
+                var dar = 'Ajourd\'hui \n';
+                $('.dailyRow').each(function(index, obj) {
+                    dar += $(obj).find('.dailyRow_client_name').text().replace(/\s/g, '') + ' \n';
+                    dar += '    *' +$(obj).find('.taskComment').text().replace(/\s/g, '') + ' \n';
+                });
+                dar += '\nDemain \n';
+                $('.todoRow').each(function(index, obj) {
+                    dar += $(obj).find('.todoRow_client_name').text().replace(/\s/g, '') + ' \n';
+                    dar += '    *' +$(obj).find('.todoRow_task').text().replace(/\s/g, '');
+                    dar += '/' +$(obj).find('.todoRow_comment').text().replace(/\s/g, '') + ' \n';
+                });
+                return dar;
             }
     });
 </script>
-

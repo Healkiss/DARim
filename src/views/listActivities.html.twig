@@ -19,7 +19,7 @@
         {% set isFinish = (activity['end'] != "0000-00-00 00:00:00") %}
         <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' data-start='{{activity['start']}}' data-end='{{activity['end']}}' style='height:41px;border-top: 1px solid grey;font-size:1em;'>
             <td>
-                {{ activity['client_name'] }} 
+                <span class="dailyRow_client_name">{{ activity['client_name'] }}</span>
                 ({{activity['client_ref2']}}-{{activity['client_ref']}})
                 {% if activity['activityType_name'] == "Développement" %}
                 <span class="label label-primary">Développement</span>
