@@ -125,4 +125,21 @@ $(document).ready(function() {
             }
         });
     });
+    $(".my-form").submit( function () {
+        var self = this;
+        $.ajax({
+            url: '//localhost/DARim/src/classes/ajax.php',
+            type: 'GET',
+            data: {
+                data: self.serialize()
+            },
+            error: function() {
+                alert('ko');
+            },
+            complete: function() {
+                console.log('ok');
+                location.reload();
+            }
+        });
+    })
 });

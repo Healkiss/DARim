@@ -3,6 +3,26 @@ require_once '../../vendor/autoload.php';
 require_once 'conBdd.php';
 $conBdd = new conBDD();
 
+function receiveNewActivity($conBdd, $isTodo){
+    $conBdd->connexion->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+    try
+    { 
+        $stmt =  $conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo)');
+        $stmt->execute(array(
+            'client_id'=> $_GET['client'],
+            'user_id'=> 1,
+            'activityType_id'=> $_GET['activityType'],
+            'task'=> $_GET['task'],
+            'commentary'=> $_GET['comment'],
+            'isTodo'=> $isTodo
+            ))
+        ;
+    }
+    catch (PDOException $e)
+    {
+        var_dump($e);
+    }
+}
 function start_activity($conBdd) {
     $activity = $_GET['activityId'];
     $runRunning = $_GET['runId'];
@@ -105,11 +125,19 @@ if(isset($_GET['action'])) {
             break;
         case 'change_start_activity':
             change_start_activity($conBdd, $_GET['activityId'], $_GET['newTime']);
-            echo "end_run";
+            echo "change_start_activity";
             break;
         case 'change_end_activity':
             change_end_activity($conBdd, $_GET['activityId'], $_GET['newTime']);
-            echo "end_run";
+            echo "change_end_activity";
+            break;
+        case 'submit':
+            receiveNewActivity($conBdd, 1);
+            echo "submit";
+            break;
+        case 'submitAndBegin':
+            receiveNewActivity($conBdd, 0);
+            echo "submitAndBegin";
             break;
     }
 }

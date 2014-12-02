@@ -26,31 +26,6 @@ function toTime($tmp){
     return $retour;
 }
 
-function receiveNewActivity($conBdd){
-    $conBdd->connexion->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-    $isTodo = ($_GET['submit'] == 'submit')?1:0;
-    try
-    { 
-    $stmt =  $conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo)');
-    $stmt->execute(array(
-        'client_id'=> $_GET['client'],
-        'user_id'=> 1,
-        'activityType_id'=> $_GET['activityType'],
-        'task'=> $_GET['task'],
-        'commentary'=> $_GET['comment'],
-        'isTodo'=> $isTodo
-        ));
-    }
-    catch (PDOException $e)
-    {
-            var_dump($e);
-    }
-    header("Location: index.php");
-}
-if( isset($_GET['submit']) ||isset($_GET['submitAndBegin']) ) {
-    receiveNewActivity($conBdd);
-}
-
 $response =  $conBdd->connexion->query("SELECT * FROM client");
 $clients = $response->fetchAll();
 $response =  $conBdd->connexion->query("SELECT * FROM activityType");
