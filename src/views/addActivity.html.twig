@@ -1,20 +1,20 @@
-<form>
-	<div class="my-form">
-		<select class="selectpicker" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
+<div>
+	<form id="my-form">
+		<select class="selectpicker" id="form-input-client" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
 			{% for client in clients %}
 			<option value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>
 			{% endfor %}
 		</select>
-		<select class="selectpicker" name="activityType" title='Type' data-style="btn-default">
-			{% for activityType in activitiesType %}
+		<select class="selectpicker" id="form-input-activityType" name="activityType" title='Type' data-style="btn-default">
+			{% for activityType in activityTypes %}
 				<option value="{{ activityType['id'] }}">{{ activityType['name'] }}</option>
 			{% endfor %}
 		</select>
-		<input type="text" name="task" id="task" class="my-input" placeholder="Tache" required>
+		<input type="text" id="form-input-task" name="task" id="task" class="my-input" placeholder="Tache" required>
 
-		<input type="text" name="comment" id="comment" class="my-input" placeholder="Commentaire" required>
-    	<button name="action" value="submitAndBegin" class="addActivity btn btn-success">Start</button>
-    	<button name="action" class="addActivity btn btn-primary">TODO</button>
-  	</div>
-		{#<button type="submit" name="submit" value="stop" class='btn red btn_end_run'>Stop</button>#}
-</form>
+		<input type="text" id="form-input-comment" name="comment" id="comment" class="my-input" placeholder="Commentaire" required>
+    	<button type="submit" name="action" value="submitAndBegin" class="addActivity submit btn btn-success">Start</button>
+    	<button type="submit" name="action" value="submit" class="addActivity btn submit btn-primary">TODO</button>
+	</form>
+</div>
+		{#<button type="submit" name="action" value="stop" class='btn submit btn-danger btn_end_run'>Stop</button>#}
