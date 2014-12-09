@@ -17,14 +17,14 @@
                 console.log('Text copied. Try to paste it now!');
                 var dar = 'Ajourd\'hui \n';
                 $('.dailyRow').each(function(index, obj) {
-                    dar += $(obj).find('.dailyRow_client_name').text().replace(/\s/g, '') + ' \n';
-                    dar += '    *' +$(obj).find('.taskComment').text().replace(/\s/g, '') + ' \n';
+                    dar += $(obj).find('.dailyRow_client_name').text().trim()+ ' \n';
+                    dar += '    *' +$(obj).find('.taskComment').text().trim() + ' \n';
                 });
                 dar += '\nDemain \n';
                 $('.todoRow').each(function(index, obj) {
-                    dar += $(obj).find('.todoRow_client_name').text().replace(/\s/g, '') + ' \n';
-                    dar += '    *' +$(obj).find('.todoRow_task').text().replace(/\s/g, '');
-                    dar += '/' +$(obj).find('.todoRow_comment').text().replace(/\s/g, '') + ' \n';
+                    dar += $(obj).find('.todoRow_client_name').text().trim() + ' \n';
+                    dar += '    *' +$(obj).find('.todoRow_task').text().trim();
+                    dar += '/' +$(obj).find('.todoRow_comment').text().trim() + ' \n';
                 });
                 return dar;
             }
