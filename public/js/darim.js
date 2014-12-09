@@ -20,7 +20,7 @@ $(document).ready(function() {
             isFinish = $(this).data('isfinish');
             var btn_etat = '';
             if(!isFinish) {
-                btn_etat += "<button class='btn_etat btn btn-warning btn_end_run' style='position:absolute;left:16px;'>Terminer</button>";
+                btn_etat += "<button class='btn_etat btn btn-danger btn_end_activity' style='position:absolute;left:16px;'>Terminer</button>";
             }
             var $btnEtat = $(btn_etat);
             $(this).append($btnEtat);
@@ -33,22 +33,25 @@ $(document).ready(function() {
     $('.timebound').on('mouseover', function() {
         $(this).css('cursor', 'pointer');
     });
-    $('.timebound').on('click', function() {
-        var changeStart = $(this).hasClass('startTime');
-        var btn_etat = '';
-        if(changeStart) {
-            btn_etat += "<input class='change_time_input change_start_time edit_box' type='time' name='boundTime' style='position:absolute;right:86px;'>";
-            btn_etat += "<button class='edit_box btn btn-info btn_edit_bound_activity btn_edit_start_activity' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>";
-        } else{
-            btn_etat += "<input class='change_time_input change_end_time edit_box' type='time' name='boundTime' style='position:absolute;right:86px;'>";
-            btn_etat += "<button class='edit_box btn btn-info btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>";
+    $('.editable').on('click', function() {
+
+        if($(this).data('type') === 'time') {
+            var changeStart = ($(this).data('name') === 'startTime')?true:false;
+            var btn_etat = '';
+            if(changeStart) {
+                btn_etat += "<input class='change_time_input change_start_time edit_box' type='time' name='boundTime' style='position:absolute;right:86px;'>";
+                btn_etat += "<button class='edit_box btn btn-info btn_edit_bound_activity btn_edit_start_activity' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>";
+            } else{
+                btn_etat += "<input class='change_time_input change_end_time edit_box' type='time' name='boundTime' style='position:absolute;right:86px;'>";
+                btn_etat += "<button class='edit_box btn btn-info btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>";
+            }
+            var $btnEtat = $(btn_etat);
+            $(this).parent('td').parent('.dailyRow').append($btnEtat);
+            var time = $(this).text().trim().replace('h',':');
+            $btnEtat.val(time);
+            $btnEtat.select();
+            $btnEtat.select();
         }
-        var $btnEtat = $(btn_etat);
-        $(this).parent('td').parent('.dailyRow').append($btnEtat);
-        var time = $(this).text().trim().replace('h',':');
-        $btnEtat.val(time);
-        $btnEtat.select();
-        $btnEtat.select();
     });
     $(document).on('click', ':not(.edit_box)', function() {
        // $('.edit_box').remove();
@@ -65,7 +68,7 @@ $(document).ready(function() {
         console.log('editer '+ action + ' ' + activityId + ' oldTime ' + oldTime +' newTime ' +newTime);
         $('.btn_etat').remove();
         $.ajax({
-            url: '//localhost/DARim/src/classes/ajax.php',
+            url: '//localhost/DARim/src/classes/ajaxActions.php',
             type: 'GET',
             data: {
                 action:action,
@@ -93,7 +96,7 @@ $(document).ready(function() {
         runRunning = $('.dailyRow:not([data-isfinish=1])').data('runid');
         activityId = $(this).parent('.todoRow').data('activityid');
         $.ajax({
-            url: '//localhost/DARim/src/classes/ajax.php',
+            url: '//localhost/DARim/src/classes/ajaxActions.php',
             type: 'GET',
             data: {
                 action:'start_activity',
@@ -108,14 +111,14 @@ $(document).ready(function() {
             }
         });
     });
-    $('.dailyRow').on('click', '.btn_end_run', function() {
-        runId = $(this).parent('.dailyRow').data('activityid');
+    $('.dailyRow').on('click', '.btn_end_activity', function() {
+        activityId = $(this).parent('.dailyRow').data('activityid');
         $.ajax({
-            url: '//localhost/DARim/src/classes/ajax.php',
+            url: '//localhost/DARim/src/classes/ajaxActions.php',
             type: 'GET',
             data: {
                 action:'end_run',
-                runId:runId
+                activityId:activityId
             },
             error: function() {
                 alert('ko');
@@ -125,4 +128,31 @@ $(document).ready(function() {
             }
         });
     });
+    var submitButtonPressed;
+    $('.submit').click(function() {
+          buttonpressed = $(this).val()
+    })
+    $(document).on("click", ".submit", function (event) {
+        var self = this;
+        submitButtonPressed
+        $.ajax({
+            url: '//localhost/DARim/src/classes/ajaxActions.php',
+            type: 'GET',
+            data: {
+                action:         buttonpressed,
+                client:         $("#form-input-client").val(),
+                activityType:   $("#form-input-activityType").val(),
+                task:           $("#form-input-task").val(),
+                comment:        $("#form-input-comment").val()
+            },
+            error: function() {
+                alert('ko');
+            },
+            complete: function() {
+                console.log('ok');
+                location.reload();
+            }
+        });
+        event.preventDefault();
+    })
 });

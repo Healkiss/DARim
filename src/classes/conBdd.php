@@ -4,7 +4,7 @@
 		
 		const HOST 	= "localhost";
 		const USER 	= "root";
-		const PASS 	= "Fullauto00";
+		const PASS 	= "toto";
 		const DB 	= "darim";
 		public $connexion;
 		private static $link;
