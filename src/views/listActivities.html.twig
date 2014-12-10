@@ -19,8 +19,8 @@
         {% set isFinish = (activity['end'] != '0000-00-00 00:00:00') %}
         <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' data-start='{{activity['start']}}' data-end='{{activity['end']}}' style='height:41px;border-top: 1px solid grey;font-size:1em;'>
             <td>
-                <span class='dailyRow_client_name'>{{ activity['client_name'] }}</span>
-                ({{activity['client_ref2']}}-{{activity['client_ref']}})
+                <span class='dailyRow_client_name editable'>{{ activity['client_name'] }}
+                ({{activity['client_ref2']}}-{{activity['client_ref']}})</span>
                 {% if activity['activityType_name'] == 'Développement' %}
                 <span class='label label-primary'>Développement</span>
                 {% elseif activity['activityType_name'] == 'Relationnel client' %}
@@ -35,8 +35,8 @@
                 {{ activity['task'] }}/{{ activity['commentary'] }}
             </td>
             <td>
-                <span class='editable timebound startTime' data-type='time' data-name='startTime'>{{ activity['start']|date('H\\hi') }}</span> -
-                <span class='editable timebound endTime' data-type='time' data-name='endTime'>
+                <span class='editable timebound startTime' data-type='time' data-name='start_time'>{{ activity['start']|date('H\\hi') }}</span> -
+                <span class='editable timebound endTime' data-type='time' data-name='end_time'>
                 {% if activity['end'] != 0 %}
                     {{ activity['end']|date('H\\hi') }}
                 {% else %}

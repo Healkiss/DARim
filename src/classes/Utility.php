@@ -140,6 +140,13 @@ class Utility {
             'run_id'=> $run
             ));
     }
+    function delete_activity($activity) {
+        $now = time();
+        $stmt =  $this->conBdd->connexion->prepare('DELETE FROM activity WHERE id = :activity_id');
+        $stmt->execute(array(
+            'activity_id'=> $activity
+            ));
+    }
     function change_start_activity($activity, $newTime) {
         $now = time();
         $newTime = strtotime($newTime);

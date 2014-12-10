@@ -4,9 +4,6 @@
     if(isset($_GET['action'])) {
         $action = $_GET['action'];
         switch ($action) {
-            case 'edit_activity':
-                echo "edit_activity";
-                break;
             case 'start_activity':
                 $utility->start_activity();
                 echo "start_activity";
@@ -15,14 +12,23 @@
                 $utility->end_activity($_GET['activityId']);
                 echo "end_run";
                 break;
-            case 'change_start_activity':
-                $utility->change_start_activity($_GET['activityId'], $_GET['newTime']);
-                echo "change_start_activity";
+            case 'delete_activity':
+                $utility->delete_activity($_GET['activityId']);
+                echo "delete activity";
                 break;
-            case 'change_end_activity':
-                $utility->change_end_activity($_GET['activityId'], $_GET['newTime']);
-                echo "change_end_activity";
-                break;
+            case 'edit_activity':
+                $field = $_GET['field'];
+                        echo $field;
+                switch ($field) {
+                    case 'start_time':
+                        echo "start_time";
+                        $utility->change_start_activity($_GET['activityId'], $_GET['newValue']);
+                        break;
+                    case 'end_time':
+                        echo "end_time";
+                        $utility->change_end_activity($_GET['activityId'], $_GET['newValue']);
+                        break;
+                    }
             case 'submit':
                 $utility->receiveNewActivity(1);
                 echo "submit";

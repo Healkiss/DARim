@@ -15,22 +15,22 @@
         {% for todo in todos %}
             <tr class='activity todoRow' data-activityId='{{ todo['id'] }} ' style='psotion:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
                 <td>
-                    <span class="todoRow_client_name">{{ todo['client_name'] }}</span>
-                    ({{ todo['client_ref2'] }}-{{ todo['client_ref'] }})
-                    {% if todo['activityType_name'] == "Développement" %}
-                    <span class="label label-primary">Développement</span>
-                    {% elseif todo['activityType_name'] == "Relationnel client" %}
-                    <span class="label label-info">Relationnel client</span>
-                    {% elseif todo['activityType_name'] == "R&D" %}
-                    <span class="label label-warning">R&D</span>
-                    {% elseif todo['activityType_name'] == "Reunion interne" %}
-                    <span class="label label-success">Reunion interne</span>
+                    <span class='todoRow_client_name editable'>{{ todo['client_name'] }}
+                    ({{ todo['client_ref2'] }}-{{ todo['client_ref'] }})</span>
+                    {% if todo['activityType_name'] == 'Développement' %}
+                    <span class='label label-primary'>Développement</span>
+                    {% elseif todo['activityType_name'] == 'Relationnel client' %}
+                    <span class='label label-info'>Relationnel client</span>
+                    {% elseif todo['activityType_name'] == 'R&D' %}
+                    <span class='label label-warning'>R&D</span>
+                    {% elseif todo['activityType_name'] == 'Reunion interne' %}
+                    <span class='label label-success'>Reunion interne</span>
                     {% endif %}
                 </td>
-                <td class="todoRow_task">
+                <td class='todoRow_task'>
                     {{ todo['task'] }}
                 </td>
-                <td class="todoRow_comment">
+                <td class='todoRow_comment'>
                     {{ todo['commentary'] }}
                 </td>
             </tr>
