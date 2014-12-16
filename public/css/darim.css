@@ -13,6 +13,10 @@
     text-align: left;
 }
 
+.editable{
+    cursor: pointer;
+}
+
 .text-center{
     display:table-cell;
     max-width:33%;

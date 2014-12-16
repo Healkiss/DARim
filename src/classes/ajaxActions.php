@@ -35,7 +35,16 @@
                 break;
             case 'submitAndBegin':
                 $utility->receiveNewActivity(0);
-                echo "submitAndBegin";
+                echo 'submitAndBegin';
+                break;
+            case 'get_clients':
+                echo json_encode($utility->getClients());
+                break;
+            case 'get_activityTypes':
+                echo json_encode($utility->getActivityTypes());
+                break;
+            default:
+                echo 'requete non suppportée';
                 break;
         }
     }

@@ -29,10 +29,7 @@ $(document).ready(function() {
     });
     $('.dailyRow').on('mouseleave', function() {
         buttonDisplayed = false;
-        $('.btn_etat').remove();
-    });
-    $('.timebound').on('mouseover', function() {
-        $(this).css('cursor', 'pointer');
+        //$('.btn_etat').remove();
     });
     
     $('.todoRow').on('click', '.btn_start_activity', function() {
