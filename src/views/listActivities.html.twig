@@ -17,12 +17,10 @@
         </tr>
     {% for activity in activities %}
         {% set isFinish = (activity['end'] != '0000-00-00 00:00:00') %}
-        <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='height:41px;border-top: 1px solid grey;font-size:1em;'>
+        <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='position:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
             <td>
                 <span class='dailyRow_client_name editable' data-type='selectpicker' data-name='clients' data-value='{{activity['activityType_name']}}'>
                     {{ activity['client_name'] }}
-                </span>
-                <span>
                     ({{activity['client_ref2']}}-{{activity['client_ref']}})
                 </span>
                 {% if activity['activityType_name'] == 'Développement' %}
@@ -34,20 +32,20 @@
                 {% elseif activity['activityType_name'] == 'Reunion interne' %}
                 {% set labelType = 'success'%}
                 {% endif %}
-                <span class='label label-{{labelType}} editable' data-type='selectpicker' data-name='activityTypes' data-value='{{activity['activityType_name']}}'>{{activity['activityType_name']}}</span>
+                <span class='label label-{{activity['activityType_color']}} editable' data-type='selectpicker' data-name='activityTypes' data-field='activityType' data-value='{{activity['activityType_name']}}' style="float:right;margin-right:10px;margin-top:8px;">{{activity['activityType_name']}}</span>
             </td>
             <td>
-                <span class='editable' data-type='string' data-name='task' data-value='{{ activity['task'] }}'>
+                <span class='editable' data-type='string' data-name='task' data-field='task' data-value='{{ activity['task'] }}'>
                     {{ activity['commentary'] }}
                 </span>
                 |
-                <span class='editable' data-type='string' data-name='commentary' data-value='{{ activity['commentary'] }}'>
+                <span class='editable' data-type='string' data-name='commentary' data-field='comentary' data-value='{{ activity['commentary'] }}'>
                     {{ activity['task'] }}
                 </span>
             </td>
             <td>
-                <span class='editable timebound startTime' data-type='time' data-name='start' data-value='{{activity['start']|date('H\\:i')}}'>{{ activity['start']|date('H\\hi') }}</span> -
-                <span class='editable timebound endTime' data-type='time' data-name='end' data-value='{{activity['end']|date('H\\:i')}}'>
+                <span class='editable timebound startTime' data-type='time' data-name='start' data-field='start_time' data-value='{{activity['start']|date('H\\:i')}}'>{{ activity['start']|date('H\\hi') }}</span> -
+                <span class='editable timebound endTime' data-type='time' data-name='end' data-field='end_time' data-value='{{activity['end']|date('H\\:i')}}'>
                 {% if activity['end'] != 0 %}
                     {{ activity['end']|date('H\\hi') }}
                 {% else %}

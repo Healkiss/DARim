@@ -47,6 +47,7 @@ class Utility {
                 activity.task AS task,
                 activity.id AS id,
                 activityType.name AS activityType_name,
+                activityType.color AS activityType_color,
                 client.name AS client_name,
                 client.ref AS client_ref,
                 client.ref2 AS client_ref2,
@@ -165,6 +166,13 @@ class Utility {
         $stmt->execute(array(
             'activity_id'=> $activity,
             'end'=> $newTime
+            ));
+    }
+    function change_activityType_activity($activity, $activityType) {
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET activityType = :activityType WHERE id = :activity_id');
+        $stmt->execute(array(
+            'activity_id'=> $activity,
+            'activityType'=> $activityType
             ));
     }
 }

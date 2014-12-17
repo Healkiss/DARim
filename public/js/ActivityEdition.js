@@ -5,58 +5,43 @@ $(document).ready(function() {
         var oldValue = 'err';
         var type = $(this).data('type');
         var oldValue = $(this).data('value');
+        var field = $(this).data('field');
         var value = 'err';
         var input_edit = '';
+        var btnEditNeeded = true;
         console.log($(this).data('type'));
         switch($(this).data('name')) {
             case 'clients':
-                $.ajax({
-                    url: '//localhost/DARim/src/classes/ajaxActions.php',
-                    async: false,
-                    data: {
-                        action:'get_clients',
-                    },
-                    error: function() {
-                        alert('ko');
-                    },
-                    complete: function(data) {
-                        constructSelectPicker(data);
-                    }
-                });
-                function constructSelectPicker(clients) {
-                    clients = JSON.parse(clients.responseText);
-                    console.log(clients);
-                    input_edit += '<select class="selectpicker" id="input-edit-client" name="client" title="Client" data-style="btn-default" data-live-search="true">';
-                    for(var i = 0; i < clients.length; ++i) {
-                        client = clients[i];
-                        input_edit += '<option value="'+client['id']+'">'+client['name']+'('+client['ref2']+'"-'+client['ref']+')</option>';
-                    };
-                    input_edit += '</select>';
-                }
+                input_edit = displaySelect('get_clients', ['name', 'ref2', 'ref'], {'name' : 'clients'}, true, false);
+                btnEditNeeded = false;
                 break;
             case 'activityTypes':
-                input_edit = displaySelect();
+                input_edit = displaySelect('get_activityTypes', ['name'], {'name' : 'activityTypes'}, false, true);
+                btnEditNeeded = false;
                 break;
             default:
                 break;
         }
         if(input_edit === '') {
-            var input_edit = "<input class='btn_etat change_client_input edit_input' type='"+type+"' style='position:absolute;right:86px;'>";
+            var input_edit = "<input class='change_client_input edit_input edit_box' type='"+type+"' style=''>";
         }
-        var btn_edit = "<button class='btn_etat btn btn-info btn_edit_activity' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>"
+        var btn_edit = "<button class='btn btn-info btn_edit_activity edit_box' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>"
         $(input_edit).val(oldValue);
-        // $(this).parent('td').parent('.dailyRow').append($(input_edit));
-        $(this).removeClass('editable');
-        $(this).html($(input_edit));
+        $(input_edit).insertAfter($(this));
+        $(input_edit).data('field', field);
+        $(input_edit).addClass('inEdition');
+        if(btnEditNeeded)
+            $(btn_edit).insertAfter($(this));
+        $(this).hide();
         $('.selectpicker').selectpicker({
-            size: false
+            width: "auto"
         });
-        // $(this).parent('td').parent('.dailyRow').append($(btn_edit));
-        //$(this).html($(this).html($(btn_edit)));
-        $(input_edit).focus();
+        $(input_edit).focus().select();
     });
     $(document).on('click', ':not(.edit_box)', function() {
-       // $('.edit_box').remove();
+        console.log('click');
+        //console.log(this);
+        $('.edit_box').remove();
     });
 
     $('.dailyRow').on('click', '.btn_edit_activity', function() {
@@ -68,12 +53,17 @@ $(document).ready(function() {
             edit_client_activity(this);
         }
     });
+    $('.dailyRow').on('change', '#input-edit-activityTypes', function() {
+        console.log($(this).val());
+        edit_client_activity(this);
+    });
 
-    function displaySelect(ajaxAction, toDisplay, datas, search) {
+    function displaySelect(ajaxAction, toDisplay, datas, search, label) {
         ajaxAction = ajaxAction || 'get_activityTypes';
         toDisplay = toDisplay || ['name'];
         datas = datas || {'name' : 'activityTypes'};
         search = search || false;
+        label = label || false;
         input_edit = '';
         console.log('displaySelect');
         $.ajax({
@@ -86,32 +76,44 @@ $(document).ready(function() {
                 alert('ko');
             },
             complete: function(data) {
-                input_edit = constructSelect(data, ajaxAction, toDisplay, datas, search);
+                input_edit = constructSelect(data, ajaxAction, toDisplay, datas, search, label);
             }
         });
         return input_edit;
     }
     //TODO : passer les valuers a afficher, passer les valeurs des datas
-    function constructSelect(response, ajaxAction, toDisplay, datas, search) {
+    function constructSelect(response, ajaxAction, toDisplay, datas, search, label) {
         lines = JSON.parse(response.responseText);
-        input_edit = '<select class="selectpicker" id="input-edit-'+datas['name']+'" name="'+datas['name']+'" title="Client" data-style="btn-default" data-live-search="'+datas['name']+'">';
+        input_edit = '<select class="selectpicker edit_box" id="input-edit-'+datas['name']+'" name="'+datas['name']+'" title="Client" data-style="btn-default" data-live-search="'+search+'" data-width="auto">';
         for(var i = 0; i < lines.length; ++i) {
             line = lines[i];
-            input_edit += '<option value="'+line['id']+'">';
+            var content = '';
             for(var j = 0; j < toDisplay.length; ++j) {
-                line[toDisplay[j]]
+                /*console.log('j ' + j);
+                console.log('toDisplay[j] ' + toDisplay[j]);
+                console.log('line[toDisplay[j]] ' + line[toDisplay[j]]);*/
+                content += ' ' + line[toDisplay[j]];
             }
-            input_edit +='</option>';
+            var dataContent = '';
+            if(label){
+                dataContent += 'data-content="<span class=\'label label-'+line['color']+'\'>'+content+'</span>"';
+            }
+            input_edit += '<option value="'+line['id']+'" '+dataContent+'>'+content+'</option>';
         };
         input_edit += '</select>';
         return input_edit;
     }
+
     function getActivityId(elem) {
-        return $(elem).parent('.dailyRow').data('activityid');
+        return $(elem).parent('td').parent('tr').data('activityid');
     }
 
     function getActivityValue(elem) {
-        return $(elem).val();;
+        return $(elem).val();
+    }
+
+    function getField(elem) {
+        return $(elem).data('field');
     }
 
     function editField(activityId, field, newValue) {
@@ -148,14 +150,15 @@ $(document).ready(function() {
 
     function edit_client_activity(elem) {
         var activityId = getActivityId(elem);
-        var value = getActivityValue(elem);
-        var changeStart = $(elem).hasClass('change_start_time');
-        var field = changeStart?'start_time':'end_time';
+        console.log('activityId' + activityId);
+        var field = getField(elem);
+        var newValue = getActivityValue(elem);
+        //var changeStart = $(elem).hasClass('change_start_time');
         /*var oldTime = changeStart?$(elem).parent('.dailyRow').data('start'):$(elem).parent('.dailyRow').data('end');
         var newTime = oldTime.replace(/\s[0-9]{2}:[0-9]{2}/,' '+value);
         console.log('editer '+ field + ' ' + activityId + ' oldTime ' + oldTime +' newTime ' +newTime);
         $('.btn_etat').html('<img src="http://localhost/d590/img/spinner.gif"/>');*/
-        var newValue = 
+        //var newValue = 
         editField(activityId, field, newValue);
     }
 });

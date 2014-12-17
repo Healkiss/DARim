@@ -20,8 +20,10 @@ $(document).ready(function() {
             isFinish = $(this).data('isfinish');
             var btn_etat = '';
             if(!isFinish) {
-                btn_etat += "<button class='btn_etat btn btn-danger btn_end_activity' style='position:absolute;left:16px;'><i class='glyphicon glyphicon-stop'></i></button>";
-                btn_etat += "<button class='btn_etat btn btn-danger btn_delete_activity' style='position:absolute;right:16px;'><i class='glyphicon glyphicon-trash'></i></button>";
+                btn_etat += "<button class='btn_etat btn btn-danger btn_end_activity' style='position:absolute;left:-25px;height:40px;'><i class='glyphicon glyphicon-stop'></i></button>";
+                btn_etat += "<button class='btn_etat btn btn-danger btn_delete_activity' style='position:absolute;right:-25px;height:40px;'><i class='glyphicon glyphicon-trash'></i></button>";
+            }else{
+                btn_etat += "<button class='btn_etat btn btn-success btn_start_activity' style='position:absolute;left:-25px;height:40px;'><i class='glyphicon glyphicon-play'></i></button>";
             }
             var $btnEtat = $(btn_etat);
             $(this).append($btnEtat);
@@ -29,7 +31,12 @@ $(document).ready(function() {
     });
     $('.dailyRow').on('mouseleave', function() {
         buttonDisplayed = false;
-        //$('.btn_etat').remove();
+        //hide button bin/stop/start
+        $('.btn_etat').remove();
+        //hide edit input and buttons
+        $('.edit_box').remove();
+        //show old value
+        $('.editable').show();
     });
     
     $('.todoRow').on('click', '.btn_start_activity', function() {

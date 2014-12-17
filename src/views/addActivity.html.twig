@@ -7,7 +7,7 @@
 		</select>
 		<select class="selectpicker" id="form-input-activityType" name="activityType" title='Type' data-style="btn-default">
 			{% for activityType in activityTypes %}
-				<option value="{{ activityType['id'] }}">{{ activityType['name'] }}</option>
+				<option value="{{ activityType['id'] }}" data-content="<span class='label label-{{ activityType['color'] }}'>{{ activityType['name'] }}</span>" data-width="auto">{{ activityType['name'] }}</option>
 			{% endfor %}
 		</select>
 		<input type="text" id="form-input-task" name="task" id="task" class="my-input" placeholder="Tache" required>

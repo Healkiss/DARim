@@ -17,18 +17,27 @@
                 echo "delete activity";
                 break;
             case 'edit_activity':
+                echo 'edit_activity : ';
                 $field = $_GET['field'];
                         echo $field;
                 switch ($field) {
                     case 'start_time':
-                        echo "start_time";
+                        echo "start_time<br/>";
                         $utility->change_start_activity($_GET['activityId'], $_GET['newValue']);
                         break;
                     case 'end_time':
-                        echo "end_time";
+                        echo "end_time<br/>";
                         $utility->change_end_activity($_GET['activityId'], $_GET['newValue']);
                         break;
+                    case 'activityType':
+                        echo "activityType <br/>";
+                        $utility->change_activityType_activity($_GET['activityId'], $_GET['newValue']);
+                        break;
+                    default:
+                        echo "<br/>Champ edition non géré<br/>";
+                        break;
                     }
+                break;
             case 'submit':
                 $utility->receiveNewActivity(1);
                 echo "submit";
@@ -44,7 +53,7 @@
                 echo json_encode($utility->getActivityTypes());
                 break;
             default:
-                echo 'requete non suppportée';
+                echo 'requete ajax non suppportée';
                 break;
         }
     }
