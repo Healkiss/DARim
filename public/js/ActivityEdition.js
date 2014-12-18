@@ -1,57 +1,63 @@
 $(document).ready(function() {
     var editType = '';
     $('.editable').on('click', function() {
-        $('.btn_etat').remove();
-        $('.edit_box').remove();
-        $('.editable').show();
-        var type = $(this).data('type');
-        var oldValue = $(this).data('value');
-        var field = $(this).data('field');
-        var input_edit = '';
-        var btnEditNeeded = true;
-        switch($(this).data('name')) {
-            case 'clients':
-                input_edit = displaySelect('get_clients', ['name', 'ref2', 'ref'],  "margin-left:40px;", true, false);
-                btnEditNeeded = false;
-                break;
-            case 'activityTypes':
-                input_edit = displaySelect('get_activityTypes', ['name'], "float:right;margin-right:20px;", false, true);
-                btnEditNeeded = false;
-                break;
-            default:
-                break;
-        }
-        if(input_edit === '') {
-            var input_edit = "<input class='change_client_input edit_input edit_box' type='"+type+"' style='position:relative;height:40px;'>";
-        }
-        var btn_edit = "<button class='btn btn-info btn_edit_activity edit_box' style='position:absolute;width:70px;height:40px'>Editer</button>"
-        $input_edit = $(input_edit);
-        $btn_edit = $(btn_edit);
-        $input_edit.val(oldValue);
+        var self = this;
+        setTimeout(function() 
+        {
+            $('.btn_etat').remove();
+            $('.edit_box').remove();
+            $('.editable').show();
+            var type = $(self).data('type');
+            var oldValue = $(self).data('value');
+            var field = $(self).data('field');
+            var input_edit = '';
+            var btnEditNeeded = true;
+            switch($(self).data('name')) {
+                case 'clients':
+                    input_edit = displaySelect('get_clients', ['name', 'ref2', 'ref'],  "margin-left:40px;", true, false);
+                    btnEditNeeded = false;
+                    break;
+                case 'activityTypes':
+                    input_edit = displaySelect('get_activityTypes', ['name'], "float:right;margin-right:20px;", false, true);
+                    btnEditNeeded = false;
+                    break;
+                default:
+                    break;
+            }
+            if(input_edit === '') {
+                var input_edit = "<input class='change_client_input edit_input edit_box' type='"+type+"' style='position:relative;height:40px;'>";
+            }
+            var btn_edit = "<button class='btn btn-info btn_edit_activity edit_box' style='position:absolute;width:70px;height:40px'>Editer</button>"
+            $input_edit = $(input_edit);
+            $btn_edit = $(btn_edit);
+            $input_edit.val(oldValue);
 
-        var edition_block = "<span style='position:relative;'></span>";
-        $edition_block = $(edition_block);
-        $edition_block.insertAfter($(this));
+            var edition_block = "<span class='edit_box' style='position:relative;'></span>";
+            $edition_block = $(edition_block);
+            $edition_block.insertAfter($(self));
 
-        $edition_block.append($input_edit);
-        //$input_edit.insertAfter($(this));
-        if(btnEditNeeded) {
-            // $btn_edit.insertAfter($input_edit);
-            $edition_block.append($btn_edit);
-        }
+            $edition_block.append($input_edit);
+            //$input_edit.insertAfter($(self));
+            if(btnEditNeeded) {
+                // $btn_edit.insertAfter($input_edit);
+                $edition_block.append($btn_edit);
+            }
 
 
-        $(this).hide();
-        $('.selectpicker').selectpicker({
-            width: "auto"
-        });        
-        $input_edit.addClass('inEdition');
-        $input_edit.data('field', field);
-        $input_edit.focus().select();
+            $(self).hide();
+            $('.selectpicker').selectpicker({
+                width: "auto"
+            });        
+            $input_edit.addClass('inEdition');
+            $input_edit.data('field', field);
+            $input_edit.focus().select();
+        }, 10);
     });
-    $(document).on('click', ':not(.edit_box)', function() {
+    $(document).on('click', ':not(.edit_box *)', function() {
         //console.log('click');
         //console.log(this);
+        $('.edit_box').remove();
+        $('.editable').show();
         //$('.edit_box').remove();
     });
 
