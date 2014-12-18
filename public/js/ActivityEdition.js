@@ -1,71 +1,80 @@
 $(document).ready(function() {
     var editType = '';
     $('.editable').on('click', function() {
-        var self = this;
-        var oldValue = 'err';
+        $('.btn_etat').remove();
+        $('.edit_box').remove();
+        $('.editable').show();
         var type = $(this).data('type');
         var oldValue = $(this).data('value');
         var field = $(this).data('field');
-        var value = 'err';
         var input_edit = '';
         var btnEditNeeded = true;
-        console.log($(this).data('type'));
         switch($(this).data('name')) {
             case 'clients':
-                input_edit = displaySelect('get_clients', ['name', 'ref2', 'ref'], {'name' : 'clients'}, true, false);
+                input_edit = displaySelect('get_clients', ['name', 'ref2', 'ref'],  "margin-left:40px;", true, false);
                 btnEditNeeded = false;
                 break;
             case 'activityTypes':
-                input_edit = displaySelect('get_activityTypes', ['name'], {'name' : 'activityTypes'}, false, true);
+                input_edit = displaySelect('get_activityTypes', ['name'], "float:right;margin-right:20px;", false, true);
                 btnEditNeeded = false;
                 break;
             default:
                 break;
         }
         if(input_edit === '') {
-            var input_edit = "<input class='change_client_input edit_input edit_box' type='"+type+"' style=''>";
+            var input_edit = "<input class='change_client_input edit_input edit_box' type='"+type+"' style='position:relative;height:40px;'>";
         }
-        var btn_edit = "<button class='btn btn-info btn_edit_activity edit_box' style='position:absolute;right:16px;width:70px;height:40px'>Editer</button>"
-        $(input_edit).val(oldValue);
-        $(input_edit).insertAfter($(this));
-        $(input_edit).data('field', field);
-        $(input_edit).addClass('inEdition');
-        if(btnEditNeeded)
-            $(btn_edit).insertAfter($(this));
+        var btn_edit = "<button class='btn btn-info btn_edit_activity edit_box' style='position:absolute;width:70px;height:40px'>Editer</button>"
+        $input_edit = $(input_edit);
+        $btn_edit = $(btn_edit);
+        $input_edit.val(oldValue);
+
+        var edition_block = "<span style='position:relative;'></span>";
+        $edition_block = $(edition_block);
+        $edition_block.insertAfter($(this));
+
+        $edition_block.append($input_edit);
+        //$input_edit.insertAfter($(this));
+        if(btnEditNeeded) {
+            // $btn_edit.insertAfter($input_edit);
+            $edition_block.append($btn_edit);
+        }
+
+
         $(this).hide();
         $('.selectpicker').selectpicker({
             width: "auto"
-        });
-        $(input_edit).focus().select();
+        });        
+        $input_edit.addClass('inEdition');
+        $input_edit.data('field', field);
+        $input_edit.focus().select();
     });
     $(document).on('click', ':not(.edit_box)', function() {
-        console.log('click');
+        //console.log('click');
         //console.log(this);
-        $('.edit_box').remove();
+        //$('.edit_box').remove();
     });
 
     $('.dailyRow').on('click', '.btn_edit_activity', function() {
-        edit_client_activity($(this).siblings('.change_client_input'));
+        edit_activity($(this).siblings('.change_client_input'));
     });
     $('.dailyRow').on('keypress', '.btn_edit_activity', function(e) {
         var key = e.which;
         if(key == 13) {
-            edit_client_activity(this);
+            edit_activity(this);
         }
     });
-    $('.dailyRow').on('change', '#input-edit-activityTypes', function() {
-        console.log($(this).val());
-        edit_client_activity(this);
+    $('.dailyRow').on('change', 'select.inEdition', function() {
+        edit_activity(this);
     });
 
-    function displaySelect(ajaxAction, toDisplay, datas, search, label) {
+    function displaySelect(ajaxAction, toDisplay, specStyle, search, label) {
         ajaxAction = ajaxAction || 'get_activityTypes';
         toDisplay = toDisplay || ['name'];
-        datas = datas || {'name' : 'activityTypes'};
+        specStyle = specStyle || '';
         search = search || false;
         label = label || false;
         input_edit = '';
-        console.log('displaySelect');
         $.ajax({
             url: '//localhost/DARim/src/classes/ajaxActions.php',
             async: false,
@@ -76,15 +85,15 @@ $(document).ready(function() {
                 alert('ko');
             },
             complete: function(data) {
-                input_edit = constructSelect(data, ajaxAction, toDisplay, datas, search, label);
+                input_edit = constructSelect(data, ajaxAction, toDisplay, specStyle, search, label);
             }
         });
         return input_edit;
     }
     //TODO : passer les valuers a afficher, passer les valeurs des datas
-    function constructSelect(response, ajaxAction, toDisplay, datas, search, label) {
+    function constructSelect(response, ajaxAction, toDisplay, specStyle, search, label) {
         lines = JSON.parse(response.responseText);
-        input_edit = '<select class="selectpicker edit_box" id="input-edit-'+datas['name']+'" name="'+datas['name']+'" title="Client" data-style="btn-default" data-live-search="'+search+'" data-width="auto">';
+        input_edit = '<select class="selectpicker edit_box" title="Client" data-style="btn-default" data-live-search="'+search+'" data-width="auto" style="'+specStyle+'">';
         for(var i = 0; i < lines.length; ++i) {
             line = lines[i];
             var content = '';
@@ -105,7 +114,7 @@ $(document).ready(function() {
     }
 
     function getActivityId(elem) {
-        return $(elem).parent('td').parent('tr').data('activityid');
+        return $(elem).parent('span').parent('td').parent('tr').data('activityid');
     }
 
     function getActivityValue(elem) {
@@ -136,7 +145,7 @@ $(document).ready(function() {
         });
     }
 
-    function edit_bound_activity(elem) {
+    /*function edit_bound_activity(elem) {
         var activityId = getActivityId(elem);
         var value = getActivityValue(elem);
         var changeStart = $(elem).hasClass('change_start_time');
@@ -146,11 +155,10 @@ $(document).ready(function() {
         console.log('editer '+ field + ' ' + activityId + ' oldTime ' + oldTime +' newTime ' +newTime);
         $('.btn_etat').html('<img src="http://localhost/d590/img/spinner.gif"/>');
         editField(activityId, field, newTime);
-    }
+    }*/
 
-    function edit_client_activity(elem) {
+    function edit_activity(elem) {
         var activityId = getActivityId(elem);
-        console.log('activityId' + activityId);
         var field = getField(elem);
         var newValue = getActivityValue(elem);
         //var changeStart = $(elem).hasClass('change_start_time');

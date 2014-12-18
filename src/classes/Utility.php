@@ -47,12 +47,15 @@ class Utility {
                 activity.task AS task,
                 activity.id AS id,
                 activityType.name AS activityType_name,
+                activityType.id AS activityType_id,
                 activityType.color AS activityType_color,
                 client.name AS client_name,
+                client.id AS client_id,
                 client.ref AS client_ref,
                 client.ref2 AS client_ref2,
                 activity.start AS start,
-                activity.end AS end
+                activity.end AS end,
+                TIMESTAMPDIFF(SECOND, start, end) AS timeSpend
             FROM activity
             LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
             LEFT JOIN client AS client ON (client.id = activity.client_id)
@@ -93,7 +96,10 @@ class Utility {
                 activity.task AS task,
                 activity.id AS id,
                 activityType.name AS activityType_name,
+                activityType.id AS activityType_id,
+                activityType.color AS activityType_color,
                 client.name AS client_name,
+                client.id AS client_id,
                 client.ref AS client_ref,
                 client.ref2 AS client_ref2
             FROM activity
@@ -148,7 +154,7 @@ class Utility {
             'activity_id'=> $activity
             ));
     }
-    function change_start_activity($activity, $newTime) {
+    function change_start_time_activity($activity, $newTime) {
         $now = time();
         $newTime = strtotime($newTime);
         echo $newTime;
@@ -158,7 +164,7 @@ class Utility {
             'start'=> $newTime
             ));
     }
-    function change_end_activity($activity, $newTime) {
+    function change_end_time_activity($activity, $newTime) {
         $now = time();
         $newTime = strtotime($newTime);
         echo $newTime;
@@ -169,10 +175,31 @@ class Utility {
             ));
     }
     function change_activityType_activity($activity, $activityType) {
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET activityType = :activityType WHERE id = :activity_id');
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET activityType_id = :activityType WHERE id = :activity_id');
         $stmt->execute(array(
             'activity_id'=> $activity,
             'activityType'=> $activityType
+            ));
+    }
+    function change_client_activity($activity, $client) {
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET client_id = :client WHERE id = :activity_id');
+        $stmt->execute(array(
+            'activity_id'=> $activity,
+            'client'=> $client
+            ));
+    }
+    function change_task_activity($activity, $task) {
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET task = :task WHERE id = :activity_id');
+        $stmt->execute(array(
+            'activity_id'=> $activity,
+            'task'=> $task
+            ));
+    }
+    function change_commentary_activity($activity, $commentary) {
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET commentary = :commentary WHERE id = :activity_id');
+        $stmt->execute(array(
+            'activity_id'=> $activity,
+            'commentary'=> $commentary
             ));
     }
 }

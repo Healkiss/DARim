@@ -6,18 +6,30 @@
         <div class="page-content" style="min-height:940px">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-12" id="addActivity">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-10" id="addActivity">
                         {% include "addActivity.html.twig" %}
+                    </div>
+                    <div class="col-md-1">
                     </div>
                 </div>
             </div>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-4" id="listActivity">
-                        {% include "listTodos.html.twig" %}
+                    <div class="col-md-1">
                     </div>
-                    <div class="col-md-7" id="diary">
+                    <div class="col-md-10" id="diary">
                         {% include "listActivities.html.twig" %}
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-7" id="listActivity">
+                        {% include "listTodos.html.twig" %}
                     </div>
                 </div>
             </div>

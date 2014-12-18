@@ -4,15 +4,20 @@ $(document).ready(function() {
         if(!buttonDisplayed) {
             buttonDisplayed = true;
             var btn_etat = '';
-            btn_etat += "<button class='btn_etat btn btn-success btn_start_activity' style='position:absolute;right:50%;'><i class='glyphicon glyphicon-play'></i></button>";
-            btn_etat += "<button class='btn_etat btn btn-danger btn_delete_activity' style='position:absolute;right:16px;'><i class='glyphicon glyphicon-trash'></i></button>";
+            btn_etat += "<button class='btn_etat btn btn-success btn_start_activity' style='position:absolute;left:15px;height:40px;'><i class='glyphicon glyphicon-play'></i></button>";
+            btn_etat += "<button class='btn_etat btn btn-danger btn_delete_activity' style='position:absolute;right:15px;'><i class='glyphicon glyphicon-trash'></i></button>";
             var $btnEtat = $(btn_etat);
             $(this).append($btnEtat);
         }
     });
     $('.todoRow').on('mouseleave', function() {
         buttonDisplayed = false;
+        //hide button bin/stop/start
         $('.btn_etat').remove();
+        //hide edit input and buttons
+        $('.edit_box').remove();
+        //show old value
+        $('.editable').show();
     });
     $('.dailyRow').on('mouseover', function() {
         if(!buttonDisplayed) {
@@ -20,11 +25,11 @@ $(document).ready(function() {
             isFinish = $(this).data('isfinish');
             var btn_etat = '';
             if(!isFinish) {
-                btn_etat += "<button class='btn_etat btn btn-danger btn_end_activity' style='position:absolute;left:-25px;height:40px;'><i class='glyphicon glyphicon-stop'></i></button>";
-                btn_etat += "<button class='btn_etat btn btn-danger btn_delete_activity' style='position:absolute;right:-25px;height:40px;'><i class='glyphicon glyphicon-trash'></i></button>";
+                btn_etat += "<button class='btn_etat btn btn-danger btn_end_activity' style='position:absolute;left:15px;height:40px;'><i class='glyphicon glyphicon-stop'></i></button>";
             }else{
-                btn_etat += "<button class='btn_etat btn btn-success btn_start_activity' style='position:absolute;left:-25px;height:40px;'><i class='glyphicon glyphicon-play'></i></button>";
+                btn_etat += "<button class='btn_etat btn btn-success btn_start_activity' style='position:absolute;left:15px;height:40px;'><i class='glyphicon glyphicon-play'></i></button>";
             }
+            btn_etat += "<button class='btn_etat btn btn-danger btn_delete_activity' style='position:absolute;right:15px;height:40px;'><i class='glyphicon glyphicon-trash'></i></button>";
             var $btnEtat = $(btn_etat);
             $(this).append($btnEtat);
         }

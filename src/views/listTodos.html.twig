@@ -3,35 +3,29 @@
         <caption><h3><b>TODO</b></h3></caption>
         <tr>
             <th>
-                Client
+                <span style='margin-left:40px;'>Client</span>
             </th>
             <th>
-                Tache
-            </th>
-            <th>
-                Commentaire
+                Tache | Commentaire
             </th>
         </tr>
         {% for todo in todos %}
             <tr class='activity todoRow' data-activityId='{{ todo['id'] }} ' style='psotion:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
                 <td>
-                    <span class='todoRow_client_name editable'>{{ todo['client_name'] }}
-                    ({{ todo['client_ref2'] }}-{{ todo['client_ref'] }})</span>
-                    {% if todo['activityType_name'] == 'Développement' %}
-                    <span class='label label-primary'>Développement</span>
-                    {% elseif todo['activityType_name'] == 'Relationnel client' %}
-                    <span class='label label-info'>Relationnel client</span>
-                    {% elseif todo['activityType_name'] == 'R&D' %}
-                    <span class='label label-warning'>R&D</span>
-                    {% elseif todo['activityType_name'] == 'Reunion interne' %}
-                    <span class='label label-success'>Reunion interne</span>
-                    {% endif %}
+                    <span class='dailyRow_client_name editable' data-type='selectpicker' data-field='client' data-name='clients' data-value='{{todo['client_id']}}' style='font-weight=bold;margin-left:40px;'>
+                        {{ todo['client_name'] }}
+                        ({{todo['client_ref2']}}-{{todo['client_ref']}})
+                    </span>
+                    <span class='label label-{{todo['activityType_color']}} editable' data-type='selectpicker' data-name='activityTypes' data-field='activityType' data-value='{{todo['activityType_id']}}' style="float:right;margin-right:20px;margin-top:2px;">{{todo['activityType_name']}}</span>
                 </td>
-                <td class='todoRow_task'>
-                    {{ todo['task'] }}
-                </td>
-                <td class='todoRow_comment'>
-                    {{ todo['commentary'] }}
+                <td>
+                    <span class='editable' data-type='string' data-name='task' data-field='task' data-value='{{ todo['task'] }}'>
+                        {{ todo['commentary'] }}
+                    </span>
+                    |
+                    <span class='editable' data-type='string' data-name='commentary' data-field='comentary' data-value='{{ todo['commentary'] }}'>
+                        {{ todo['task'] }}
+                    </span>
                 </td>
             </tr>
         {% endfor %}

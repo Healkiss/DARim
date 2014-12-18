@@ -1,9 +1,9 @@
 <div style='border-width:1px;border-color:black;min-height:600px;'>
     <table style='width:100%;'>
-        <caption><h3><b>Aujoud'hui ({{ 'now'|date('d/m/Y') }})</b></h3></caption>
+        <caption><h3><b>Aujoud'hui ({{ 'now'|date('d/m/Y') }})</b></h3><h4><b>{{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s</b></h4></caption>
         <tr>
             <th>
-                Client
+                <span style='margin-left:40px;'>Client</span>
             </th>
             <th>
                 Tache | Commentaire
@@ -19,27 +19,18 @@
         {% set isFinish = (activity['end'] != '0000-00-00 00:00:00') %}
         <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='position:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
             <td>
-                <span class='dailyRow_client_name editable' data-type='selectpicker' data-name='clients' data-value='{{activity['activityType_name']}}'>
+                <span class='dailyRow_client_name editable' data-type='selectpicker' data-field='client' data-name='clients' data-value='{{activity['client_id']}}' style='font-weight=bold;margin-left:40px;'>
                     {{ activity['client_name'] }}
                     ({{activity['client_ref2']}}-{{activity['client_ref']}})
                 </span>
-                {% if activity['activityType_name'] == 'Développement' %}
-                {% set labelType = 'primary'%}
-                {% elseif activity['activityType_name'] == 'Relationnel client' %}
-                {% set labelType = 'info'%}
-                {% elseif activity['activityType_name'] == 'R&D' %}
-                {% set labelType = 'warning'%}
-                {% elseif activity['activityType_name'] == 'Reunion interne' %}
-                {% set labelType = 'success'%}
-                {% endif %}
-                <span class='label label-{{activity['activityType_color']}} editable' data-type='selectpicker' data-name='activityTypes' data-field='activityType' data-value='{{activity['activityType_name']}}' style="float:right;margin-right:10px;margin-top:8px;">{{activity['activityType_name']}}</span>
+                <span class='label label-{{activity['activityType_color']}} editable' data-type='selectpicker' data-name='activityTypes' data-field='activityType' data-value='{{activity['activityType_id']}}' style="float:right;margin-right:20px;margin-top:2px;">{{activity['activityType_name']}}</span>
             </td>
             <td>
-                <span class='editable' data-type='string' data-name='task' data-field='task' data-value='{{ activity['task'] }}'>
+                <span class='editable' data-type='string' data-name='commentary' data-field='commentary' data-value='{{ activity['commentary'] }}'>
                     {{ activity['commentary'] }}
                 </span>
                 |
-                <span class='editable' data-type='string' data-name='commentary' data-field='comentary' data-value='{{ activity['commentary'] }}'>
+                <span class='editable' data-type='string' data-name='task' data-field='task' data-value='{{ activity['task'] }}'>
                     {{ activity['task'] }}
                 </span>
             </td>
@@ -61,11 +52,8 @@
         </tr>
     {% endfor %}
     </table>
-    <div style='position:absolute; right:50px; bottom:0;'>
-        <h3>Temps total : {{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s</h3>
     </div>
-    </div>
-        <button class='btn btn-success btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:16px;width:80px;height:40px'>Exporter</button>
-        <button id='copy' class='btn btn-success btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:100px;width:80px;height:40px'>Copier</button>
+        <button class='btn btn-success btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:16px;width:80px;height:40px;top:19px;'>Exporter</button>
+        <button id='copy' class='btn btn-success btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:100px;width:80px;height:40px;top:19px;'>Copier</button>
     <div>
 </div>

@@ -19,24 +19,9 @@
             case 'edit_activity':
                 echo 'edit_activity : ';
                 $field = $_GET['field'];
-                        echo $field;
-                switch ($field) {
-                    case 'start_time':
-                        echo "start_time<br/>";
-                        $utility->change_start_activity($_GET['activityId'], $_GET['newValue']);
-                        break;
-                    case 'end_time':
-                        echo "end_time<br/>";
-                        $utility->change_end_activity($_GET['activityId'], $_GET['newValue']);
-                        break;
-                    case 'activityType':
-                        echo "activityType <br/>";
-                        $utility->change_activityType_activity($_GET['activityId'], $_GET['newValue']);
-                        break;
-                    default:
-                        echo "<br/>Champ edition non géré<br/>";
-                        break;
-                    }
+                echo 'field :  ' . $field . '<br/>';
+                $functionName = 'change_'.$field.'_activity';
+                $utility->$functionName($_GET['activityId'], $_GET['newValue']);
                 break;
             case 'submit':
                 $utility->receiveNewActivity(1);

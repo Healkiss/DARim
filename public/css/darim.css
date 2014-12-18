@@ -1,3 +1,8 @@
+body{
+    background-color: #FBF0D9;
+    color: #5F4B32;
+}
+
 .table{
     display:table;
     height:40px;
