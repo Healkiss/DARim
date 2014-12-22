@@ -18,7 +18,8 @@
         "healkiss/listitems": "dev-master",
         "twig/extensions" : "1.0.*",
         "twig/twig": "1.*",
-        "symfony/yaml": "*"
+        "symfony/yaml": "*",
+        "symfony/security": "*"
     },
     "autoload" : {
         "psr-0" : {

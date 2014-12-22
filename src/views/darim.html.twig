@@ -1,0 +1,67 @@
+{% extends "base.html.twig" %}
+{% block title %}DARim{% endblock %}
+{% block body %}
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+    <div class="page-content-wrapper">
+        <div class="page-content" style="min-height:940px">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-10" id="addActivity">
+                        {% include "addActivity.html.twig" %}
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-10" id="diary">
+                        {% include "listActivities.html.twig" %}
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-7" id="listActivity">
+                        {% include "listTodos.html.twig" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker({
+                size: false
+            });
+        });
+        $('button#copy').clipboard({
+                path: 'public/js/jquery.clipboard.swf',
+                copy: function() {
+                    console.log('DAR copied. Paste it now!');
+                    var dar = 'Ajourd\'hui \n';
+                    $('.dailyRow').each(function(index, obj) {
+                        dar += $(obj).find('.dailyRow_client_name').text().trim()+ ' \n';
+                        dar += '    *' +$(obj).find('.taskComment').text().trim() + ' \n';
+                    });
+                    dar += '\nDemain \n';
+                    $('.todoRow').each(function(index, obj) {
+                        dar += $(obj).find('.todoRow_client_name').text().trim() + ' \n';
+                        dar += '    *' +$(obj).find('.todoRow_task').text().trim();
+                        dar += '/' +$(obj).find('.todoRow_comment').text().trim() + ' \n';
+                    });
+                    return dar;
+                }
+        });
+    </script>
+{% endblock %}

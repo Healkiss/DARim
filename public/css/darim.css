@@ -3,6 +3,18 @@ body{
     color: #5F4B32;
 }
 
+.vcenter {
+    display:table !important;
+    position:relative;
+    vertical-align: middle;
+    float: none;
+    min-height:100%;
+}
+
+.page-footer {
+    position:relative !important;
+}
+
 .table{
     display:table;
     height:40px;

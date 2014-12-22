@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+{% block title %}Login{% endblock %}
+{% block body %}
+    <div class="admin-form" id="login-page">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="widget-content">
+                        <div id='vcenter' class="row vcenter">
+                            <form action="/login_check" method="post" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-mg-5" for="username">Email</label>
+                                    <div class="col-mg-7">
+                                        <input type="text" id="username" name="_username" class="form-control" value="" required="required" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-mg-5 " for="password">Password</label>
+                                    <div class="col-mg-7">
+                                        <input type="password" class="form-control" id="password" name="_password" placeholder="Password">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript">
+        $(function(){
+            var blockWidth = 150,
+                blockHeight = 150,
+                leftPos = ($(window).innerWidth() - blockWidth) / 2,
+                topPos = ($(window).innerHeight() - blockHeight) /2;
+            $('#vcenter').css({'top':topPos,'left':leftPos})
+            $('.page-footer').css({'top':$(window).innerHeight()})
+            $(document).resize(function() {
+                leftPos = ($(window).innerWidth() - blockWidth) / 2;
+                topPos = ($(window).innerHeight() - blockHeight) /2;
+                $('#vcenter').css({
+                    'left' : leftPos+'px',
+                    'top'  : topPos+'px'
+                });
+                $('.page-footer').css({'top':$(window).innerHeight()})
+            });
+            document.getElementById("username").focus();
+        })
+    </script>
+{% endblock %}

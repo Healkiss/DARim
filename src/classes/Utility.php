@@ -4,8 +4,8 @@ require_once 'conBdd.php';
 class Utility {
     protected $conBdd;
 
-    function __construct(){
-        $this->conBdd = new conBDD();
+    function __construct($conBdd){
+        $this->conBdd = $conBdd;
     }
 
     function exportDay() {
@@ -40,7 +40,7 @@ class Utility {
     }
 
     //get today activities
-    function getActivities() {
+    function getActivities($userId) {
         $query = '
             SELECT
                 activity.commentary AS commentary,
@@ -59,7 +59,8 @@ class Utility {
             FROM activity
             LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
             LEFT JOIN client AS client ON (client.id = activity.client_id)
-            WHERE activity.isTodo = 0
+            LEFT JOIN user AS user ON (user.id = activity.user_id)
+            WHERE activity.isTodo = 0 AND user.id = '.$userId.'
             ORDER BY start
         ';
         $response =  $this->conBdd->connexion->query($query);
@@ -73,8 +74,8 @@ class Utility {
         return $diary;
     }
 
-    function getToDayWorktime() {
-        $activities = $this->getActivities();
+    function getToDayWorktime($userId) {
+        $activities = $this->getActivities($userId);
         $diary = array();
         $worktimeToday = '0';
         foreach($activities as $activity) {
@@ -89,7 +90,7 @@ class Utility {
         return $worktimeToday;
     }
 
-    function getTodos() {
+    function getTodos($userId) {
         $query = '
             SELECT
                 activity.commentary AS commentary,
@@ -105,7 +106,8 @@ class Utility {
             FROM activity
             LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
             LEFT JOIN client AS client ON (client.id = activity.client_id)
-            WHERE activity.isTodo = 1
+            LEFT JOIN user AS user ON (user.id = activity.user_id)
+            WHERE activity.isTodo = 1 AND user.id = '.$userId.'
             ORDER BY start
         ';
         $response =  $this->conBdd->connexion->query($query);
@@ -114,10 +116,11 @@ class Utility {
     }
 
     function receiveNewActivity($isTodo){
+        $userId = $_SESSION['USERID'];
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo)');
         $stmt->execute(array(
             'client_id'=> $_GET['client'],
-            'user_id'=> 1,
+            'user_id'=> $userId,
             'activityType_id'=> $_GET['activityType'],
             'task'=> $_GET['task'],
             'commentary'=> $_GET['comment'],

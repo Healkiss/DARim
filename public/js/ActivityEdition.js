@@ -25,14 +25,14 @@ $(document).ready(function() {
                     break;
             }
             if(input_edit === '') {
-                var input_edit = "<input class='change_client_input edit_input edit_box' type='"+type+"' style='position:relative;height:40px;'>";
+                var input_edit = "<input class='edit_input' type='"+type+"' style='position:relative;height:40px;'>";
             }
-            var btn_edit = "<button class='btn btn-info btn_edit_activity edit_box' style='position:absolute;width:70px;height:40px'>Editer</button>"
+            var btn_edit = "<button class='btn btn-info btn_edit_activity' style='position:absolute;width:70px;height:40px'>Editer</button>"
             $input_edit = $(input_edit);
             $btn_edit = $(btn_edit);
             $input_edit.val(oldValue);
 
-            var edition_block = "<span class='edit_box' style='position:relative;'></span>";
+            var edition_block = "<span class='edit_block' style='position:relative;'></span>";
             $edition_block = $(edition_block);
             $edition_block.insertAfter($(self));
 
@@ -53,16 +53,16 @@ $(document).ready(function() {
             $input_edit.focus().select();
         }, 10);
     });
-    $(document).on('click', ':not(.edit_box *)', function() {
+    $(document).on('click', ':not(.edit_block *)', function() {
         //console.log('click');
         //console.log(this);
-        $('.edit_box').remove();
+        $('.edit_block').remove();
         $('.editable').show();
         //$('.edit_box').remove();
     });
 
     $('.dailyRow').on('click', '.btn_edit_activity', function() {
-        edit_activity($(this).siblings('.change_client_input'));
+        edit_activity($(this).siblings('.edit_input'));
     });
     $('.dailyRow').on('keypress', '.btn_edit_activity', function(e) {
         var key = e.which;
@@ -99,7 +99,7 @@ $(document).ready(function() {
     //TODO : passer les valuers a afficher, passer les valeurs des datas
     function constructSelect(response, ajaxAction, toDisplay, specStyle, search, label) {
         lines = JSON.parse(response.responseText);
-        input_edit = '<select class="selectpicker edit_box" title="Client" data-style="btn-default" data-live-search="'+search+'" data-width="auto" style="'+specStyle+'">';
+        input_edit = '<select class="selectpicker" title="Client" data-style="btn-default" data-live-search="'+search+'" data-width="auto" style="'+specStyle+'">';
         for(var i = 0; i < lines.length; ++i) {
             line = lines[i];
             var content = '';

@@ -15,7 +15,7 @@ $(document).ready(function() {
         //hide button bin/stop/start
         $('.btn_etat').remove();
         //hide edit input and buttons
-        $('.edit_box').remove();
+        //$('.edit_box').remove();
         //show old value
         $('.editable').show();
     });
