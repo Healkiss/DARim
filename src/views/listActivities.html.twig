@@ -3,7 +3,7 @@
         <caption><h3><b>Aujoud'hui ({{ 'now'|date('d/m/Y') }})</b></h3><h4><b>{{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s</b></h4></caption>
         <tr>
             <th>
-                <span style='margin-left:40px;'>Client</span>
+                <span>Client</span>
             </th>
             <th>
                 Tache | Commentaire
@@ -22,7 +22,7 @@
         {% set isFinish = (activity['end'] != '0000-00-00 00:00:00') %}
         <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='position:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
             <td>
-                <span class='dailyRow_client_name editable' data-type='selectpicker' data-field='client' data-name='clients' data-value='{{activity['client_id']}}' style='font-weight=bold;margin-left:40px;'>
+                <span class='dailyRow_client_name editable' data-type='selectpicker' data-field='client' data-name='clients' data-value='{{activity['client_id']}}' style='font-weight=bold;'>
                     {{ activity['client_name'] }}
                     ({{activity['client_ref2']}}-{{activity['client_ref']}})
                 </span>
@@ -64,7 +64,8 @@
     {% endfor %}
     </table>
     </div>
-        <button class='btn btn-success btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:16px;width:80px;height:40px;top:19px;'>Exporter</button>
-        <button id='copy' class='btn btn-success btn_edit_bound_activity btn_edit_end_activity' style='position:absolute;right:100px;width:80px;height:40px;top:19px;'>Copier</button>
+        <button class='btn btn-warning' id='admin' style='position:absolute;left:16px;width:80px;height:40px;top:19px;'>Admin</button>
+        <button class='btn btn-success' style='position:absolute;right:16px;width:80px;height:40px;top:19px;'>Exporter</button>
+        <button id='copy' class='btn btn-success' style='position:absolute;right:100px;width:80px;height:40px;top:19px;'>Copier</button>
     <div>
 </div>
