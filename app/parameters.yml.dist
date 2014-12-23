@@ -3,7 +3,7 @@ parameters:
     dblocal_user: root
     dblocal_password: unknown
     dblocal_name: darim
-    dbbop_host: 87.98.144.239
+    dbbop_host: 87.98.144.239:3306
     dbbop_user: admin
     dbbop_password: devaticsadmin
     dbbop_name: bop

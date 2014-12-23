@@ -14,6 +14,9 @@
             <th>
                 Temps
             </th>
+            <th width='84px'>
+                Actions
+            </th>
         </tr>
     {% for activity in activities %}
         {% set isFinish = (activity['end'] != '0000-00-00 00:00:00') %}
@@ -44,10 +47,18 @@
                 {% endif %}
                 </span>
             </td>
-            <td>
+            <td >
                 {% if activity['timeSpend'] %}
                 {{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}
                 {% endif %}
+            </td>
+            <td>
+                {% if activity['timeSpend'] %}
+                    <button class='btn btn-success btn_restart_activity' title="Reprendre"><i class='glyphicon glyphicon-repeat'></i></button>
+                {% else %}
+                    <button class='btn btn-danger btn_end_activity' title="Stopper"><i class='glyphicon glyphicon-stop'></i></button>
+                {% endif %}
+                <button class='btn btn-danger btn_delete_activity' title="Supprimer"><i class='glyphicon glyphicon-trash'></i></button>
             </td>
         </tr>
     {% endfor %}

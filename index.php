@@ -17,13 +17,14 @@ $twig = new Twig_Environment($loader);
 $twig->getExtension('core')->setTimezone('Europe/Paris');
 
 
-$localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
+$localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
 $utility = new Utility($localBD);
 
 if (empty($_GET['data']))
      $_GET['data'] = 'home';
+//$_SESSION['USERID'] = 1;
 if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
-    $bopBD = new conBDD($parameters['dbbop_host'], $parameters['dbbop_user'],$parameters['dbbop_password'],$parameters['dbbop_name']);
+    $bopBD = new conBDD($parameters['dbbop_host'], $parameters['dbbop_port'], $parameters['dbbop_user'],$parameters['dbbop_password'],$parameters['dbbop_name']);
     $login = new Login($bopBD);
     echo $twig->render('login.html.twig');
 }else{

@@ -130,15 +130,20 @@ class Utility {
     }
     function start_activity() {
         $activity = $_GET['activityId'];
-        $runRunning = $_GET['runId'];
-        if($runRunning)
-            end_run($this->conBdd, $runRunning);
         $now = time();
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 0 FROM activity WHERE id = (:activity_id)');
         $stmt->execute(array(
             'activity_id'=> $activity
             ));
         $stmt =  $this->conBdd->connexion->prepare('DELETE FROM activity WHERE id = :activity_id');
+        $stmt->execute(array(
+            'activity_id'=> $activity
+            ));
+    }
+    function restart_activity($activity) {
+        $activity = $_GET['activityId'];
+        $now = time();
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 0 FROM activity WHERE id = (:activity_id)');
         $stmt->execute(array(
             'activity_id'=> $activity
             ));
@@ -203,6 +208,38 @@ class Utility {
         $stmt->execute(array(
             'activity_id'=> $activity,
             'commentary'=> $commentary
+            ));
+    }
+    function editClient($id, $name, $ref1, $ref2) {
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE client SET name = :name, ref = :ref1, ref2 = :ref2  WHERE id = :clientId');
+        $stmt->execute(array(
+            'clientId'=> $id,
+            'name'=> $name,
+            'ref1'=> $ref1,
+            'ref2'=> $ref2
+            ));
+    }
+    function editActivityType($id, $name, $color) {
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activityType SET name = :name, color = :color WHERE id = :activityTypeId');
+        $stmt->execute(array(
+            'activityTypeId'=> $id,
+            'name'=> $name,
+            'color'=> $color
+            ));
+    }
+    function newClient($name, $ref1, $ref2) {
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO client (name, ref, ref2) VALUES (:name, :ref1, :ref2)');
+        $stmt->execute(array(
+            'name'=> $name,
+            'ref1'=> $ref1,
+            'ref2'=> $ref2
+            ));
+    }
+    function newActivityType($name, $color) {
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activityType (name, color) VALUES (:name, :color)');
+        $stmt->execute(array(
+            'name'=> $name,
+            'color'=> $color
             ));
     }
 }

@@ -19,21 +19,6 @@ $(document).ready(function() {
         //show old value
         $('.editable').show();
     });
-    $('.dailyRow').on('mouseover', function() {
-        if(!buttonDisplayed) {
-            buttonDisplayed = true;
-            isFinish = $(this).data('isfinish');
-            var btn_etat = '';
-            if(!isFinish) {
-                btn_etat += "<button class='btn_etat btn btn-danger btn_end_activity' style='position:absolute;left:15px;height:40px;'><i class='glyphicon glyphicon-stop'></i></button>";
-            }else{
-                btn_etat += "<button class='btn_etat btn btn-success btn_start_activity' style='position:absolute;left:15px;height:40px;'><i class='glyphicon glyphicon-play'></i></button>";
-            }
-            btn_etat += "<button class='btn_etat btn btn-danger btn_delete_activity' style='position:absolute;right:15px;height:40px;'><i class='glyphicon glyphicon-trash'></i></button>";
-            var $btnEtat = $(btn_etat);
-            $(this).append($btnEtat);
-        }
-    });
     $('.dailyRow').on('mouseleave', function() {
         buttonDisplayed = false;
         //hide button bin/stop/start
@@ -44,17 +29,34 @@ $(document).ready(function() {
         //$('.editable').show();
     });
     
-    $('.todoRow').on('click', '.btn_start_activity', function() {
-        runRunning = $('.dailyRow:not([data-isfinish=1])').data('runid');
-        activityId = $(this).parent('.todoRow').data('activityid');
+    //TODOTABLE
+    $('.btn_start_activity').click(function() {
+        activityId = $(this).parent('td').parent('.todoRow').data('activityid');
+        action({'action':'start_activity', 'activityId':activityId});
+    });
+    $('.btn_end_activity').click(function() {
+        activityId = $(this).parent('td').parent('.todoRow').data('activityid');
+        action({'action':'end_run', 'activityId':activityId});
+    });
+    //ACTIVITYTABLE
+    $('.btn_restart_activity').click(function() {
+        activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
+        action({'action':'restart_activity', 'activityId':activityId});
+    });
+    $('.btn_end_activity').click(function() {
+        activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
+        action({'action':'end_run', 'activityId':activityId});
+    });
+    $('.btn_delete_activity').click(function() {
+        activityId = $(this).parent('td').parent('.activity').data('activityid');
+        action({'action':'delete_activity', 'activityId':activityId});
+    });
+    function action(data) {
         $.ajax({
             url: '//localhost/DARim/src/classes/ajaxActions.php',
             type: 'GET',
-            data: {
-                action:'start_activity',
-                activityId:activityId,
-                runId:runRunning
-            },
+            data: data
+            ,
             error: function() {
                 alert('ko');
             },
@@ -62,41 +64,7 @@ $(document).ready(function() {
                 location.reload();
             }
         });
-    });
-    $('.dailyRow').on('click', '.btn_end_activity', function() {
-        activityId = $(this).parent('.dailyRow').data('activityid');
-        $.ajax({
-            url: '//localhost/DARim/src/classes/ajaxActions.php',
-            type: 'GET',
-            data: {
-                action:'end_run',
-                activityId:activityId
-            },
-            error: function() {
-                alert('ko');
-            },
-            complete: function() {
-                location.reload();
-            }
-        });
-    });
-    $(document).on('click', '.btn_delete_activity', function() {
-        activityId = $(this).parent('.activity').data('activityid');
-        $.ajax({
-            url: '//localhost/DARim/src/classes/ajaxActions.php',
-            type: 'GET',
-            data: {
-                action:'delete_activity',
-                activityId:activityId
-            },
-            error: function() {
-                alert('ko');
-            },
-            complete: function() {
-                location.reload();
-            }
-        });
-    });
+    }
     var submitButtonPressed;
     $('.submit').click(function() {
           buttonpressed = $(this).val()

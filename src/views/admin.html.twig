@@ -8,14 +8,15 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-1">
+                        <button id='return' class="btn btn-default">Retour</button>
                     </div>
-                    <div class="col-md-10" id="addActivity" style="margin-top:50px;border: 2px solid black;padding:20px;">
+                    <div class="col-md-10" id="createBox" style="margin-top:50px;border: 2px solid black;padding:20px;">
                         Creer des entites  : <br/>
                         Nouveau client :
                         <input type="text" id="new_clientname" name="clientname" class="my-input" placeholder="Nom" required>
                         <input type="text" id="new_clientref1" name="clientref1" class="my-input" placeholder="Ref1(d[1-9]+)" required>
                         <input type="text" id="new_clientref2" name="clientref2" class="my-input" placeholder="Ref2([A-Z]{3})" required>
-                        <button name="action" value="submitNewClient" class="addClient submit btn btn-success" data-type="client">Ajouter</button>
+                        <button name="action" id="addClient" class="btn btn-success" data-type="client">Ajouter</button>
                         <br/>
                         Nouveau type d'activité : <input type="text" id="new_activitytypename" name="activitytypename" class="my-input" placeholder="Nom" required>
                         <select class="selectpicker" id="new_activitytypecolor" name="activitytypecolor" data-style="btn-default" data-live-search="false" method="post">
@@ -26,41 +27,41 @@
                             <option value="warning" data-content='<span class="label label-warning">Couleur</span>' data-width="auto">Couleur</option>
                             <option value="danger" data-content='<span class="label label-danger">Couleur</span>' data-width="auto">Couleur</option>                            
                         </select>
-                        <button name="action" value="submitNewActivityType" class="addActivityType submit btn btn-success"  data-type="activitytype">Ajouter</button>
+                        <button name="action" id="addActivityType" class=" btn btn-success"  data-type="activitytype">Ajouter</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-1">
                     </div>
-                    <div class="col-md-10" id="addActivity" style="margin-top:50px;border: 2px solid black;padding:20px;">
+                    <div class="col-md-10" id="editBox" style="margin-top:50px;border: 2px solid black;padding:20px;">
                         Modifier des entites  : <br/>
                         Editer client :
-                        <select class="selectpicker" id="form-input-client" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
+                        <select class="selectpicker" id="edit_client" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
                             {% for client in clients %}
-                            <option value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>
+                            <option data-id="{{ client['id'] }}" data-name="{{ client['name'] }}" data-ref1="{{ client['ref'] }}" data-ref2="{{ client['ref2'] }}" value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>
                             {% endfor %}
                         </select>
                         <input type="text" id="edit_clientname" name="clientname" class="my-input" placeholder="Nom" required>
                         <input type="text" id="edit_clientref1" name="clientref1" class="my-input" placeholder="Ref1(d[1-9]+)" required>
                         <input type="text" id="edit_clientref2" name="clientref2" class="my-input" placeholder="Ref2([A-Z]{3})" required>
-                        <button name="action" value="submitNewClient" class="editClient submit btn btn-success" data-type="client">Editer</button>
+                        <button name="action" id="editClient" class="btn btn-success" data-type="client">Editer</button>
                         <br/>
                         Editer type d'activité :
-                        <select class="selectpicker" id="form-input-activityType" name="activityType" title='Type' data-style="btn-default">
+                        <select class="selectpicker" id="edit_activitytype" name="activityType" title='Type' data-style="btn-default">
                             {% for activityType in activityTypes %}
-                                <option value="{{ activityType['id'] }}" data-content="<span class='label label-{{ activityType['color'] }}'>{{ activityType['name'] }}</span>" data-width="auto">{{ activityType['name'] }}</option>
+                                <option data-id="{{ activityType['id'] }}" data-name="{{ activityType['name'] }}" data-color="{{ activityType['color'] }}" value="{{ activityType['id'] }}" data-content="<span class='label label-{{ activityType['color'] }}'>{{ activityType['name'] }}</span>" data-width="auto">{{ activityType['name'] }}</option>
                             {% endfor %}
                         </select>
-                        <input type="text"id="edit_activitytypename" name="activitytypename" class="my-input" placeholder="Nom" required>
+                        <input type="text" id="edit_activitytypename" name="activitytypename" class="my-input" placeholder="Nom" required>
                         <select class="selectpicker" id="edit_activitytypecolor" name="activitytypecolor" data-style="btn-default" data-live-search="false" method="post">
-                            <option value="default" data-content='<span class="label label-default">Couleur</span>' data-width="auto">Couleur</option>
-                            <option value="primary" data-content='<span class="label label-primary">Couleur</span>' data-width="auto"Couleur</option>
-                            <option value="success" data-content='<span class="label label-success">Couleur</span>' data-width="auto">Couleur</option>
-                            <option value="info" data-content='<span class="label label-info">Couleur</span>' data-width="auto">Couleur</option>
-                            <option value="warning" data-content='<span class="label label-warning">Couleur</span>' data-width="auto">Couleur</option>
-                            <option value="danger" data-content='<span class="label label-danger">Couleur</span>' data-width="auto">Couleur</option>                            
+                            <option value="default" data-content='<span class="label label-default">Couleur</span>' data-width="auto" data-width="auto">Couleur</option>
+                            <option value="primary" data-content='<span class="label label-primary">Couleur</span>' data-width="auto" data-width="auto"Couleur</option>
+                            <option value="success" data-content='<span class="label label-success">Couleur</span>' data-width="auto" data-width="auto">Couleur</option>
+                            <option value="info" data-content='<span class="label label-info">Couleur</span>' data-width="auto" data-width="auto">Couleur</option>
+                            <option value="warning" data-content='<span class="label label-warning">Couleur</span>' data-width="auto" data-width="auto">Couleur</option>
+                            <option value="danger" data-content='<span class="label label-danger">Couleur</span>' data-color="auto" data-width="auto">Couleur</option>                            
                         </select>
-                        <button name="action" value="submitNewClient" class="editActivityType submit btn btn-success" data-type="activitytype">Editer</button>
+                        <button name="action" id="editActivityType" class="btn btn-success" data-type="activitytype">Editer</button>
                     </div>
                 </div>
             </div>
@@ -69,8 +70,8 @@
 </div>
 {% endblock %}
 {% block javascripts %}
+    <script src="public/js/admin.js" type="text/javascript" ></script>
     <script>
-        $(document).ready(function() {
-        });
+    $('.selectpicker').selectpicker();
     </script>
 {% endblock %}
