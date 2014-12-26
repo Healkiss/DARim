@@ -28,7 +28,19 @@ $(document).ready(function() {
         //show old value
         //$('.editable').show();
     });
-    
+    //boundtime
+    var old = 0;
+    $('.timebound').each(function( index ) {
+        var value = parseInt($( this ).data('value').replace(':',''));
+        //console.log('compare : ' + value + ' to ' + old);
+        if(value < old) {
+            $( this ).css({'background-color':'red'});
+            $( oldThis ).css({'background-color':'red'})
+        }
+        old = parseInt($( this ).data('value').replace(':',''));
+        oldThis = this;
+    });
+
     //TODOTABLE
     $('.btn_start_activity').click(function() {
         activityId = $(this).parent('td').parent('.todoRow').data('activityid');
