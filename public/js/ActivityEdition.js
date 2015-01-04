@@ -12,22 +12,28 @@ $(document).ready(function() {
             var field = $(self).data('field');
             var input_edit = '';
             var btnEditNeeded = true;
+            var selectPicker = false;
+            var slider = false;
             var addedStyle = '';
             var tag="input";
             switch($(self).data('name')) {
                 case 'clients':
                     input_edit = displaySelect('get_clients', ['name', 'ref2', 'ref'], true, false);
-                    btnEditNeeded = false;
-                    addedStyle = "";
+                    selectPicker = true;
                     break;
                 case 'activityTypes':
                     input_edit = displaySelect('get_activityTypes', ['name'], false, true);
-                    btnEditNeeded = false;
                     addedStyle = "float:right;";
+                    selectPicker = true;
                     break;
                 case 'commentary':
                     addedStyle = "width:auto;";
                     tag = "textarea";
+                    break;
+                case 'timeRange':
+                    input_edit = constructTimeRange();
+                    console.log('construct');
+                    slider = true;
                     break;
                 default:
                     break;
@@ -35,7 +41,7 @@ $(document).ready(function() {
             if(input_edit === '') {
                 var input_edit = "<"+tag+" class='edit_input' type='"+type+"' style='position:relative;height:40px;"+addedStyle+"'></"+tag+">";
             }
-            var btn_edit = "<button class='btn btn-info btn_edit_activity' style='position:absolute;width:70px;height:40px'>Editer</button>"
+            var btn_edit = "<button class='btn btn-info btn_edit_activity' style='position:absolute;width:40px;height:40px'><i class='glyphicon glyphicon-pencil'></i></button>"
             $input_edit = $(input_edit);
             $btn_edit = $(btn_edit);
             $input_edit.val(oldValue);
@@ -45,11 +51,9 @@ $(document).ready(function() {
             $edition_block.insertAfter($(self));
 
             $edition_block.append($input_edit);
-            //$input_edit.insertAfter($(self));
-            /*if(btnEditNeeded) {
-                // $btn_edit.insertAfter($input_edit);
+            if(btnEditNeeded) {
                 $edition_block.append($btn_edit);
-            }*/
+            }
 
 
             $(self).hide();
@@ -59,8 +63,32 @@ $(document).ready(function() {
             $input_edit.addClass('inEdition');
             $input_edit.data('field', field);
             $input_edit.focus().select();
-            var selectpickerButton = $('button[data-id="selectEditing"]');
-            $(selectpickerButton).trigger('click');
+            if(selectPicker){
+                var selectpickerButton = $('button[data-id="selectEditing"]');
+                $(selectpickerButton).trigger('click');
+            }
+            if(slider){
+                $("#slider").ionRangeSlider({
+                    type: "double",
+                    min: 540,
+                    max: 1080,
+                    from: 700,
+                    to: 800,
+                    step: 5,
+                    onStart: function (data) {
+                        console.log(data);
+                    },
+                    onChange : function (data) {
+                        console.log(data);
+                    },
+                    onFinish : function (data) {
+                        console.log(data);
+                    },
+                    onUpdate : function (data) {
+                        console.log(data);
+                    }
+                });
+            }
         }, 10);
     });
     $(document).on('click', 'body :not(.edit_block *)', function() {
@@ -128,6 +156,14 @@ $(document).ready(function() {
         return input_edit;
     }
 
+    function constructTimeRange(timeStart, timeEnd) {
+        timeStart = timeStart || 540;
+        timeEnd = timeEnd || 1080;/*
+        input_edit = '<select id="selectEditing" class="selectpicker selectEditing" title="Client" data-style="btn-default" data-live-search="'+search+'" data-width="auto">';
+        input_edit += '</select>';*/
+        var input_edit = '<div id="slider"></div>';
+        return input_edit;
+    }
     function getActivityId(elem) {
         return $(elem).parent('span').parent('td').parent('tr').data('activityid');
     }
@@ -160,7 +196,7 @@ $(document).ready(function() {
         });
     }
 
-    /*function edit_bound_activity(elem) {
+    function edit_bounds_activity(elem) {
         var activityId = getActivityId(elem);
         var value = getActivityValue(elem);
         var changeStart = $(elem).hasClass('change_start_time');
@@ -170,18 +206,12 @@ $(document).ready(function() {
         console.log('editer '+ field + ' ' + activityId + ' oldTime ' + oldTime +' newTime ' +newTime);
         $('.btn_etat').html('<img src="http://localhost/d590/img/spinner.gif"/>');
         editField(activityId, field, newTime);
-    }*/
+    }
 
     function edit_activity(elem) {
         var activityId = getActivityId(elem);
         var field = getField(elem);
         var newValue = getActivityValue(elem);
-        //var changeStart = $(elem).hasClass('change_start_time');
-        /*var oldTime = changeStart?$(elem).parent('.dailyRow').data('start'):$(elem).parent('.dailyRow').data('end');
-        var newTime = oldTime.replace(/\s[0-9]{2}:[0-9]{2}/,' '+value);
-        console.log('editer '+ field + ' ' + activityId + ' oldTime ' + oldTime +' newTime ' +newTime);
-        $('.btn_etat').html('<img src="http://localhost/d590/img/spinner.gif"/>');*/
-        //var newValue = 
         editField(activityId, field, newValue);
     }
 });

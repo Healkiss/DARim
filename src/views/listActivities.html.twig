@@ -37,12 +37,20 @@
             </td>
             <td>
                 <span class='editable' data-type='string' data-name='task' data-field='task' data-value='{{ activity['task'] }}'>
-                    {{ activity['task'] }}
+                    {% if activity['task'] != '' %}
+                        {{ activity['task'] }}
+                    {% else %}
+                        <span style="font-style: italic;">Ajouter une tache</span>
+                    {% endif %}
                 </span>
             </td>
             <td>
                 <span class='editable' data-type='textarea' data-name='commentary' data-field='commentary' data-value='{{ activity['commentary'] }}'>
-                    {{ activity['commentary'] }}
+                    {% if activity['commentary'] != '' %}
+                        {{ activity['commentary'] }}
+                    {% else %}
+                        <span style="font-style: italic;">Ecrire un commentaire</span>
+                    {% endif %}
                 </span>
             </td>
             <td>
@@ -57,7 +65,7 @@
             </td>
             <td >
                 {% if activity['timeSpend'] %}
-                {{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}
+                <span class='editable' data-type='timeRange' data-name='timeRange' data-field='start_time' data-value='{{activity['start']|date('H\\:i')}}'>{{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}</span>
                 {% endif %}
             </td>
             <td>

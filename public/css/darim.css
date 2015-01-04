@@ -1,10 +1,10 @@
 body{
-    background-color: #FBF0D9;
+    /*background-color: #FBF0D9;*/
+    /*background-color:black;*/
+    /*background-image:url(../img/swatch.gif);*/
+    background-color: #F5F3EE;
     color: #5F4B32;
-}
-
-.bootstrap-select:has(>.selectPickerActivityType){
-    float:right;
+    /*color: #009999;*/
 }
 
 .vcenter {
@@ -36,6 +36,9 @@ body{
 
 .editable{
     cursor: pointer;
+}
+.editable:hover{
+    border-bottom: dashed 1px #0088cc;
 }
 
 .text-center{

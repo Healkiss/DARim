@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    
+
     buttonDisplayed = false; //avoid multiple add elemnts
     $('.todoRow').on('mouseover', function() {
         if(!buttonDisplayed) {
@@ -34,8 +36,8 @@ $(document).ready(function() {
         var value = parseInt($( this ).data('value').replace(':',''));
         //console.log('compare : ' + value + ' to ' + old);
         if(value < old) {
-            $( this ).css({'background-color':'red'});
-            $( oldThis ).css({'background-color':'red'})
+            $( this ).css({'color':'red'});
+            $( oldThis ).css({'color':'red'})
         }
         old = parseInt($( this ).data('value').replace(':',''));
         oldThis = this;
