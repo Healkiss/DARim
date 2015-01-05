@@ -22,7 +22,7 @@ $utility = new Utility($localBD);
 
 if (empty($_GET['data']))
      $_GET['data'] = 'home';
-//$_SESSION['USERID'] = 1;
+$_SESSION['USERID'] = 1;
 if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
     $bopBD = new conBDD($parameters['dbbop_host'], $parameters['dbbop_port'], $parameters['dbbop_user'],$parameters['dbbop_password'],$parameters['dbbop_name']);
     $login = new Login($bopBD);
