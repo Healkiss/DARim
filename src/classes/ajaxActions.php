@@ -14,11 +14,11 @@
         $action = $_GET['action'];
         switch ($action) {
             case 'start_activity':
-                $utility->start_activity();
+                $utility->start_activity($_SESSION['USERID']);
                 echo "start_activity";
                 break;
             case 'restart_activity':
-                $utility->restart_activity($_GET['activityId']);
+                $utility->restart_activity($_GET['activityId'], $_SESSION['USERID']);
                 echo "start_activity";
                 break;
             case 'end_run':
@@ -57,7 +57,7 @@
                 echo "submit";
                 break;
             case 'submitAndBegin':
-                $utility->receiveNewActivity(0);
+                $utility->receiveNewActivity(0, $_SESSION['USERID']);
                 echo 'submitAndBegin';
                 break;
             case 'get_clients':

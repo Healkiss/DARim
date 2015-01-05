@@ -115,8 +115,11 @@ class Utility {
         return $todos;
     }
 
-    function receiveNewActivity($isTodo){
-        $userId = $_SESSION['USERID'];
+    function receiveNewActivity($isTodo, $userId){
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = NOW() WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
+        $stmt->execute(array(
+            'user_id'=> $userId
+            ));
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo)');
         $stmt->execute(array(
             'client_id'=> $_GET['client'],
@@ -128,7 +131,11 @@ class Utility {
             ))
         ;
     }
-    function start_activity() {
+    function start_activity($userId) {
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = NOW() WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
+        $stmt->execute(array(
+            'user_id'=> $userId
+            ));
         $activity = $_GET['activityId'];
         $now = time();
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 0 FROM activity WHERE id = (:activity_id)');
@@ -140,7 +147,11 @@ class Utility {
             'activity_id'=> $activity
             ));
     }
-    function restart_activity($activity) {
+    function restart_activity($activity, $userId) {
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = NOW() WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
+        $stmt->execute(array(
+            'user_id'=> $userId
+            ));
         $activity = $_GET['activityId'];
         $now = time();
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 0 FROM activity WHERE id = (:activity_id)');
