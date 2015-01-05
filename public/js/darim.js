@@ -1,6 +1,4 @@
 $(document).ready(function() {
-    
-
     buttonDisplayed = false; //avoid multiple add elemnts
     $('.todoRow').on('mouseover', function() {
         if(!buttonDisplayed) {

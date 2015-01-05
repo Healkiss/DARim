@@ -69,23 +69,17 @@ $(document).ready(function() {
             }
             if(slider){
                 $("#slider").ionRangeSlider({
-                    type: "double",
-                    min: 540,
-                    max: 1080,
-                    from: 700,
-                    to: 800,
-                    step: 5,
-                    onStart: function (data) {
-                        console.log(data);
-                    },
-                    onChange : function (data) {
-                        console.log(data);
-                    },
-                    onFinish : function (data) {
-                        console.log(data);
-                    },
-                    onUpdate : function (data) {
-                        console.log(data);
+                    //hide_min_max: true,
+                    //drag_interval: true,
+                    min: +moment().set('hour', 9).format("X"),
+                    max: +moment().set('hour', 18).format("X"),
+                    from: +moment().set('hour', 12).format("X"),
+                    to: +moment().set('hour', 14).format("X"),
+                    //grid: true,
+                    //force_edges: true,
+                    prettify: function (num) {
+                        var m = moment(num, "HH:mm").locale("ru");
+                        return m.format("HH:mm");
                     }
                 });
             }
@@ -161,7 +155,7 @@ $(document).ready(function() {
         timeEnd = timeEnd || 1080;/*
         input_edit = '<select id="selectEditing" class="selectpicker selectEditing" title="Client" data-style="btn-default" data-live-search="'+search+'" data-width="auto">';
         input_edit += '</select>';*/
-        var input_edit = '<div id="slider"></div>';
+        var input_edit = '<div id="slider" sryle="width:120px;"></div>';
         return input_edit;
     }
     function getActivityId(elem) {
