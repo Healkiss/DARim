@@ -6,7 +6,13 @@
                 <span style='margin-left:40px;'>Client</span>
             </th>
             <th>
-                Tache | Commentaire
+                Tache
+            </th>
+            <th>
+                Commentaire
+            </th>
+            <th width='84px'>
+                Actions
             </th>
         </tr>
         {% for todo in todos %}
@@ -20,12 +26,25 @@
                 </td>
                 <td>
                     <span class='editable' data-type='string' data-name='task' data-field='task' data-value='{{ todo['task'] }}'>
-                        {{ todo['commentary'] }}
-                    </span>
-                    |
-                    <span class='editable' data-type='string' data-name='commentary' data-field='comentary' data-value='{{ todo['commentary'] }}'>
+                    {% if todo['task'] != '' %}
                         {{ todo['task'] }}
+                    {% else %}
+                        <span style="font-style: italic;">Ecrire une tache</span>
+                    {% endif %}
                     </span>
+                </td>
+                <td>
+                    <span class='editable' data-type='string' data-name='commentary' data-field='comentary' data-value='{{ todo['commentary'] }}'>
+                    {% if todo['commentary'] != '' %}
+                        {{ todo['commentary'] }}
+                    {% else %}
+                        <span style="font-style: italic;">Ecrire un commentaire</span>
+                    {% endif %}
+                    </span>
+                </td>
+                <td>
+                    <button class='btn_etat btn btn-success btn_start_activity' style=''><i class='glyphicon glyphicon-play'></i></button>
+                    <button class='btn_etat btn btn-danger btn_delete_activity' style=''><i class='glyphicon glyphicon-trash'></i></button>
                 </td>
             </tr>
         {% endfor %}

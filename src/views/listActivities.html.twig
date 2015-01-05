@@ -28,7 +28,7 @@
         <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='position:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
             <td width="240">
                 <span class='dailyRow_client_name editable' data-type='selectpicker' data-field='client' data-name='clients' data-value='{{activity['client_id']}}' style='font-weight=bold;margin-left: 10px;'>
-                    {{ activity['client_name'] }}
+                    <span class='activityClientName'>{{ activity['client_name'] }}</span>
                     ({{activity['client_ref2']}}-{{activity['client_ref']}})
                 </span>
             </td>
@@ -36,7 +36,7 @@
                 <span class='label label-{{activity['activityType_color']}} editable' data-type='selectpicker' data-name='activityTypes' data-field='activityType' data-value='{{activity['activityType_id']}}' style="float:right;margin-right:38px;margin-top:2px;">{{activity['activityType_name']}}</span>
             </td>
             <td>
-                <span class='editable' data-type='string' data-name='task' data-field='task' data-value='{{ activity['task'] }}'>
+                <span class='editable activityTask' data-type='string' data-name='task' data-field='task' data-value='{{ activity['task'] }}'>
                     {% if activity['task'] != '' %}
                         {{ activity['task'] }}
                     {% else %}
@@ -45,7 +45,7 @@
                 </span>
             </td>
             <td>
-                <span class='editable' data-type='textarea' data-name='commentary' data-field='commentary' data-value='{{ activity['commentary'] }}'>
+                <span class='editable activityComment' data-type='textarea' data-name='commentary' data-field='commentary' data-value='{{ activity['commentary'] }}'>
                     {% if activity['commentary'] != '' %}
                         {{ activity['commentary'] }}
                     {% else %}
@@ -53,7 +53,7 @@
                     {% endif %}
                 </span>
             </td>
-            <td>
+            <td class='time'>
                 <span class='editable timebound startTime' data-type='time' data-name='start' data-field='start_time' data-value='{{activity['start']|date('H\\:i')}}'>{{ activity['start']|date('H\\hi') }}</span> -
                 <span class='editable timebound endTime' data-type='time' data-name='end' data-field='end_time' data-value='{{activity['end']|date('H\\:i')}}'>
                 {% if activity['end'] != 0 %}
@@ -63,9 +63,9 @@
                 {% endif %}
                 </span>
             </td>
-            <td >
+            <td>
                 {% if activity['timeSpend'] %}
-                <span class='editable' data-type='timeRange' data-name='timeRange' data-field='start_time' data-value='{{activity['start']|date('H\\:i')}}'>{{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}</span>
+                <span class='editable' data-type='timeRange' data-name='timeRange' data-field='start_time' data-start='{{activity['start']|date('H\\:i')}}' data-end='{{activity['end']|date('H\\:i')}}'>{{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}</span>
                 {% endif %}
             </td>
             <td>
@@ -74,11 +74,28 @@
                 {% else %}
                     <button class='btn btn-danger btn_end_activity' title="Stopper"><i class='glyphicon glyphicon-stop'></i></button>
                 {% endif %}
-                <button class='btn btn-danger btn_delete_activity' title="Supprimer"><i class='glyphicon glyphicon-trash'></i></button>
+                <button class='btn btn-danger btn_predelete_activity' title="Supprimer" data-activityid='{{ activity["id"] }}'><i class='glyphicon glyphicon-trash'></i></button>
             </td>
         </tr>
     {% endfor %}
     </table>
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Suppression</h4>
+          </div>
+          <div class="modal-body">
+          Etes-vous sur de vouloir supprimer cette Activité ?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+            <button id="btn_delete_activity" type="button" class="btn btn-danger">Supprimer</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div>
         <button class='btn btn-warning' id='admin' style='position:absolute;left:16px;width:80px;height:40px;top:19px;'>Admin</button>
         <button class='btn btn-success' style='position:absolute;right:16px;width:80px;height:40px;top:19px;'>Exporter</button>

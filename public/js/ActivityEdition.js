@@ -32,7 +32,6 @@ $(document).ready(function() {
                     break;
                 case 'timeRange':
                     input_edit = constructTimeRange();
-                    console.log('construct');
                     slider = true;
                     break;
                 default:
@@ -68,30 +67,35 @@ $(document).ready(function() {
                 $(selectpickerButton).trigger('click');
             }
             if(slider){
+                var start = $(self).data('start');
+                var starts = start.split(':');
+                var end = $(self).data('end');
+                var ends = end.split(':');
+                console.log(end);
                 $("#slider").ionRangeSlider({
-                    //hide_min_max: true,
-                    //drag_interval: true,
-                    min: +moment().set('hour', 9).format("X"),
-                    max: +moment().set('hour', 18).format("X"),
-                    from: +moment().set('hour', 12).format("X"),
-                    to: +moment().set('hour', 14).format("X"),
-                    //grid: true,
+                    hide_min_max: true,
+                    drag_interval: true,
+                    min: moment().set('hour', 9).set('minute', 0).format("X"),
+                    max: moment().set('hour', 18).set('minute', 0).format("X"),
+                    from: moment().set('hour', starts[0]).set('minute', starts[1]).format("X"),
+                    to: moment().set('hour', ends[0]).set('minute', ends[1]).format("X"),
+                    grid: true,
                     //force_edges: true,
                     prettify: function (num) {
-                        var m = moment(num, "HH:mm").locale("ru");
+                        var m = moment(num, "X").locale("fr");
                         return m.format("HH:mm");
                     }
                 });
             }
         }, 10);
     });
-    $(document).on('click', 'body :not(.edit_block *)', function() {
+    /*$(document).on('click', 'body :not(.edit_block *)', function() {
         //console.log('click');
         //console.log('class :'+ $(this).attr("class"));
         $('.edit_block').remove();
         $('.editable').show();
         //$('.edit_box').remove();
-    });
+    });*/
 
     $('.dailyRow').on('click', '.btn_edit_activity', function() {
         edit_activity($(this).siblings('.edit_input'));
@@ -100,6 +104,13 @@ $(document).ready(function() {
         var key = e.which;
         if(key == 13) {
             edit_activity($(this).find('.edit_input'));
+        }
+    });
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 27) {
+            $('.edit_block').remove();
+            $('.editable').show();
         }
     });
     $('.dailyRow').on('change', 'select.inEdition', function() {
@@ -155,7 +166,7 @@ $(document).ready(function() {
         timeEnd = timeEnd || 1080;/*
         input_edit = '<select id="selectEditing" class="selectpicker selectEditing" title="Client" data-style="btn-default" data-live-search="'+search+'" data-width="auto">';
         input_edit += '</select>';*/
-        var input_edit = '<div id="slider" sryle="width:120px;"></div>';
+        var input_edit = '<div id="slider" style="position:relative;width:120px;"></div>';
         return input_edit;
     }
     function getActivityId(elem) {

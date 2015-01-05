@@ -52,10 +52,42 @@
                     copy: function() {
                         console.log('DAR copied. Paste it now!');
                         var dar = 'Ajourd\'hui \n';
+                        var darObjects = {};
+                        darObjects['clients'] = {};
                         $('.dailyRow').each(function(index, obj) {
-                            dar += $(obj).find('.dailyRow_client_name').text().trim()+ ' \n';
-                            dar += '    *' +$(obj).find('.taskComment').text().trim() + ' \n';
+                            var clientName = $(obj).find('.activityClientName').text().trim();
+                            var task = $(obj).find('.activityTask').text().trim();
+                            var comment = $(obj).find('.activityComment').text().trim();
+                            if(!darObjects.hasOwnProperty(clientName)){
+                                darObjects['clients'][clientName] = {};
+                                darObjects['clients'][clientName]['tasks'] = {};
+                            }
+                            if(!darObjects['clients'][clientName].hasOwnProperty('tasks')){
+                                darObjects['clients'][clientName]['tasks'][task] = {};
+                                if(!darObjects['clients'][clientName]['tasks'][task].hasOwnProperty('comment')){
+                                    darObjects['clients'][clientName]['tasks'][task]['comment'] = comment;
+                                }else{
+                                    darObjects['clients'][clientName]['tasks'][task]['comment'] += '\n\t\t' +comment;
+                                }
+                            }else{
+                                darObjects['clients'][clientName]['tasks'] = {};
+                                darObjects['clients'][clientName]['tasks'][task] = {};
+                                darObjects['clients'][clientName]['tasks'][task]['comment'] = comment;
+                            }
+
                         });
+                        for (var client in darObjects['clients']) {
+                            dar += client + ' \n';
+                            console.log(client);
+                            for (var tasks in client['tasks']) {
+                                for (var task in tasks) {
+                                    dar += '\t*' +task;
+                                    dar += task['comment']+' \n';
+                                };
+                            };
+                        };
+
+                        console.log(darObjects);
                         dar += '\nDemain \n';
                         $('.todoRow').each(function(index, obj) {
                             dar += $(obj).find('.todoRow_client_name').text().trim() + ' \n';

@@ -79,3 +79,26 @@ body{
     -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
+
+tr:nth-child(odd){
+    background: rgb(245, 243, 238);
+}
+tr:nth-child(even){
+    background: rgb(225, 223, 220);
+}
+.time{
+    font-size: 0.8em;
+    color: #222;
+}
+td{
+    text-align: center;
+}
+th{
+    text-align: center;
+}
+td:last-child{
+    text-align: left;
+}
+            #rowBottom { outline:red solid 2px }
+            #divBottom { margin:1em; font-size:xx-large; position:relative; }
+            #divOverlay { background-color:Silver; text-align:center;  position:absolute; z-index:10000; opacity:0.5; }

@@ -53,7 +53,7 @@
                 $utility->$functionName($_GET['activityId'], $_GET['newValue']);
                 break;
             case 'submit':
-                $utility->receiveNewActivity(1);
+                $utility->receiveNewActivity(1, $_SESSION['USERID']);
                 echo "submit";
                 break;
             case 'submitAndBegin':
