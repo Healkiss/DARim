@@ -30,6 +30,10 @@ $(document).ready(function() {
         activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
         action({'action':'end_run', 'activityId':activityId});
     });
+    $('.btn_todo_activity').click(function() {
+        activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
+        action({'action':'todo_activity', 'activityId':activityId});
+    });
     $('.btn_predelete_activity').click(function() {
         $('#modalDelete').modal()
         console.log($(this).data('activityid'));
@@ -43,6 +47,63 @@ $(document).ready(function() {
         activityId = $(this).data('activityid');
         action({'action':'delete_activity', 'activityId':activityId});
     });
+    $('.preChangeDay').click(function() {
+        var inputDate = '<input class="changeDay" type="date"></input>';
+        $inputDate = $(inputDate);
+        $inputDate.insertAfter($(this))
+        $inputDate.val($(this).data('day'));
+        $(this).hide();
+        $inputDate.focus().select();
+    });
+    $('.changeDay').click(function() {
+        console.log($(this).val());
+        change_day($(this).val());
+    });
+    $('.preChangeDay').hover(function(){$('<span class="glyphicon glyphicon-pencil editicon" style="color:#0088cc;font-size :20px;"></span>').insertAfter($(this));},function(){$('.editicon').remove();} );
+    function change_day(newDay){
+        data = {'action':'change_day', 'newDay':newDay};
+        $.ajax({
+            url: '//localhost/DARim/src/classes/ajaxActions.php',
+            type: 'GET',
+            data: data
+            ,
+            error: function() {
+                alert('change_day ko');
+            },
+            complete: function() {
+                location.reload();
+            }
+        });
+    }
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 13) {
+            console.log($('.changeDay').val());
+            if($('.changeDay').val())
+                change_day($('.changeDay').val());
+        }
+    });
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 27) {
+            $('.changeDay').remove();
+            $('.preChangeDay').show();
+        }
+    });
+    function action(data) {
+        $.ajax({
+            url: '//localhost/DARim/src/classes/ajaxActions.php',
+            type: 'GET',
+            data: data
+            ,
+            error: function() {
+                alert('');
+            },
+            complete: function() {
+                location.reload();
+            }
+        });
+    }
     $(document).on('click','btn_delete_activity', function() {
         var $divBottom = $(this).parent('td').parent('tr');
         var $divOverlay = $('#divOverlay');
@@ -64,20 +125,6 @@ $(document).ready(function() {
 
         $('#info').text('Top: ' + bottomTop + ' Left: ' + bottomLeft);
     });
-    function action(data) {
-        $.ajax({
-            url: '//localhost/DARim/src/classes/ajaxActions.php',
-            type: 'GET',
-            data: data
-            ,
-            error: function() {
-                alert('ko');
-            },
-            complete: function() {
-                location.reload();
-            }
-        });
-    }
     var submitButtonPressed;
     $('.submit').click(function() {
           buttonpressed = $(this).val()
@@ -96,7 +143,7 @@ $(document).ready(function() {
                 comment:        $("#form-input-comment").val()
             },
             error: function() {
-                alert('ko');
+                alert('submit form ko');
             },
             complete: function() {
                 console.log('ok');

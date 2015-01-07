@@ -73,6 +73,7 @@ $(document).ready(function() {
                 var ends = end.split(':');
                 console.log(end);
                 $("#slider").ionRangeSlider({
+                    type: "double",
                     hide_min_max: true,
                     drag_interval: true,
                     min: moment().set('hour', 9).set('minute', 0).format("X"),
@@ -96,7 +97,7 @@ $(document).ready(function() {
         $('.editable').show();
         //$('.edit_box').remove();
     });*/
-
+    
     $('.dailyRow').on('click', '.btn_edit_activity', function() {
         edit_activity($(this).siblings('.edit_input'));
     });
@@ -192,7 +193,7 @@ $(document).ready(function() {
                 newValue:newValue
             },
             error: function() {
-                alert('ko');
+                alert('editField ko');
             },
             complete: function() {
                 $('.btn_etat').remove();

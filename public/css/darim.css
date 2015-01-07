@@ -40,6 +40,12 @@ body{
 .editable:hover{
     border-bottom: dashed 1px #0088cc;
 }
+.preChangeDay{
+    cursor: pointer;
+}
+.preChangeDay:hover{
+    border-bottom: dashed 1px #0088cc;
+}
 
 .text-center{
     display:table-cell;
@@ -84,7 +90,7 @@ tr:nth-child(odd){
     background: rgb(245, 243, 238);
 }
 tr:nth-child(even){
-    background: rgb(225, 223, 220);
+    background: rgb(248, 248, 248);
 }
 .time{
     font-size: 0.8em;
@@ -99,6 +105,3 @@ th{
 td:last-child{
     text-align: left;
 }
-            #rowBottom { outline:red solid 2px }
-            #divBottom { margin:1em; font-size:xx-large; position:relative; }
-            #divOverlay { background-color:Silver; text-align:center;  position:absolute; z-index:10000; opacity:0.5; }

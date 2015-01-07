@@ -6,6 +6,10 @@ class Utility {
 
     function __construct($conBdd){
         $this->conBdd = $conBdd;
+        $currentTime = new \DateTime();
+        $currentTime = $currentTime->format('H:i:s');
+        $currentDay = $_SESSION['currentDay'];
+        $this->currentDateTime = $_SESSION['currentDay'] . ' ' . $currentTime;
     }
 
     function exportDay() {
@@ -41,6 +45,7 @@ class Utility {
 
     //get today activities
     function getActivities($userId) {
+        $currentDay = $_SESSION['currentDay'];
         $query = '
             SELECT
                 activity.commentary AS commentary,
@@ -67,7 +72,7 @@ class Utility {
         $activities = $response->fetchAll();
         $diary = array();
         foreach($activities as $activity) {
-            if (date('Ymd') == date('Ymd', strtotime($activity['start']))){
+            if (date('Ymd', strtotime($currentDay)) == date('Ymd', strtotime($activity['start']))){
                 $diary[] = $activity;
             }
         }
@@ -116,28 +121,29 @@ class Utility {
     }
 
     function receiveNewActivity($isTodo, $userId){
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = NOW() WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = "'+$this->currentDateTime+'" WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
         $stmt->execute(array(
             'user_id'=> $userId
             ));
-        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo)');
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo, start) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo, :start)');
         $stmt->execute(array(
             'client_id'=> $_GET['client'],
             'user_id'=> $userId,
             'activityType_id'=> $_GET['activityType'],
             'task'=> $_GET['task'],
             'commentary'=> $_GET['comment'],
-            'isTodo'=> $isTodo
+            'isTodo'=> $isTodo,
+            'start'=> $this->currentDateTime,
             ))
         ;
     }
     function start_activity($userId) {
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = NOW() WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
         $stmt->execute(array(
-            'user_id'=> $userId
+            'user_id'=> $userId,
+            'end'=> $this->currentDateTime,
             ));
         $activity = $_GET['activityId'];
-        $now = time();
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 0 FROM activity WHERE id = (:activity_id)');
         $stmt->execute(array(
             'activity_id'=> $activity
@@ -148,33 +154,37 @@ class Utility {
             ));
     }
     function restart_activity($activity, $userId) {
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = NOW() WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
         $stmt->execute(array(
-            'user_id'=> $userId
+            'user_id'=> $userId,
+            'end'=> $this->currentDateTime,
             ));
         $activity = $_GET['activityId'];
-        $now = time();
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 0 FROM activity WHERE id = (:activity_id)');
         $stmt->execute(array(
             'activity_id'=> $activity
             ));
     }
-    function end_activity($run) {
-        $now = time();
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = NOW() WHERE id = :run_id');
+    function todo_activity($activity, $userId) {
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 1 FROM activity WHERE id = (:activity_id)');
         $stmt->execute(array(
-            'run_id'=> $run
+            'activity_id'=> $activity
+            ));
+    }
+    function end_activity($run) {
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE id = :run_id');
+        $stmt->execute(array(
+            'run_id'=> $run,
+            'end'=> $this->currentDateTime,
             ));
     }
     function delete_activity($activity) {
-        $now = time();
         $stmt =  $this->conBdd->connexion->prepare('DELETE FROM activity WHERE id = :activity_id');
         $stmt->execute(array(
             'activity_id'=> $activity
             ));
     }
     function change_start_time_activity($activity, $newTime) {
-        $now = time();
         $newTime = strtotime($newTime);
         echo $newTime;
         $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET start = FROM_UNIXTIME(:start) WHERE id = :activity_id');
@@ -184,7 +194,6 @@ class Utility {
             ));
     }
     function change_end_time_activity($activity, $newTime) {
-        $now = time();
         $newTime = strtotime($newTime);
         echo $newTime;
         $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = FROM_UNIXTIME(:end) WHERE id = :activity_id');
@@ -252,6 +261,46 @@ class Utility {
             'name'=> $name,
             'color'=> $color
             ));
+    }
+    function generateCSV($userId){
+        $currentDay = $_SESSION['currentDay'];
+        $query = '
+            SELECT
+                activity.commentary AS comment,
+                activity.task AS task,
+                activityType.name AS activityTypeName,
+                client.name AS client_name,
+                client.ref AS client_ref,
+                client.ref2 AS client_ref2,
+                activity.start AS start,
+                activity.end AS end,
+                TIMESTAMPDIFF(SECOND, start, end) AS timeSpend
+            FROM activity
+            LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
+            LEFT JOIN client AS client ON (client.id = activity.client_id)
+            LEFT JOIN user AS user ON (user.id = activity.user_id)
+            WHERE activity.isTodo = 0 AND user.id = '.$userId.'
+            ORDER BY start
+        ';
+        $response =  $this->conBdd->connexion->query($query);
+        $activities = $response->fetchAll();
+        $array = array();
+        foreach($activities as $activity) {
+            if (date('Ymd', strtotime($currentDay)) == date('Ymd', strtotime($activity['start']))){
+                $array[] = $activity;
+            }
+        }
+        if (count($array) == 0) {
+            return null;
+        }
+        ob_start();
+        $df = fopen("/tmp/csvdar".$this->currentDateTime.".csv", 'w+');
+        fputcsv($df, array_keys(reset($array)));
+        foreach ($array as $row) {
+            fputcsv($df, $row);
+        }
+        fclose($df);
+        return ob_get_clean();
     }
 }
 ?>

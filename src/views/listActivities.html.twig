@@ -1,6 +1,6 @@
 <div style='border-width:1px;border-color:black;min-height:600px;'>
     <table style='width:100%;'>
-        <caption><h3><b>Aujoud'hui ({{ 'now'|date('d/m/Y') }})</b></h3><h4><b>{{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s</b></h4></caption>
+        <caption><h3><b><span class='preChangeDay' data-day='{{currentDay}}' >{{ currentDay|date('d/m/Y') }}</span></b></h3><h4><b>{{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s</b></h4></caption>
         <tr>
             <th>
                 <span>Client</span>
@@ -19,7 +19,7 @@
             <th>
                 Temps
             </th>
-            <th width='84px'>
+            <th width='128px'>
                 Actions
             </th>
         </tr>
@@ -65,7 +65,7 @@
             </td>
             <td>
                 {% if activity['timeSpend'] %}
-                <span class='editable' data-type='timeRange' data-name='timeRange' data-field='start_time' data-start='{{activity['start']|date('H\\:i')}}' data-end='{{activity['end']|date('H\\:i')}}'>{{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}</span>
+                <span class='editable activitytimeSpend' data-type='timeRange' data-name='timeRange' data-field='start_time' data-start='{{activity['start']|date('H\\:i')}}' data-end='{{activity['end']|date('H\\:i')}}'>{{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}</span>
                 {% endif %}
             </td>
             <td>
@@ -75,6 +75,7 @@
                     <button class='btn btn-danger btn_end_activity' title="Stopper"><i class='glyphicon glyphicon-stop'></i></button>
                 {% endif %}
                 <button class='btn btn-danger btn_predelete_activity' title="Supprimer" data-activityid='{{ activity["id"] }}'><i class='glyphicon glyphicon-trash'></i></button>
+                <button class='btn btn-primary btn_todo_activity' title="Todo" data-activityid='{{ activity["id"] }}'><i class='glyphicon glyphicon-time'></i></button>
             </td>
         </tr>
     {% endfor %}
@@ -98,7 +99,7 @@
     </div>
     <div>
         <button class='btn btn-warning' id='admin' style='position:absolute;left:16px;width:80px;height:40px;top:19px;'>Admin</button>
-        <button class='btn btn-success' style='position:absolute;right:16px;width:80px;height:40px;top:19px;'>Exporter</button>
+        <button class='btn btn-success' id='export' style='position:absolute;right:16px;width:80px;height:40px;top:19px;'>Exporter</button>
         <button id='copy' class='btn btn-success' style='position:absolute;right:100px;width:80px;height:40px;top:19px;'>Copier</button>
     </div>
 </div>

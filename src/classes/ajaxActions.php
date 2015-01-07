@@ -19,7 +19,11 @@
                 break;
             case 'restart_activity':
                 $utility->restart_activity($_GET['activityId'], $_SESSION['USERID']);
-                echo "start_activity";
+                echo "restart_activity";
+                break;
+            case 'todo_activity':
+                $utility->todo_activity($_GET['activityId'], $_SESSION['USERID']);
+                echo "todo_activity";
                 break;
             case 'end_run':
                 $utility->end_activity($_GET['activityId']);
@@ -65,6 +69,12 @@
                 break;
             case 'get_activityTypes':
                 echo json_encode($utility->getActivityTypes());
+                break;
+            case 'change_day':
+                $_SESSION['currentDay'] = $_GET['newDay'];
+                break;
+            case 'get_csv':
+                return($utility->generateCSV($_SESSION['USERID']));
                 break;
             default:
                 echo 'requete ajax non suppportée';

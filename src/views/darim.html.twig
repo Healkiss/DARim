@@ -48,58 +48,80 @@
         $(document).ready(function() {
             $('.selectpicker').selectpicker();
             $('button#copy').clipboard({
-                    path: 'public/js/jquery.clipboard.swf',
-                    copy: function() {
-                        console.log('DAR copied. Paste it now!');
-                        var dar = 'Ajourd\'hui \n';
-                        var darObjects = {};
-                        darObjects['clients'] = {};
-                        $('.dailyRow').each(function(index, obj) {
-                            var clientName = $(obj).find('.activityClientName').text().trim();
-                            var task = $(obj).find('.activityTask').text().trim();
-                            var comment = $(obj).find('.activityComment').text().trim();
-                            if(!darObjects.hasOwnProperty(clientName)){
-                                darObjects['clients'][clientName] = {};
-                                darObjects['clients'][clientName]['tasks'] = {};
-                            }
-                            if(!darObjects['clients'][clientName].hasOwnProperty('tasks')){
-                                darObjects['clients'][clientName]['tasks'][task] = {};
-                                if(!darObjects['clients'][clientName]['tasks'][task].hasOwnProperty('comment')){
-                                    darObjects['clients'][clientName]['tasks'][task]['comment'] = comment;
-                                }else{
-                                    darObjects['clients'][clientName]['tasks'][task]['comment'] += '\n\t\t' +comment;
+                path: 'public/js/jquery.clipboard.swf',
+                copy: function() {
+                    console.log('DAR copied. Paste it now!');
+                    var darObject = {};
+                    $('.dailyRow').each(function(index, obj) {
+                        var clientName = $(obj).find('.activityClientName').text().trim();
+                        var task = $(obj).find('.activityTask').text().trim();
+                        var comment = $(obj).find('.activityComment').text().trim();
+                        var comment = $(obj).find('.activityComment').text().trim();
+                        var timeSpend = $(obj).find('.activitytimeSpend').text().trim();
+                        var minutesSpend = 0;
+                        if(timeSpend){
+                            minutesSpend = parseInt(timeSpend.split('h')[0])*60 + parseInt(timeSpend.split('h')[1]);
+                            console.log("hour" + parseInt(timeSpend.split('h')[0]));
+                            console.log("minutes" + timeSpend.split('h')[1]);
+                            console.log("minutesSpend" + minutesSpend);
+                        }
+                        if(!darObject.hasOwnProperty(clientName)){
+                            darObject[clientName] = {};
+                        }
+                        if(!darObject[clientName].hasOwnProperty(task)){
+                            darObject[clientName][task] = {};
+                        }
+                        if(!darObject[clientName][task].hasOwnProperty(comment)){
+                            darObject[clientName][task][comment] = minutesSpend;
+                            console.log(darObject[clientName][task][comment]);
+                        }else{
+                            darObject[clientName][task][comment] += minutesSpend;
+                            console.log(darObject[clientName][task][comment]);
+                        }
+                    });
+                    var dar = 'Aujourd\'hui';
+                    for (var client in darObject) {
+                        dar += ' \n' + client;
+                        for (var task in darObject[client]) {
+                            dar += '\n\t*' +task;
+                            for (var comment in darObject[client][task]) {
+                                dar += '\n\t\t- ' + comment;
+                                //console.log('minutesSpend' + darObject[client][task][comment]);
+                                console.log('minutesSpend '+ parseInt(darObject[client][task][comment]) + 'modulo ' + Math.floor(parseInt(darObject[client][task][comment])/90));
+                                var modulo = Math.floor(parseInt(darObject[client][task][comment])/90);
+                                for(var i = 0; i < modulo; i++){
+                                    dar += ' (*)';
                                 }
-                            }else{
-                                darObjects['clients'][clientName]['tasks'] = {};
-                                darObjects['clients'][clientName]['tasks'][task] = {};
-                                darObjects['clients'][clientName]['tasks'][task]['comment'] = comment;
                             }
-
-                        });
-                        for (var client in darObjects['clients']) {
-                            dar += client + ' \n';
-                            console.log(client);
-                            for (var tasks in client['tasks']) {
-                                for (var task in tasks) {
-                                    dar += '\t*' +task;
-                                    dar += task['comment']+' \n';
-                                };
-                            };
-                        };
-
-                        console.log(darObjects);
-                        dar += '\nDemain \n';
-                        $('.todoRow').each(function(index, obj) {
-                            dar += $(obj).find('.todoRow_client_name').text().trim() + ' \n';
-                            dar += '    *' +$(obj).find('.todoRow_task').text().trim();
-                            dar += '/' +$(obj).find('.todoRow_comment').text().trim() + ' \n';
-                        });
-                        return dar;
+                        }
                     }
+                    dar += '\n\nDemain \n';
+                    $('.todoRow').each(function(index, obj) {
+                        dar += $(obj).find('.todoRow_client_name').text().trim() + ' \n';
+                        dar += '    *' +$(obj).find('.todoRow_task').text().trim();
+                        dar += '/' +$(obj).find('.todoRow_comment').text().trim() + ' \n';
+                    });
+                    return dar;
+                }
+            });
+            $('button#export').click(function(){
+                var data = {'action':'get_csv'};
+                $.ajax({
+                    url: '//localhost/DARim/src/classes/ajaxActions.php',
+                    type: 'GET',
+                    data: data
+                    ,
+                    error: function() {
+                        alert('change_day ko');
+                    },
+                    complete: function() {
+                        console.log('its exported!');
+                    }
+                });
             });
             $('#admin').click(function(){
                 window.location.href = "/DARim/admin";
-            })
+            });
         });
     </script>
 {% endblock %}
