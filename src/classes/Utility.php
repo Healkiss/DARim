@@ -121,9 +121,10 @@ class Utility {
     }
 
     function receiveNewActivity($isTodo, $userId){
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = "'+$this->currentDateTime+'" WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
         $stmt->execute(array(
-            'user_id'=> $userId
+            'user_id'=> $userId,
+            'end'=> $this->currentDateTime,
             ));
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo, start) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo, :start)');
         $stmt->execute(array(
@@ -274,6 +275,7 @@ class Utility {
                 client.ref2 AS client_ref2,
                 activity.start AS start,
                 activity.end AS end,
+                user.name AS name,
                 TIMESTAMPDIFF(SECOND, start, end) AS timeSpend
             FROM activity
             LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
@@ -294,7 +296,8 @@ class Utility {
             return null;
         }
         ob_start();
-        $df = fopen("/tmp/csvdar".$this->currentDateTime.".csv", 'w+');
+        $now = new DateTime('now');
+        $df = fopen("/tmp/".$_SESSION['USERID']."of".$_SESSION['currentDay']."at".$now->format('Y-m-d H:i:s').".csv", 'w+');
         fputcsv($df, array_keys(reset($array)));
         foreach ($array as $row) {
             fputcsv($df, $row);
