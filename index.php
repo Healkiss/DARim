@@ -16,13 +16,17 @@ $loader = new Twig_Loader_Filesystem('src/views');
 $twig = new Twig_Environment($loader);
 $twig->getExtension('core')->setTimezone('Europe/Paris');
 
+if(!isset($_SESSION['currentDay']) || $_SESSION['currentDay'] == null){
+    $_SESSION['currentDay'] = date('Y-m-d');
+}
+$_SESSION['USERID'] = 1;
 
 $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
 $utility = new Utility($localBD);
 
 if (empty($_GET['data']))
      $_GET['data'] = 'home';
-$_SESSION['USERID'] = 1;
+
 if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
     $ds=ldap_connect("pilot.devatics.com");
     // Search login entry
@@ -58,9 +62,6 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
             ));
     }else{
         $userId = $_SESSION['USERID'];
-        if(!isset($_SESSION['currentDay'])){
-            $_SESSION['currentDay'] = date('Y-m-d');
-        }
         echo $twig->render('darim.html.twig', array(
                 'currentDay' => $_SESSION['currentDay'],
                 'clients' => $utility->getClients(),
