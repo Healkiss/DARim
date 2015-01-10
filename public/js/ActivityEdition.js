@@ -1,6 +1,8 @@
 $(document).ready(function() {
     var editType = '';
     $('.editable').on('click', function() {
+        $('.edit_block').remove();
+        $('.editable').show();
         var self = this;
         setTimeout(function() 
         {
@@ -20,11 +22,13 @@ $(document).ready(function() {
                 case 'clients':
                     input_edit = displaySelect('get_clients', ['name', 'ref2', 'ref'], true, false);
                     selectPicker = true;
+                    btnEditNeeded = false;
                     break;
                 case 'activityTypes':
                     input_edit = displaySelect('get_activityTypes', ['name'], false, true);
                     addedStyle = "float:right;";
                     selectPicker = true;
+                    btnEditNeeded = false;
                     break;
                 case 'commentary':
                     addedStyle = "width:auto;";
@@ -98,10 +102,10 @@ $(document).ready(function() {
         //$('.edit_box').remove();
     });*/
     
-    $('.dailyRow').on('click', '.btn_edit_activity', function() {
+    $(document).on('click', '.btn_edit_activity', function() {
         edit_activity($(this).siblings('.edit_input'));
     });
-    $(document).on('keypress','.dailyRow', function(e) {
+    $(document).on('keypress','tr', function(e) {
         var key = e.which;
         if(key == 13) {
             edit_activity($(this).find('.edit_input'));
@@ -114,7 +118,7 @@ $(document).ready(function() {
             $('.editable').show();
         }
     });
-    $('.dailyRow').on('change', 'select.inEdition', function() {
+    $(document).on('change', 'select.inEdition', function() {
         edit_activity(this);
     });
 

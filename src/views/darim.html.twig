@@ -47,7 +47,7 @@
     <script>
         $(document).ready(function() {
             $('.selectpicker').selectpicker();
-            $('button#copy').clipboard({
+            /*$('button#copy').clipboard({
                 path: 'public/js/jquery.clipboard.swf',
                 copy: function() {
                     console.log('DAR copied. Paste it now!');
@@ -103,7 +103,7 @@
                     });
                     return dar;
                 }
-            });
+            });*/
             $('button#export').click(function(){
                 var data = {'action':'get_csv'};
                 $.ajax({
