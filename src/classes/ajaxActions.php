@@ -76,6 +76,10 @@
             case 'get_csv':
                 return($utility->generateCSV($_SESSION['USERID']));
                 break;
+            case 'logout':
+                $utility->logout();
+                return true;
+                break;
             default:
                 echo 'requete ajax non suppportée';
                 break;

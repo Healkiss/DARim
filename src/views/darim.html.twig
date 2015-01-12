@@ -7,6 +7,14 @@
         <div class="page-content" style="min-height:940px">
             <div class="container-fluid">
                 <div class="row">
+                    <div class="col-md-12" id="addActivity">
+                        <button class='btn btn-warning' id='admin'>Admin</button>
+                        <button class='btn btn-danger' id='logout'>Logout</button>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
                     <div class="col-md-1">
                     </div>
                     <div class="col-md-10" id="addActivity">
@@ -47,7 +55,7 @@
     <script>
         $(document).ready(function() {
             $('.selectpicker').selectpicker();
-            /*$('button#copy').clipboard({
+            $('button#copy').clipboard({
                 path: 'public/js/jquery.clipboard.swf',
                 copy: function() {
                     console.log('DAR copied. Paste it now!');
@@ -103,7 +111,7 @@
                     });
                     return dar;
                 }
-            });*/
+            });
             $('button#export').click(function(){
                 var data = {'action':'get_csv'};
                 $.ajax({
@@ -121,6 +129,10 @@
             });
             $('#admin').click(function(){
                 window.location.href = "/DARim/admin";
+            });
+            $('#logout').click(function(){
+                $.ajax({url: '//localhost/DARim/src/classes/ajaxActions.php',data: {'action':'logout'}});
+                window.location.href = "/DARim/login";
             });
         });
     </script>
