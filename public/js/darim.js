@@ -5,8 +5,10 @@ $(document).ready(function() {
         var value = parseInt($( this ).data('value').replace(':',''));
         //console.log('compare : ' + value + ' to ' + old);
         if(value < old) {
-            $( this ).css({'color':'red'});
-            $( oldThis ).css({'color':'red'})
+            /*$( this ).css({'color':'red'});
+            $( oldThis ).css({'color':'red'})*/
+            $( this ).addClass('error');
+            $( oldThis ).addClass('error');
         }
         old = parseInt($( this ).data('value').replace(':',''));
         oldThis = this;

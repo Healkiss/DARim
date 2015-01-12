@@ -134,6 +134,11 @@
                 $.ajax({url: '//localhost/DARim/src/classes/ajaxActions.php',data: {'action':'logout'}});
                 window.location.href = "/DARim/login";
             });
+            if($('.error').length > 0){
+                $('#export').prop('disabled', true);
+            }else{
+
+            }
         });
     </script>
 {% endblock %}

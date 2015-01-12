@@ -334,14 +334,8 @@ class Utility {
                     $userId = $user[0]['id'];
                     $_SESSION['USERID'] = $userId;
                 }
-                echo $twig->render('darim.html.twig', array(
-                        'currentDay' => $_SESSION['currentDay'],
-                        'clients' => $utility->getClients(),
-                        'activityTypes' => $utility->getActivityTypes(),
-                        'todos' => $utility->getTodos($userId),
-                        'activities' => $utility->getActivities($userId),
-                        'worktimeToday' => $utility->getToDayWorktime($userId)
-                    ));
+                header("Location: home");
+                exit(0);   
             } else {
                 return $twig->render('login.html.twig',array('error' => "bad credentials"));
             }

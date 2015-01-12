@@ -27,6 +27,9 @@ body{
 .cell{
     display:table-cell;
 }
+.error{
+    color:red;
+}
 .text-left{
     display:table-cell;
     max-width:33%;
