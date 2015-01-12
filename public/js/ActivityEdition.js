@@ -129,7 +129,7 @@ $(document).ready(function() {
         label = label || false;
         input_edit = '';
         $.ajax({
-            url: '//localhost/DARim/src/classes/ajaxActions.php',
+            url: 'src/classes/ajaxActions.php',
             async: false,
             data: {
                 action:ajaxAction,
@@ -188,7 +188,7 @@ $(document).ready(function() {
 
     function editField(activityId, field, newValue) {
         $.ajax({
-            url: '//localhost/DARim/src/classes/ajaxActions.php',
+            url: 'src/classes/ajaxActions.php',
             type: 'GET',
             data: {
                 action:'edit_activity',

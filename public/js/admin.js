@@ -39,7 +39,7 @@ $(document).ready(function() {
 
     function action(data) {
         $.ajax({
-            url: '//localhost/DARim/src/classes/ajaxActions.php',
+            url: 'src/classes/ajaxActions.php',
             type: 'GET',
             data: data
             ,

@@ -115,7 +115,7 @@
             $('button#export').click(function(){
                 var data = {'action':'get_csv'};
                 $.ajax({
-                    url: '//localhost/DARim/src/classes/ajaxActions.php',
+                    url: 'src/classes/ajaxActions.php',
                     type: 'GET',
                     data: data
                     ,
@@ -131,7 +131,7 @@
                 window.location.href = "admin";
             });
             $('#logout').click(function(){
-                $.ajax({url: '//localhost/DARim/src/classes/ajaxActions.php',data: {'action':'logout'}});
+                $.ajax({url: 'src/classes/ajaxActions.php',data: {'action':'logout'}});
                 window.location.href = "login";
             });
             if($('.error').length > 0){
