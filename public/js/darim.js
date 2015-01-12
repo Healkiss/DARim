@@ -65,7 +65,7 @@ $(document).ready(function() {
     function change_day(newDay){
         data = {'action':'change_day', 'newDay':newDay};
         $.ajax({
-            url: '//localhost/DARim/src/classes/ajaxActions.php',
+            url: 'src/classes/ajaxActions.php',
             type: 'GET',
             data: data
             ,
@@ -135,7 +135,7 @@ $(document).ready(function() {
         var self = this;
         submitButtonPressed
         $.ajax({
-            url: '//localhost/DARim/src/classes/ajaxActions.php',
+            url: 'src/classes/ajaxActions.php',
             type: 'GET',
             data: {
                 action:         buttonpressed,

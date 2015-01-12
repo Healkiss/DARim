@@ -39,7 +39,7 @@ $(document).ready(function() {
 
     function action(data) {
         $.ajax({
-            url: 'src/classes/ajaxActions.php',
+            url: '//localhost/DARim/src/classes/ajaxActions.php',
             type: 'GET',
             data: data
             ,
@@ -55,6 +55,6 @@ $(document).ready(function() {
     $('#edit_client').change();
     $('#edit_activitytype').change();
     $('#return').click(function(){
-        window.location.href = "";
+        window.location.href = "/";
     })
 });
