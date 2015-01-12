@@ -1,5 +1,5 @@
 <div>
-	<form id="my-form"  style="margin-top:20px;border: 2px solid black;padding:20px;width:1035px;">
+	<form id="my-form"  style="margin-top:20px;border: 2px solid black;padding:20px;width:1080px;">
 		<select class="selectpicker" id="form-input-client" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
 			{% for client in clients %}
 			<option value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>

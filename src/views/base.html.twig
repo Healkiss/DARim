@@ -20,6 +20,7 @@
     </head>
 
     <body class="page-header-fixed page-quick-sidebar-over-content page-full-width" style="min-width:1277px">
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modalShortKeys" style="position:absolute;right:10px;top:10px;height:20px;width:20px;margin:0;padding:0;z-index:999;"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></button>
         <div class="clearfix">
         </div>
         {% block body %}
@@ -27,13 +28,33 @@
         <!-- BEGIN FOOTER -->
         <div class="page-footer">
             <div class="footer-inner">
-                Time 2014. All rights reserved.
+                Time 2014-2015. All rights reserved.
                 <br>
-                Ce site est actuellement en bêta, merci de signaler toute erreur à fschneider@devatics.fr
+                Ce site est actuellement en bêta, merci de signaler toute erreur à fschneider@devatics.com
             </div>
         </div>
         <!-- END FOOTER -->
-
+        <div class="modal fade" id="modalShortKeys" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table align="center">
+                        <tbody><tr><td align="right" style="padding-bottom: 5px; padding-right: 5px"><kbd><kbd>Enter</kbd></td>  <td style="padding-left: 5px">Valider formulaire en cours ou valider edition</td></tr>
+                            <tr><td align="right" style="padding-bottom: 5px; padding-right: 5px"><kbd>Esc</kbd></td>  <td style="padding-left: 5px">Quitter le mode édition</td></tr>
+                            <tr><td align="right" style="padding-bottom: 5px; padding-right: 5px"><kbd>Alt</kbd> + <kbd>/</kbd></td>  <td style="padding-left: 5px">Commencer l'ajout d'une activité</td></tr>
+                            <tr><td align="right" style="padding-bottom: 5px; padding-right: 5px"><kbd>Alt</kbd> + <kbd>E</kbd></td>  <td style="padding-left: 5px">Exporter le CSV</td></tr>
+                            <tr><td align="right" style="padding-bottom: 5px; padding-right: 5px"><kbd>Alt</kbd> + <kbd>A</kbd></td>  <td style="padding-left: 5px">Aujourd'hui</td></tr>
+                            <tr><td align="right" style="padding-bottom: 5px; padding-right: 5px"><kbd>Alt</kbd> + <kbd>P</kbd></td>  <td style="padding-left: 5px">Jour précédent</td></tr>
+                            <tr><td align="right" style="padding-bottom: 5px; padding-right: 5px"><kbd>Alt</kbd> + <kbd>S</kbd></td>  <td style="padding-left: 5px">Jour suivant</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-danger">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
         {% include 'javascripts.html.twig' %}
         {% block javascripts %}

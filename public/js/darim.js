@@ -49,11 +49,16 @@ $(document).ready(function() {
         activityId = $(this).data('activityid');
         action({'action':'delete_activity', 'activityId':activityId});
     });
+    ///////////////////
+    //DATE MANIPULATION
+    ///////////////////
     $('.preChangeDay').click(function() {
         var inputDate = '<input class="changeDay" type="date"></input>';
         $inputDate = $(inputDate);
-        $inputDate.insertAfter($(this))
+        $inputDate.insertAfter($(this));
+        console.log($(this).data('day'));
         $inputDate.val($(this).data('day'));
+        console.log($inputDate.val());
         $(this).hide();
         $inputDate.focus().select();
     });
@@ -62,6 +67,18 @@ $(document).ready(function() {
         change_day($(this).val());
     });
     $('.preChangeDay').hover(function(){$('<span class="glyphicon glyphicon-pencil editicon" style="color:#0088cc;font-size :20px;"></span>').insertAfter($(this));},function(){$('.editicon').remove();} );
+    function goToYesterday() {
+        change_day(new Date(new Date($('.preChangeDay').data('day')).getTime() - 24 * 60 * 60 * 1000));
+    }
+    function goToTomorrow() {
+        change_day(new Date(new Date($('.preChangeDay').data('day')).getTime() + 24 * 60 * 60 * 1000));
+    }
+    function goToToday() {
+        change_day(new Date());
+    }
+    $('#changeDayBefore').click(function(){goToYesterday();});
+    $('#changeDayAfter').click(function(){goToTomorrow();});
+    $('#changeDayToday').click(function(){goToToday();});
     function change_day(newDay){
         data = {'action':'change_day', 'newDay':newDay};
         $.ajax({
@@ -77,21 +94,9 @@ $(document).ready(function() {
             }
         });
     }
-    $(document).keyup(function(e) {
-        var key = e.which;
-        if(key == 13) {
-            console.log($('.changeDay').val());
-            if($('.changeDay').val())
-                change_day($('.changeDay').val());
-        }
-    });
-    $(document).keyup(function(e) {
-        var key = e.which;
-        if(key == 27) {
-            $('.changeDay').remove();
-            $('.preChangeDay').show();
-        }
-    });
+    ///////////////////////
+    //SUBMISSION & DELETION
+    ///////////////////////
     function action(data) {
         $.ajax({
             url: 'src/classes/ajaxActions.php',
@@ -154,4 +159,188 @@ $(document).ready(function() {
         });
         event.preventDefault();
     })
+    $('.selectpicker').selectpicker();
+    ///////////////////
+    // EXPORTS
+    ///////////////////
+    function getActivities(element, gettime) {
+        var darObject = {};
+        $(element).each(function(index, obj) {
+            var clientName = $(obj).find('.activityClientName').text().trim();
+            var task = $(obj).find('.activityTask').text().trim();
+            // console.log('clientName : ' + clientName);
+            // console.log('task : ' + task);
+            var comment = $(obj).find('.activityComment').text().trim();
+            if(task == 'Ajouter une tache'){
+                task = '(...)';
+            }
+            if(comment == 'Ecrire un commentaire'){
+                comment = '(...)';
+            }
+            var minutesSpend = 0;
+            if(gettime){
+                var timeSpend = $(obj).find('.activitytimeSpend').text().trim();
+                if(timeSpend){
+                    minutesSpend = parseInt(timeSpend.split('h')[0])*60 + parseInt(timeSpend.split('h')[1]);
+                    // console.log("hour" + parseInt(timeSpend.split('h')[0]));
+                    // console.log("minutes" + timeSpend.split('h')[1]);
+                    // console.log("minutesSpend" + minutesSpend);
+                }
+            }
+            if(!darObject.hasOwnProperty(clientName)){
+                darObject[clientName] = {};
+            }
+            if(!darObject[clientName].hasOwnProperty(task)){
+                darObject[clientName][task] = {};
+            }
+            if(!darObject[clientName][task].hasOwnProperty(comment)){
+                darObject[clientName][task][comment] = minutesSpend;
+                // console.log(darObject[clientName][task][comment]);
+            }else{
+                darObject[clientName][task][comment] += minutesSpend;
+                // console.log(darObject[clientName][task][comment]);
+            }
+        });
+        return darObject;
+    }
+    function copy() {
+        var darObject = getActivities('.dailyRow', 1);
+
+        var dar = 'Aujourd\'hui';
+        for (var client in darObject) {
+            dar += ' \n' + client;
+            for (var task in darObject[client]) {
+                dar += '\n\t- ' +task;
+                for (var comment in darObject[client][task]) {
+                    dar += '\n\t\t- ' + comment;
+                    //console.log('minutesSpend' + darObject[client][task][comment]);
+                    //console.log('minutesSpend '+ parseInt(darObject[client][task][comment]) + 'modulo ' + Math.floor(parseInt(darObject[client][task][comment])/90));
+                    var modulo = Math.floor(parseInt(darObject[client][task][comment])/90);
+                    for(var i = 0; i < modulo; i++){
+                        dar += ' (*)';
+                    }
+                }
+            }
+        }                    
+        darObject = getActivities('.todoRow', 0);
+        dar += '\n\nDemain \n';
+        for (var client in darObject) {
+            dar += ' \n' + client;
+            for (var task in darObject[client]) {
+                dar += '\n\t- ' +task;
+                for (var comment in darObject[client][task]) {
+                    dar += '\n\t\t- ' + comment;
+                }
+            }
+        }
+        console.log('DAR copied. Paste it now!');
+        $('#info-alert').show();
+        $('#info-alert').text('DAR copied. Paste it now!');
+        $('#info-alert').fadeOut( "slow", function() {});
+        return dar;
+    }
+    $('button#copy').clipboard({
+        path: 'public/js/jquery.clipboard.swf',
+        copy: function() {
+            return copy();
+        }
+    });
+    function exportCSV() {
+        var data = {'action':'get_csv'};
+        $.ajax({
+            url: 'src/classes/ajaxActions.php',
+            type: 'GET',
+            data: data
+            ,
+            error: function() {
+                alert('change_day ko');
+            },
+            complete: function() {
+                console.log('CSV exported!');
+                $('#info-alert').show();
+                $('#info-alert').text('CSV exported!');
+                $('#info-alert').fadeOut( "slow", function() {});
+            }
+        });
+    }
+    $('button#export').click(function(){
+        exportCSV();
+    });
+    $('#admin').click(function(){
+        window.location.href = "admin";
+    });
+    $('#logout').click(function(){
+        $.ajax({url: 'src/classes/ajaxActions.php',data: {'action':'logout'}});
+        window.location.href = "login";
+    });
+    if($('.error').length > 0){
+        $('#export').prop('disabled', true);
+    }else{
+
+    }
+    ///////////////////
+    //RACCOURCIS
+    ///////////////////
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 13) {
+            console.log($('.changeDay').val());
+            if($('.changeDay').val())
+                change_day($('.changeDay').val());
+        }
+    });
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 27) {
+            $('.changeDay').remove();
+            $('.preChangeDay').show();
+        }
+    });
+    //alt + / commencer ajout activité
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 191 && e.shiftKey) {
+            $('[data-id="form-input-client"]').focus().select();
+        }
+    });
+    //alt + A aller a aujourd'hui
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 65 && e.shiftKey) {
+            goToToday();
+        }
+    });
+    //alt + S jour suivant
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 83 && e.shiftKey) {
+            goToTomorrow();
+        }
+    });
+    //alt + P jour precedent
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 80 && e.shiftKey) {
+            goToYesterday();
+        }
+    });
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 67 && e.shiftKey) {
+            console.log('test copy');
+            $('#copy').clipboard({
+                path: 'public/js/jquery.clipboard.swf',
+                copy: function() {
+                    return copy();
+                }
+            });
+            $('#copy').focus().select().click();
+        }
+    });
+    $(document).keyup(function(e) {
+        var key = e.which;
+        if(key == 69 && e.shiftKey) {
+            exportCSV();
+        }
+    });
 });

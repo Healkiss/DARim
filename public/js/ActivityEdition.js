@@ -214,7 +214,7 @@ $(document).ready(function() {
         var oldTime = changeStart?$(elem).parent('.dailyRow').data('start'):$(elem).parent('.dailyRow').data('end');
         var newTime = oldTime.replace(/\s[0-9]{2}:[0-9]{2}/,' '+value);
         console.log('editer '+ field + ' ' + activityId + ' oldTime ' + oldTime +' newTime ' +newTime);
-        $('.btn_etat').html('<img src="http://localhost/d590/img/spinner.gif"/>');
+        $('.btn_etat').html('<img src="http://static.devatics.com/d590/img/spinner.gif"/>');
         editField(activityId, field, newTime);
     }
 

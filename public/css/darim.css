@@ -40,6 +40,14 @@ body{
 .editable{
     cursor: pointer;
 }
+.changeDate:hover{
+    font-size: 20px;
+}
+.changeDate{
+    color: #0088cc;
+    font-size: 15px;
+    width:15px;
+}
 .editable:hover{
     border-bottom: dashed 1px #0088cc;
 }

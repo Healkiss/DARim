@@ -1,6 +1,22 @@
-<div style='border-width:1px;border-color:black;min-height:600px;'>
+<div style='border-width:1px;border-color:black;min-height:200px;'>
     <table style='width:100%;'>
-        <caption><h3><b><span class='preChangeDay' data-day='{{currentDay}}' >{{ currentDay|date('d/m/Y') }}</span></b></h3><h4><b>{{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s</b></h4></caption>
+        <caption>
+            <h3>
+                <b>
+                    <span id='changeDayBefore' title="Jour précédent" class='changeDate glyphicon glyphicon-chevron-left'></span>
+                    <span class='preChangeDay' data-day='{{currentDay|date('Y-m-d')}}' >
+                        {{ currentDay|date('d/m/Y') }}
+                    </span>
+                    <span id='changeDayAfter' title="Jour suivant" class='changeDate glyphicon glyphicon-chevron-right'></span>
+                    <span id='changeDayToday' title="Aujourd'hui" class='changeDate glyphicon glyphicon-expand'></span>
+                </b>
+            </h3>
+            <h4>
+                <b>
+                    {{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s
+                </b>
+            </h4>
+        </caption>
         <tr>
             <th>
                 <span>Client</span>
@@ -65,7 +81,7 @@
             </td>
             <td>
                 {% if activity['timeSpend'] %}
-                <span class='editable activitytimeSpend' data-type='timeRange' data-name='timeRange' data-field='start_time' data-start='{{activity['start']|date('H\\:i')}}' data-end='{{activity['end']|date('H\\:i')}}'>{{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}</span>
+                <span class='activitytimeSpend' data-type='timeRange' data-name='timeRange' data-field='start_time' data-start='{{activity['start']|date('H\\:i')}}' data-end='{{activity['end']|date('H\\:i')}}'>{{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}</span>
                 {% endif %}
             </td>
             <td>
@@ -98,7 +114,8 @@
       </div>
     </div>
     <div>
-        <button class='btn btn-success' id='export' style='position:absolute;right:16px;width:80px;height:40px;top:19px;'>Exporter</button>
-        <button id='copy' class='btn btn-success' style='position:absolute;right:100px;width:80px;height:40px;top:19px;'>Copier</button>
+        <button class='btn btn-success' id='export' title="Exporter" style='position:absolute;right:16px;width:80px;height:40px;top:19px;'>Exporter</button>
+        <button id='copy' class='btn btn-success' title="Copier" style='position:absolute;right:100px;width:80px;height:40px;top:19px;'>Copier</button>
+        <span id='info-alert' style='position:absolute;right:0px;width:180px;height:40px;top:0px;color:green;'></span>
     </div>
 </div>
