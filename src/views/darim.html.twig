@@ -128,11 +128,11 @@
                 });
             });
             $('#admin').click(function(){
-                window.location.href = "/DARim/admin";
+                window.location.href = "admin";
             });
             $('#logout').click(function(){
                 $.ajax({url: '//localhost/DARim/src/classes/ajaxActions.php',data: {'action':'logout'}});
-                window.location.href = "/DARim/login";
+                window.location.href = "login";
             });
             if($('.error').length > 0){
                 $('#export').prop('disabled', true);

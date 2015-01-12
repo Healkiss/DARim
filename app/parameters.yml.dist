@@ -1,9 +1,6 @@
 parameters:
     dblocal_host: 127.0.0.1
+    dblocal_port: 3306
     dblocal_user: root
     dblocal_password: unknown
-    dblocal_name: darim
-    dbbop_host: 87.98.144.239:3306
-    dbbop_user: admin
-    dbbop_password: devaticsadmin
-    dbbop_name: bop
+    dblocal_name: time

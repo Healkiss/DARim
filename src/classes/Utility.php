@@ -275,7 +275,7 @@ class Utility {
                 client.ref2 AS client_ref2,
                 activity.start AS start,
                 activity.end AS end,
-                user.name AS name,
+                user.login AS login,
                 TIMESTAMPDIFF(SECOND, start, end) AS timeSpend
             FROM activity
             LEFT JOIN activityType AS activityType ON (activityType.id = activity.activityType_id)
@@ -297,7 +297,7 @@ class Utility {
         }
         ob_start();
         $now = new DateTime('now');
-        $df = fopen("/tmp/".$_SESSION['USERID']."of".$_SESSION['currentDay']."at".$now->format('Y-m-d H:i:s').".csv", 'w+');
+        $df = fopen("/tmp/".$_SESSION['login']."of".$_SESSION['currentDay']."at".$now->format('Y-m-d H:i:s').".csv", 'w+');
         fputcsv($df, array_keys(reset($array)));
         foreach ($array as $row) {
             fputcsv($df, $row);
@@ -319,6 +319,7 @@ class Utility {
                     FROM user
                     WHERE user.login = "'.$_POST['login'].'"
                 ';
+                $_SESSION['login'] = $_POST['login'];
                 $response =  $this->conBdd->connexion->query($query);
                 // var_dump($response);
                 $user = $response->fetchAll();
