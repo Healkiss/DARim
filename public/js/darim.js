@@ -303,29 +303,33 @@ $(document).ready(function() {
     });
     //alt + / commencer ajout activité
     $(document).keyup(function(e) {
+        var tag = e.target.tagName.toLowerCase();
         var key = e.which;
-        if(key == 191 && e.shiftKey) {
+        if(key == 191 && e.shiftKey && tag != 'input' && tag != 'textarea') {
             $('[data-id="form-input-client"]').focus().select();
         }
     });
     //alt + A aller a aujourd'hui
     $(document).keyup(function(e) {
+        var tag = e.target.tagName.toLowerCase();
         var key = e.which;
-        if(key == 65 && e.shiftKey) {
+        if(key == 65 && e.shiftKey && tag != 'input' && tag != 'textarea') {
             goToToday();
         }
     });
     //alt + S jour suivant
     $(document).keyup(function(e) {
+        var tag = e.target.tagName.toLowerCase();
         var key = e.which;
-        if(key == 83 && e.shiftKey) {
+        if(key == 83 && e.shiftKey && tag != 'input' && tag != 'textarea') {
             goToTomorrow();
         }
     });
     //alt + P jour precedent
     $(document).keyup(function(e) {
+        var tag = e.target.tagName.toLowerCase();
         var key = e.which;
-        if(key == 80 && e.shiftKey) {
+        if(key == 80 && e.shiftKey && tag != 'input' && tag != 'textarea') {
             goToYesterday();
         }
     });
