@@ -49,6 +49,14 @@ $(document).ready(function() {
         activityId = $(this).data('activityid');
         action({'action':'delete_activity', 'activityId':activityId});
     });
+
+    $('#admin').click(function(){
+        window.location.href = "admin";
+    });
+    $('#logout').click(function(){
+        $.ajax({url: 'src/classes/ajaxActions.php',data: {'action':'logout'}});
+        window.location.href = "login";
+    });
     ///////////////////
     //DATE MANIPULATION
     ///////////////////
@@ -239,6 +247,9 @@ $(document).ready(function() {
         $('#info-alert').fadeOut( "slow", function() {});
         return dar;
     }
+    $('button#copy').on('click', function(e) {
+            e.preventDefault();
+        });
     $('button#copy').clipboard({
         path: 'public/js/jquery.clipboard.swf',
         copy: function() {
@@ -266,13 +277,6 @@ $(document).ready(function() {
     $('button#export').click(function(){
         exportCSV();
     });
-    $('#admin').click(function(){
-        window.location.href = "admin";
-    });
-    $('#logout').click(function(){
-        $.ajax({url: 'src/classes/ajaxActions.php',data: {'action':'logout'}});
-        window.location.href = "login";
-    });
     if($('.error').length > 0){
         $('#export').prop('disabled', true);
     }else{
@@ -281,14 +285,15 @@ $(document).ready(function() {
     ///////////////////
     //RACCOURCIS
     ///////////////////
+    //Enter 
     $(document).keyup(function(e) {
         var key = e.which;
         if(key == 13) {
-            console.log($('.changeDay').val());
             if($('.changeDay').val())
                 change_day($('.changeDay').val());
         }
     });
+    //Escape 
     $(document).keyup(function(e) {
         var key = e.which;
         if(key == 27) {
@@ -324,19 +329,16 @@ $(document).ready(function() {
             goToYesterday();
         }
     });
-    $(document).keyup(function(e) {
+    //alt + C copy DAR on clipboard
+    /*$(document).keyup(function(e) {
         var key = e.which;
         if(key == 67 && e.shiftKey) {
             console.log('test copy');
-            $('#copy').clipboard({
-                path: 'public/js/jquery.clipboard.swf',
-                copy: function() {
-                    return copy();
-                }
-            });
+            $('button#copy').trigger('clipboard');
             $('#copy').focus().select().click();
         }
-    });
+    });*/
+    //alt + C export CSV
     $(document).keyup(function(e) {
         var key = e.which;
         if(key == 69 && e.shiftKey) {
