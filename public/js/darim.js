@@ -17,24 +17,24 @@ $(document).ready(function() {
     //TODOTABLE
     $('.btn_start_activity').click(function() {
         activityId = $(this).parent('td').parent('.todoRow').data('activityid');
-        action({'action':'start_activity', 'activityId':activityId});
+        actionEdit({'action':'start_activity', 'activityId':activityId});
     });
     $('.btn_end_activity').click(function() {
         activityId = $(this).parent('td').parent('.todoRow').data('activityid');
-        action({'action':'end_run', 'activityId':activityId});
+        actionEdit({'action':'end_run', 'activityId':activityId});
     });
     //ACTIVITYTABLE
     $('.btn_restart_activity').click(function() {
         activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
-        action({'action':'restart_activity', 'activityId':activityId});
+        actionEdit({'action':'restart_activity', 'activityId':activityId});
     });
     $('.btn_end_activity').click(function() {
         activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
-        action({'action':'end_run', 'activityId':activityId});
+        actionEdit({'action':'end_run', 'activityId':activityId});
     });
     $('.btn_todo_activity').click(function() {
         activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
-        action({'action':'todo_activity', 'activityId':activityId});
+        actionEdit({'action':'todo_activity', 'activityId':activityId});
     });
     $('.btn_predelete_activity').click(function() {
         $('#modalDelete').modal()
@@ -42,12 +42,12 @@ $(document).ready(function() {
         $('#btn_delete_activity').data('activityid', $(this).data('activityid'))
         /*
         activityId = $(this).parent('td').parent('.activity').data('activityid');
-        action({'action':'delete_activity', 'activityId':activityId});
+        actionEdit({'action':'delete_activity', 'activityId':activityId});
         */
     });
     $('#btn_delete_activity').click(function() {
         activityId = $(this).data('activityid');
-        action({'action':'delete_activity', 'activityId':activityId});
+        actionEdit({'action':'delete_activity', 'activityId':activityId});
     });
 
     $('#admin').click(function(){
@@ -105,7 +105,7 @@ $(document).ready(function() {
     ///////////////////////
     //SUBMISSION & DELETION
     ///////////////////////
-    function action(data) {
+    function actionEdit(data) {
         $.ajax({
             url: 'src/classes/ajaxActions.php',
             type: 'GET',

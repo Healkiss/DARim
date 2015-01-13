@@ -31,6 +31,27 @@ class Utility {
         return $retour;
     }
 
+    function stopRunningActivity($userId) {
+        echo $userId; 
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
+        $stmt->execute(array(
+            'user_id'=> $userId,
+            'end'=> $this->currentDateTime,
+            ));
+    }
+    function deleteActivity($activityId) {
+        $stmt =  $this->conBdd->connexion->prepare('DELETE FROM activity WHERE id = :activity_id');
+        $stmt->execute(array(
+            'activity_id'=> $activityId
+            ));
+    }
+    function copyActivity($activityId, $isTodo) {
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, '.$isTodo.' FROM activity WHERE id = (:activity_id)');
+        $stmt->execute(array(
+            'activity_id'=> $activityId
+            ));
+    }
+
     function getClients() {
         $response =  $this->conBdd->connexion->query("SELECT * FROM client");
         $clients = $response->fetchAll();
@@ -121,11 +142,7 @@ class Utility {
     }
 
     function receiveNewActivity($isTodo, $userId){
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
-        $stmt->execute(array(
-            'user_id'=> $userId,
-            'end'=> $this->currentDateTime,
-            ));
+        $this->stopRunningActivity($userId);
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo, start) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo, :start)');
         $stmt->execute(array(
             'client_id'=> $_GET['client'],
@@ -139,51 +156,24 @@ class Utility {
         ;
     }
     function start_activity($userId) {
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
-        $stmt->execute(array(
-            'user_id'=> $userId,
-            'end'=> $this->currentDateTime,
-            ));
-        $activity = $_GET['activityId'];
-        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 0 FROM activity WHERE id = (:activity_id)');
-        $stmt->execute(array(
-            'activity_id'=> $activity
-            ));
-        $stmt =  $this->conBdd->connexion->prepare('DELETE FROM activity WHERE id = :activity_id');
-        $stmt->execute(array(
-            'activity_id'=> $activity
-            ));
+        $activityId = $_GET['activityId'];
+        $this->stopRunningActivity($userId);
+        $this->copyActivity($activityId, 0);
+        $this->deleteActivity($activity);
     }
     function restart_activity($activity, $userId) {
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
-        $stmt->execute(array(
-            'user_id'=> $userId,
-            'end'=> $this->currentDateTime,
-            ));
-        $activity = $_GET['activityId'];
-        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 0 FROM activity WHERE id = (:activity_id)');
-        $stmt->execute(array(
-            'activity_id'=> $activity
-            ));
+        $activityId = $_GET['activityId'];
+        $this->stopRunningActivity($userId);
+        $this->copyActivity($activityId, 0);
     }
-    function todo_activity($activity, $userId) {
-        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, 1 FROM activity WHERE id = (:activity_id)');
-        $stmt->execute(array(
-            'activity_id'=> $activity
-            ));
+    function todo_activity($activityId, $userId) {
+        $this->copyActivity($activityId, 1);
     }
-    function end_activity($run) {
-        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE id = :run_id');
-        $stmt->execute(array(
-            'run_id'=> $run,
-            'end'=> $this->currentDateTime,
-            ));
+    function end_activity($userId) {
+        $this->stopRunningActivity($userId);
     }
     function delete_activity($activity) {
-        $stmt =  $this->conBdd->connexion->prepare('DELETE FROM activity WHERE id = :activity_id');
-        $stmt->execute(array(
-            'activity_id'=> $activity
-            ));
+        $this->deleteActivity($activity);
     }
     function change_start_time_activity($activity, $newTime) {
         $newTime = strtotime($newTime);

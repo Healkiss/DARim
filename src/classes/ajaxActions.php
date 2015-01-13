@@ -26,7 +26,7 @@
                 echo "todo_activity";
                 break;
             case 'end_run':
-                $utility->end_activity($_GET['activityId']);
+                $utility->end_activity($_SESSION['USERID']);
                 echo "end_run";
                 break;
             case 'delete_activity':
