@@ -26,12 +26,13 @@ $utility = new Utility($localBD);
 if (empty($_GET['data']))
      $_GET['data'] = 'home';
 if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
-    echo $utility->login($twig);
+    echo $utility->login($twig, $parameters['version']);
 }else{
     if($_GET['data'] == 'admin'){
         echo $twig->render('admin.html.twig', array(
                 'clients' => $utility->getClients(),
-                'activityTypes' => $utility->getActivityTypes()
+                'activityTypes' => $utility->getActivityTypes(),
+                'version' => $parameters['dblocal_port']
             ));
     }else{
         $userId = $_SESSION['USERID'];
@@ -41,7 +42,8 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
                 'activityTypes' => $utility->getActivityTypes(),
                 'todos' => $utility->getTodos($userId),
                 'activities' => $utility->getActivities($userId),
-                'worktimeToday' => $utility->getToDayWorktime($userId)
+                'worktimeToday' => $utility->getToDayWorktime($userId),
+                'version' => $parameters['version']
             ));
     }
 }

@@ -304,7 +304,7 @@ class Utility {
         fclose($df);
         return ob_get_clean();
     }
-    function login($twig){
+    function login($twig, $version){
         //after connexion :
         $ds=ldap_connect("pilot.devatics.com");
         ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -363,7 +363,7 @@ class Utility {
                 ldap_close($ds);*/
             //$bopBD = new conBDD($parameters['dbbop_host'], $parameters['dbbop_port'], $parameters['dbbop_user'],$parameters['dbbop_password'],$parameters['dbbop_name']);
             //$login = new Login($bopBD);
-            return $twig->render('login.html.twig',array('error' => ""));
+            return $twig->render('login.html.twig',array('error' => "", 'version' => $version));
         }
     }
     function logout(){
