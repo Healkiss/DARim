@@ -32,7 +32,8 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
         echo $twig->render('admin.html.twig', array(
                 'clients' => $utility->getClients(),
                 'activityTypes' => $utility->getActivityTypes(),
-                'version' => $parameters['dblocal_port']
+                'version' => $parameters['dblocal_port'],
+                'fb_app' => $parameters['fb_app']
             ));
     }else{
         $userId = $_SESSION['USERID'];
@@ -43,7 +44,8 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
                 'todos' => $utility->getTodos($userId),
                 'activities' => $utility->getActivities($userId),
                 'worktimeToday' => $utility->getToDayWorktime($userId),
-                'version' => $parameters['version']
+                'version' => $parameters['version'],
+                'fb_app' => $parameters['fb_app']
             ));
     }
 }

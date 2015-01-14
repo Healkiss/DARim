@@ -54,6 +54,12 @@ $(document).ready(function() {
         window.location.href = "admin";
     });
     $('#logout').click(function(){
+        /*FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                FB.logout(function(response) {
+                });
+            }
+        });*/
         $.ajax({url: 'src/classes/ajaxActions.php',data: {'action':'logout'}});
         window.location.href = "login";
     });

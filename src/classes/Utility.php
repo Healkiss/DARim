@@ -390,9 +390,12 @@ class Utility {
                 $stmt->execute(array('id'=> $user_id, 'login'=> $user_name));
             }
             $_SESSION['USERID'] = $user_id;
+            echo $_SESSION['USERID'];
             $_SESSION['login'] = $user_name;
+            echo $_SESSION['login'];
             return true; 
         } else {
+            echo 'error';
             return false;
         }
     }
