@@ -9,7 +9,7 @@ class Utility {
         $currentTime = new \DateTime();
         $currentTime = $currentTime->format('H:i:s');
         $currentDay = $_SESSION['currentDay'];
-        $currentDay = date("Y-m-d", strtotime($currentDay));
+        $this->currentDay = date("Y-m-d", strtotime($currentDay));
         $this->currentDateTime = $currentDay . ' ' . $currentTime;
     }
 
@@ -296,7 +296,7 @@ class Utility {
         }
         ob_start();
         $now = new DateTime('now');
-        $df = fopen("/var/www/export/".$_SESSION['login']."of".$_SESSION['currentDay']."at".$now->format('Y-m-d H_i_s').".csv", 'w+');
+        $df = fopen("/var/www/export/".$_SESSION['login']."of".$this->currentDay."at".$now->format('Y-m-d H_i_s').".csv", 'w+');
         fputcsv($df, array_keys(reset($array)));
         foreach ($array as $row) {
             fputcsv($df, $row);
