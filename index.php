@@ -1,5 +1,6 @@
 <?php
 session_start();
+session_cache_expire(60*24*30);
 require_once 'vendor/autoload.php';
 require_once 'src/classes/conBdd.php';
 require_once 'src/classes/Utility.php';

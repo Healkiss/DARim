@@ -141,7 +141,15 @@ class Utility {
         $todos = $response->fetchAll();
         return $todos;
     }
+    function getClientByDomainName($domainName) {
+        $stmt =  $this->conBdd->connexion->prepare('SELECT * FROM  `client` WHERE domainName =  :domainName');
+        $stmt->execute(array(
+            'domainName'=> $domainName
+            ));
+        $clients = $stmt->fetchAll();
+        return $clients;
 
+    }
     function receiveNewActivity($isTodo, $userId){
         $this->stopRunningActivity($userId);
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo, start) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo, :start)');
@@ -288,7 +296,7 @@ class Utility {
         }
         ob_start();
         $now = new DateTime('now');
-        $df = fopen("/tmp/".$_SESSION['login']."of".$_SESSION['currentDay']."at".$now->format('Y-m-d H:i:s').".csv", 'w+');
+        $df = fopen("/var/www/export/".$_SESSION['login']."of".$_SESSION['currentDay']."at".$now->format('Y-m-d H-i-s').".csv", 'w+');
         fputcsv($df, array_keys(reset($array)));
         foreach ($array as $row) {
             fputcsv($df, $row);
