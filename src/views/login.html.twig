@@ -12,7 +12,7 @@
         // for FB.getLoginStatus().
         if (response.status === 'connected') {
           // Logged into your app and Facebook.
-          testAPI();
+          testAPI(response);
         } else if (response.status === 'not_authorized') {
           // The person is logged into Facebook, but not your app.
           document.getElementById('status').innerHTML = 'Please log ' +
@@ -66,20 +66,33 @@
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
+        js.src = "//connect.facebook.net/fr_FR/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
 
       // Here we run a very simple test of the Graph API after login is
       // successful.  See statusChangeCallback() for when this call is made.
-      function testAPI() {
-        console.log('Welcome!  Fetching your information.... ');
+      function testAPI(firstResponse) {
+        var signedRequest = firstResponse.authResponse.signedRequest;
+        var data = signedRequest.split('.')[1];
+        data = JSON.parse(atob(data));
+        user_id = data.user_id;
         FB.api('/me', function(response) {
-          console.log('Successful login for: ' + response.name);
-          console.log('Successful login for id: ' + response.id);
           console.log(response);
           document.getElementById('status').innerHTML =
             'Thanks for logging in, ' + response.name + '!';
+            $.ajax({
+                url: 'src/classes/ajaxActions.php',
+                type: 'GET',
+                data: {'action':'loginFb', 'signed_request':firstResponse.authResponse.signedRequest,'user_name' : response.name,'user_id' : response.id}
+                ,
+                success: function() {
+                    window.location.href = "home";
+                },
+                error: function() {
+                    console.log('testLoginFb ko');
+                }
+            });
         });
       }
     </script>

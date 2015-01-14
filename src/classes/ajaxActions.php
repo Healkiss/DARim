@@ -9,7 +9,7 @@
     $parameters = $parameters['parameters'];
 
     $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
-    $utility = new Utility($localBD);
+    $utility = new Utility($localBD, '../views');
     if(isset($_GET['action'])) {
         $action = $_GET['action'];
         switch ($action) {
@@ -78,6 +78,10 @@
                 break;
             case 'logout':
                 $utility->logout();
+                return true;
+                break;
+            case 'loginFb':
+                $utility->loginFb($_GET['signed_request'], $_GET['user_name'], $_GET['user_id']);
                 return true;
                 break;
             default:

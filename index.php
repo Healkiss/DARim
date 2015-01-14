@@ -21,12 +21,12 @@ if(!isset($_SESSION['currentDay']) || $_SESSION['currentDay'] == null){
     $_SESSION['currentDay'] = date('Y-m-d');
 }
 $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
-$utility = new Utility($localBD);
+$utility = new Utility($localBD, 'src/views');
 
 if (empty($_GET['data']))
      $_GET['data'] = 'home';
 if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
-    echo $utility->login($twig, $parameters['version']);
+    echo $utility->login();
 }else{
     if($_GET['data'] == 'admin'){
         echo $twig->render('admin.html.twig', array(

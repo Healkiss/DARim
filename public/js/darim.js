@@ -95,7 +95,7 @@ $(document).ready(function() {
             data: data
             ,
             error: function() {
-                alert('change_day ko');
+                console.log('change_day ko');
             },
             complete: function() {
                 location.reload();
@@ -158,7 +158,7 @@ $(document).ready(function() {
                 comment:        $("#form-input-comment").val()
             },
             error: function() {
-                alert('submit form ko');
+                console.log('submit form ko');
             },
             complete: function() {
                 console.log('ok');
