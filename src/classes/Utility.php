@@ -4,7 +4,7 @@ require_once 'conBdd.php';
 class Utility {
     protected $conBdd;
 
-    function __construct($conBdd, $views){
+    function __construct($conBdd, $views, $parameters){
         $loader = new Twig_Loader_Filesystem($views);
         $this->twig = new Twig_Environment($loader);
         $this->twig->getExtension('core')->setTimezone('Europe/Paris');
@@ -14,6 +14,7 @@ class Utility {
         $currentDay = $_SESSION['currentDay'];
         $this->currentDay = date("Y-m-d", strtotime($currentDay));
         $this->currentDateTime = $currentDay . ' ' . $currentTime;
+        $this->parameters = $parameters;
     }
 
     function exportDay() {
@@ -340,7 +341,8 @@ class Utility {
                 header("Location: home");
                 exit(0);   
             } else {
-                return $this->twig->render('login.html.twig',array('error' => "bad credentials"));
+                return $this->twig->render('login.html.twig',array('error' => "bad credentials",
+                'fb_app' => $this->parameters['fb_app']));
             }
         }else{
             // Search login entry
@@ -366,7 +368,8 @@ class Utility {
                 ldap_close($ds);*/
             //$bopBD = new conBDD($parameters['dbbop_host'], $parameters['dbbop_port'], $parameters['dbbop_user'],$parameters['dbbop_password'],$parameters['dbbop_name']);
             //$login = new Login($bopBD);
-            return $this->twig->render('login.html.twig',array('error' => ""));
+            return $this->twig->render('login.html.twig',array('error' => "",
+                'fb_app' => $this->parameters['fb_app']));
         }
     }
     function logout(){
@@ -375,7 +378,7 @@ class Utility {
     function loginFb($signed_request, $user_name, $user_id) {
         list($encoded_sig, $payload) = explode('.', $signed_request, 2);
         $sig = base64_decode($encoded_sig);
-        $secret = '0c8146812ec3695850ccae3cf83669be';
+        $secret = $this->parameters['fb_secret'];
         $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
         if ($sig == $expected_sig) {
             //check if user exist in localBd

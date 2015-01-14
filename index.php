@@ -21,7 +21,7 @@ if(!isset($_SESSION['currentDay']) || $_SESSION['currentDay'] == null){
     $_SESSION['currentDay'] = date('Y-m-d');
 }
 $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
-$utility = new Utility($localBD, 'src/views');
+$utility = new Utility($localBD, 'src/views', $parameters);
 
 if (empty($_GET['data']))
      $_GET['data'] = 'home';

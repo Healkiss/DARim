@@ -9,7 +9,7 @@
     $parameters = $parameters['parameters'];
 
     $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
-    $utility = new Utility($localBD, '../views');
+    $utility = new Utility($localBD, '../views', $parameters);
     if(isset($_GET['action'])) {
         $action = $_GET['action'];
         switch ($action) {

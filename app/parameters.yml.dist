@@ -5,3 +5,5 @@ parameters:
     dblocal_password: unknown
     dblocal_name: time
     version: pro
+    fb_secret: 0c8146812ec3695850ccae3cf83669be
+    fb_app: 597432860403092
