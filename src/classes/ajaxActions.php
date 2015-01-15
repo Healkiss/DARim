@@ -65,10 +65,10 @@
                 echo 'submitAndBegin';
                 break;
             case 'get_clients':
-                echo json_encode($utility->getClients());
+                echo json_encode($utility->getClients($_SESSION['USERID']));
                 break;
             case 'get_activityTypes':
-                echo json_encode($utility->getActivityTypes());
+                echo json_encode($utility->getActivityTypes($_SESSION['USERID']));
                 break;
             case 'change_day':
                 $_SESSION['currentDay'] = $_GET['newDay'];

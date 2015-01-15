@@ -1,9 +1,8 @@
 <?php
-session_start();
 ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100);
 ini_set('session.gc_maxlifetime', 60*60*24*31);
-session_cache_expire(60*24*30);
+session_start();
 require_once 'vendor/autoload.php';
 require_once 'src/classes/conBdd.php';
 require_once 'src/classes/Utility.php';
@@ -33,15 +32,15 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
 }else{
     if($_GET['data'] == 'admin'){
         echo $twig->render('admin.html.twig', array(
-                'clients' => $utility->getClients(),
-                'activityTypes' => $utility->getActivityTypes()
+                'clients' => $utility->getClients($userId),
+                'activityTypes' => $utility->getActivityTypes($userId),
             ));
     }else{
         $userId = $_SESSION['USERID'];
         echo $twig->render('darim.html.twig', array(
                 'currentDay' => $_SESSION['currentDay'],
-                'clients' => $utility->getClients(),
-                'activityTypes' => $utility->getActivityTypes(),
+                'clients' => $utility->getClients($userId),
+                'activityTypes' => $utility->getActivityTypes($userId),
                 'todos' => $utility->getTodos($userId),
                 'activities' => $utility->getActivities($userId),
                 'worktimeToday' => $utility->getToDayWorktime($userId)

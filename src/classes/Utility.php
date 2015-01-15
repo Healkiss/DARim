@@ -53,14 +53,20 @@ class Utility {
             ));
     }
 
-    function getClients() {
-        $response =  $this->conBdd->connexion->query("SELECT * FROM client");
+    function getClients($userId) {
+        $response =  $this->conBdd->connexion->prepare("SELECT * FROM client LEFT JOIN user AS user ON (user.id = :user_id) WHERE client.organization_id = user.organization_id");
+        $response->execute(array(
+            'user_id'=> $userId
+            ));
         $clients = $response->fetchAll();
         return $clients;
     }
 
-    function getActivityTypes() {
-        $response =  $this->conBdd->connexion->query("SELECT * FROM activityType");
+    function getActivityTypes($userId) {
+        $response =  $this->conBdd->connexion->prepare("SELECT * FROM activityType LEFT JOIN user AS user ON (user.id = :user_id) WHERE activityType.organization_id = user.organization_id");
+        $response->execute(array(
+            'user_id'=> $userId
+            ));
         $activitiesType = $response->fetchAll();
         return $activitiesType;
     }
