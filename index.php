@@ -31,6 +31,7 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
     echo $utility->login($twig);
 }else{
     if($_GET['data'] == 'admin'){
+        $userId = $_SESSION['USERID'];
         echo $twig->render('admin.html.twig', array(
                 'clients' => $utility->getClients($userId),
                 'activityTypes' => $utility->getActivityTypes($userId),
