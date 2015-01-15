@@ -10,7 +10,7 @@ class Utility {
         $currentTime = $currentTime->format('H:i:s');
         $currentDay = $_SESSION['currentDay'];
         $this->currentDay = date("Y-m-d", strtotime($currentDay));
-        $this->currentDateTime = $currentDay . ' ' . $currentTime;
+        $this->currentDateTime = $this->currentDay . ' ' . $currentTime;
     }
 
     function exportDay() {
@@ -151,7 +151,8 @@ class Utility {
 
     }
     function receiveNewActivity($isTodo, $userId){
-        $this->stopRunningActivity($userId);
+        if(!$isTodo)
+            $this->stopRunningActivity($userId);
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo, start) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo, :start)');
         $stmt->execute(array(
             'client_id'=> $_GET['client'],

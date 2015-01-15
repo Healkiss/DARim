@@ -1,5 +1,5 @@
 <div>
-	<form id="my-form"  style="margin-top:20px;border: 2px solid black;padding:20px;width:1080px;">
+	<form id="my-form"  style="margin-top:20px;border: 2px solid black;padding:20px;width:930px;">
 		<select class="selectpicker" id="form-input-client" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
 			{% for client in clients %}
 			<option value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>
@@ -12,8 +12,8 @@
 		</select>
 		<input type="text" id="form-input-task" name="task" id="task" class="my-input" placeholder="Tache" required>
 		<textarea type="text" id="form-input-comment" name="comment" id="comment" class="my-input my-textarea" placeholder="Commentaire" required></textarea>
-    	<button type="submit" name="action" value="submitAndBegin" class="addActivity submit btn btn-success"><i class='glyphicon glyphicon-play'></i></button>
-    	<button type="submit" name="action" value="submit" class="addActivity btn submit btn-primary" style="margin-left:65px;font-size:0.7em;">TODO</button>
+    	<button id='submitAndStart' type="submit" name="action" value="submitAndBegin" class="addActivity submit btn btn-success"><i class='glyphicon glyphicon-play'></i></button>
+    	<button id='submitTodo' type="submit" name="action" value="submit" class="addActivity btn submit btn-primary" style="margin-left:5px;font-size:1em;"><i class='glyphicon glyphicon-list-alt'></i></button>
 	</form>
 </div>
 		{#<button type="submit" name="action" value="stop" class='btn submit btn-danger btn_end_run'>Stop</button>#}

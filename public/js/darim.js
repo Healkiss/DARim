@@ -301,7 +301,7 @@ $(document).ready(function() {
             $('.preChangeDay').show();
         }
     });
-    //alt + / commencer ajout activité
+    //Shift + / commencer ajout activité
     $(document).keyup(function(e) {
         var tag = e.target.tagName.toLowerCase();
         var key = e.which;
@@ -309,7 +309,7 @@ $(document).ready(function() {
             $('[data-id="form-input-client"]').focus().select();
         }
     });
-    //alt + A aller a aujourd'hui
+    //Shift + A aller a aujourd'hui
     $(document).keyup(function(e) {
         var tag = e.target.tagName.toLowerCase();
         var key = e.which;
@@ -317,7 +317,7 @@ $(document).ready(function() {
             goToToday();
         }
     });
-    //alt + S jour suivant
+    //Shift + S jour suivant
     $(document).keyup(function(e) {
         var tag = e.target.tagName.toLowerCase();
         var key = e.which;
@@ -325,12 +325,36 @@ $(document).ready(function() {
             goToTomorrow();
         }
     });
-    //alt + P jour precedent
+    //Shift + P jour precedent
     $(document).keyup(function(e) {
         var tag = e.target.tagName.toLowerCase();
         var key = e.which;
         if(key == 80 && e.shiftKey && tag != 'input' && tag != 'textarea') {
             goToYesterday();
+        }
+    });
+    //Shift + I Stopper l'activité en cours
+    $(document).keyup(function(e) {
+        var tag = e.target.tagName.toLowerCase();
+        var key = e.which;
+        if(key == 73 && e.shiftKey && tag != 'input' && tag != 'textarea') {
+            actionEdit({'action':'end_run'});
+        }
+    });
+    //alt + S Start activity
+    $(document).keyup(function(e) {
+        var tag = e.target.tagName.toLowerCase();
+        var key = e.which;
+        if(key == 83 && e.altKey) {
+            $('#submitAndStart').click();
+        }
+    });
+    //alt + T Todo activity
+    $(document).keyup(function(e) {
+        var tag = e.target.tagName.toLowerCase();
+        var key = e.which;
+        if(key == 84 && e.altKey) {
+           $('#submitTodo').click();
         }
     });
     //alt + C copy DAR on clipboard
