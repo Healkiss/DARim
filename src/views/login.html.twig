@@ -76,9 +76,13 @@
                 type: 'GET',
                 data: {'action':'loginFb', 'signed_request':firstResponse.authResponse.signedRequest,'user_name' : response.name,'user_id' : response.id}
                 ,
-                success: function() {
-                    console.log('testLoginFb ok');
-                    window.location.href = "home";
+                success: function(response) {
+                    if(response){
+                        console.log('testLoginFb ok');
+                        window.location.href = "home";
+                    }else{
+                        console.log('testLoginFb ko');
+                    }
                 },
                 error: function() {
                     console.log('testLoginFb ko');
