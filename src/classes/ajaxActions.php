@@ -86,11 +86,7 @@
                 echo json_encode($utility->getActivityTypes($_SESSION['USERID']));
                 break;
             case 'change_day':
-<<<<<<< HEAD
-                $_SESSION['currentDay'] = date("Y-m-d", strtotime($_GET['newDay']));
-=======
                 $_SESSION['currentDay'] = date("Y-m-d", strtotime($currentDay));;
->>>>>>> 20d5cd00d39dc4c4f645b57f46130da51a0d0284
                 break;
             case 'get_csv':
                 return($utility->generateCSV($_SESSION['USERID']));
