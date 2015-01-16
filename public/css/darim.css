@@ -36,6 +36,10 @@ body{
     left:50%;
     height:50px;
 }
+.reloading{
+    'opacity': '0.4';
+    'filter': 'alpha(opacity=40)';
+}
 .text-left{
     display:table-cell;
     max-width:33%;

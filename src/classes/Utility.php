@@ -10,7 +10,7 @@ class Utility {
         $currentTime = $currentTime->format('H:i:s');
         $currentDay = $_SESSION['currentDay'];
         $this->currentDay = date("Y-m-d", strtotime($currentDay));
-        $this->currentDateTime = $currentDay . ' ' . $currentTime;
+        $this->currentDateTime = $this->currentDay . ' ' . $currentTime;
     }
 
     function exportDay() {
