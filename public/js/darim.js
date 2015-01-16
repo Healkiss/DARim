@@ -1,66 +1,60 @@
 $(document).ready(function() {
     //boundtime
+    
     var old = 0;
     $('.timebound').each(function( index ) {
         var value = parseInt($( this ).data('value').replace(':',''));
         //console.log('compare : ' + value + ' to ' + old);
         if(value < old) {
-            /*$( this ).css({'color':'red'});
-            $( oldThis ).css({'color':'red'})*/
+            // $( this ).css({'color':'red'});
+            // $( oldThis ).css({'color':'red'})
             $( this ).addClass('error');
             $( oldThis ).addClass('error');
         }
         old = parseInt($( this ).data('value').replace(':',''));
         oldThis = this;
     });
-
     //TODOTABLE
-    $('.btn_start_activity').click(function() {
+    $(document).on('click','.btn_start_activity',function() {
         activityId = $(this).parent('td').parent('.todoRow').data('activityid');
         actionEdit({'action':'start_activity', 'activityId':activityId});
     });
-    $('.btn_end_activity').click(function() {
-        activityId = $(this).parent('td').parent('.todoRow').data('activityid');
-        actionEdit({'action':'end_run', 'activityId':activityId});
-    });
     //ACTIVITYTABLE
-    $('.btn_restart_activity').click(function() {
+    $(document).on('click','.btn_restart_activity',function() {
         activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
         actionEdit({'action':'restart_activity', 'activityId':activityId});
     });
-    $('.btn_end_activity').click(function() {
-        activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
-        actionEdit({'action':'end_run', 'activityId':activityId});
+    $(document).on('click','.btn_end_activity',function() {
+        activityId = $(this).parent('td').parent('tr').data('activityid');
+        actionEdit({'action':'end_run'});
     });
-    $('.btn_todo_activity').click(function() {
+    $(document).on('click','.btn_todo_activity',function() {
         activityId = $(this).parent('td').parent('.dailyRow').data('activityid');
         actionEdit({'action':'todo_activity', 'activityId':activityId});
     });
-    $('.btn_predelete_activity').click(function() {
+    $(document).on('click','.btn_predelete_activity', function() {
         $('#modalDelete').modal()
         console.log($(this).data('activityid'));
         $('#btn_delete_activity').data('activityid', $(this).data('activityid'))
-        /*
-        activityId = $(this).parent('td').parent('.activity').data('activityid');
-        actionEdit({'action':'delete_activity', 'activityId':activityId});
-        */
+        // activityId = $(this).parent('td').parent('.activity').data('activityid');
+        // actionEdit({'action':'delete_activity', 'activityId':activityId});
     });
-    $('#btn_delete_activity').click(function() {
+    $(document).on('click','#btn_delete_activity',function() {
         activityId = $(this).data('activityid');
         actionEdit({'action':'delete_activity', 'activityId':activityId});
     });
 
-    $('#admin').click(function(){
+    $(document).on('click','#admin',function(){
         window.location.href = "admin";
     });
-    $('#logout').click(function(){
+    $(document).on('click','#logout',function(){
         $.ajax({url: 'src/classes/ajaxActions.php',data: {'action':'logout'}});
         window.location.href = "login";
     });
     ///////////////////
     //DATE MANIPULATION
     ///////////////////
-    $('.preChangeDay').click(function() {
+    $(document).on('click','.preChangeDay',function() {
         var inputDate = '<input class="changeDay" type="date"></input>';
         $inputDate = $(inputDate);
         $inputDate.insertAfter($(this));
@@ -70,11 +64,18 @@ $(document).ready(function() {
         $(this).hide();
         $inputDate.focus().select();
     });
-    $('.changeDay').click(function() {
+    $(document).on('click','.changeDay',function() {
         console.log($(this).val());
         change_day($(this).val());
     });
-    $('.preChangeDay').hover(function(){$('<span class="glyphicon glyphicon-pencil editicon" style="color:#0088cc;font-size :20px;"></span>').insertAfter($(this));},function(){$('.editicon').remove();} );
+    $(document).on({
+        mouseenter: function() {
+            $('<span class="glyphicon glyphicon-pencil editicon" style="color:#0088cc;font-size :20px;margin-left:-20px;margin-right:-7px;"></span>').insertAfter($(this));
+        },
+        mouseleave: function() {
+            $('.editicon').remove();
+        }
+    }, '.preChangeDay');
     function goToYesterday() {
         change_day(new Date(new Date($('.preChangeDay').data('day')).getTime() - 24 * 60 * 60 * 1000));
     }
@@ -84,9 +85,9 @@ $(document).ready(function() {
     function goToToday() {
         change_day(new Date());
     }
-    $('#changeDayBefore').click(function(){goToYesterday();});
-    $('#changeDayAfter').click(function(){goToTomorrow();});
-    $('#changeDayToday').click(function(){goToToday();});
+    $(document).on('click','#changeDayBefore', function(){goToYesterday();});
+    $(document).on('click','#changeDayAfter', function(){goToTomorrow();});
+    $(document).on('click','#changeDayToday', function(){goToToday();});
     function change_day(newDay){
         data = {'action':'change_day', 'newDay':newDay};
         $.ajax({
@@ -114,7 +115,7 @@ $(document).ready(function() {
             error: function() {
                 alert('');
             },
-            complete: function() {
+            complete: function(response) {
                 location.reload();
             }
         });
@@ -141,12 +142,18 @@ $(document).ready(function() {
         $('#info').text('Top: ' + bottomTop + ' Left: ' + bottomLeft);
     });
     var submitButtonPressed;
-    $('.submit').click(function() {
+    $(document).on("click", ".submit", function (event) {
           buttonpressed = $(this).val()
     })
     $(document).on("click", ".submit", function (event) {
+        if(buttonpressed == 'submit'){
+            $('#listActivity tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
+            $('#listActivity tbody').html($('#listActivity tbody').html()+'<img src="public/img/giphy.gif" class="reload">');
+        }else{
+            $('#diary tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
+            $('#diary tbody').html($('#diary tbody').html()+'<img src="public/img/giphy.gif" class="reload">');
+        }
         var self = this;
-        submitButtonPressed
         $.ajax({
             url: 'src/classes/ajaxActions.php',
             type: 'GET',
@@ -157,12 +164,20 @@ $(document).ready(function() {
                 task:           $("#form-input-task").val(),
                 comment:        $("#form-input-comment").val()
             },
+            dataType: 'html',
             error: function() {
                 alert('submit form ko');
             },
-            complete: function() {
-                console.log('ok');
-                location.reload();
+            success: function(data) {
+                setTimeout(function(){ 
+                    if(buttonpressed == 'submit'){
+                        $('#listActivity').css({'opacity': '1','filter': 'alpha(opacity=100)'});
+                        $('#listActivity').html(data);
+                    }else{
+                        $('#diary').css({'opacity': '1','filter': 'alpha(opacity=100)'});
+                        $('#diary').html(data);
+                    }
+                }, 3000);
             }
         });
         event.preventDefault();
