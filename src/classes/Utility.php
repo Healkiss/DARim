@@ -343,8 +343,13 @@ class Utility {
                 // var_dump($user);
                 //if not exist create user
                 if(!$user){
-                    $stmt =  $this->conBdd->connexion->prepare('INSERT INTO user (login) VALUES (:login)');
-                    $stmt->execute(array('login'=> $_POST['login']));
+                    $response =  $this->conBdd->connexion->prepare("SELECT * FROM organization WHERE organization.name = :organization_name");
+                    $response->execute(array(
+                        'organization_name'=> 'devatics'
+                        ));
+                    $organization = $response->fetch();
+                    $stmt =  $this->conBdd->connexion->prepare('INSERT INTO user (login, organization_id) VALUES (:login, :organization)');
+                    $stmt->execute(array('login'=> $_POST['login'], 'organization'=>$organization['id']));
                     $userId = $this->conBdd->connexion->lastInsertId();
                     $_SESSION['USERID'] = $userId;
                 //else go to main page
