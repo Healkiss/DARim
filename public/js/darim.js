@@ -77,6 +77,9 @@ $(document).ready(function() {
         }
     }, '.preChangeDay');
     function goToYesterday() {
+        console.log(new Date($('.preChangeDay').data('day')));
+        console.log(new Date(new Date($('.preChangeDay').data('day')).getTime()));
+        console.log(new Date(new Date($('.preChangeDay').data('day')).getTime() - 24 * 60 * 60 * 1000));
         change_day(new Date(new Date($('.preChangeDay').data('day')).getTime() - 24 * 60 * 60 * 1000));
     }
     function goToTomorrow() {
@@ -354,19 +357,19 @@ $(document).ready(function() {
             actionEdit({'action':'end_run'});
         }
     });
-    //alt + S Start activity
+    //Ctrl + Enter Start activity
     $(document).keyup(function(e) {
         var tag = e.target.tagName.toLowerCase();
         var key = e.which;
-        if(key == 83 && e.altKey) {
+        if(key == 13 && e.ctrlKey) {
             $('#submitAndStart').click();
         }
     });
-    //alt + T Todo activity
+    //Alt + Enter Todo activity
     $(document).keyup(function(e) {
         var tag = e.target.tagName.toLowerCase();
         var key = e.which;
-        if(key == 84 && e.altKey) {
+        if(key == 13 && e.altKey) {
            $('#submitTodo').click();
         }
     });
