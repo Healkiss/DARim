@@ -62,6 +62,15 @@ class Utility {
         return $clients;
     }
 
+    function getUser($userId) {
+        $response =  $this->conBdd->connexion->prepare("SELECT * FROM user WHERE user.id = :user_id");
+        $response->execute(array(
+            'user_id'=> $userId
+            ));
+        $user = $response->fetch();
+        return $user;
+    }
+
     function getActivityTypes($userId) {
         $response =  $this->conBdd->connexion->prepare("SELECT activityType.id AS activityType_id, activityType.color AS activityType_color, activityType.name AS activityType_name FROM activityType LEFT JOIN user ON (user.id = :user_id) WHERE activityType.organization_id = user.organization_id");
         $response->execute(array(
@@ -254,17 +263,23 @@ class Utility {
             'color'=> $color
             ));
     }
-    function newClient($name, $ref1, $ref2) {
-        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO client (name, ref, ref2) VALUES (:name, :ref1, :ref2)');
+    function newClient($userId, $name, $ref1, $ref2) {
+        $user = $this->getUser($userId);
+        $organizationId = $user['organization_id'];
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO client (organization_id, name, ref, ref2) VALUES (:organization_id, :name, :ref1, :ref2)');
         $stmt->execute(array(
+            'organization_id'=> $organizationId,
             'name'=> $name,
             'ref1'=> $ref1,
             'ref2'=> $ref2
             ));
     }
-    function newActivityType($name, $color) {
-        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activityType (name, color) VALUES (:name, :color)');
+    function newActivityType($userId, $name, $color) {
+        $user = $this->getUser($userId);
+        $organizationId = $user['organization_id'];
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activityType (organization_id, name, color) VALUES (:organization_id, :name, :color)');
         $stmt->execute(array(
+            'organization_id'=> $organizationId,
             'name'=> $name,
             'color'=> $color
             ));
