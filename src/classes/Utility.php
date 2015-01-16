@@ -54,7 +54,7 @@ class Utility {
     }
 
     function getClients($userId) {
-        $response =  $this->conBdd->connexion->prepare("SELECT * FROM client LEFT JOIN user AS user ON (user.id = :user_id) WHERE client.organization_id = user.organization_id");
+        $response =  $this->conBdd->connexion->prepare("SELECT client.id AS client_id, client.name AS client_name,  client.ref AS client_ref, client.ref2 AS client_ref2 FROM client LEFT JOIN user ON (user.id = :user_id) WHERE client.organization_id = user.organization_id");
         $response->execute(array(
             'user_id'=> $userId
             ));
@@ -63,7 +63,7 @@ class Utility {
     }
 
     function getActivityTypes($userId) {
-        $response =  $this->conBdd->connexion->prepare("SELECT * FROM activityType LEFT JOIN user AS user ON (user.id = :user_id) WHERE activityType.organization_id = user.organization_id");
+        $response =  $this->conBdd->connexion->prepare("SELECT activityType.id AS activityType_id, activityType.color AS activityType_color, activityType.name AS activityType_name FROM activityType LEFT JOIN user ON (user.id = :user_id) WHERE activityType.organization_id = user.organization_id");
         $response->execute(array(
             'user_id'=> $userId
             ));
