@@ -47,7 +47,13 @@ $(document).ready(function() {
     $(document).on('click','#admin',function(){
         window.location.href = "admin";
     });
-    $(document).on('click','#logout',function(){
+    $(document).on('click','#logout', function(){
+        /*FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                FB.logout(function(response) {
+                });
+            }
+        });*/
         $.ajax({url: 'src/classes/ajaxActions.php',data: {'action':'logout'}});
         window.location.href = "login";
     });
@@ -96,7 +102,7 @@ $(document).ready(function() {
             data: data
             ,
             error: function() {
-                alert('change_day ko');
+                console.log('change_day ko');
             },
             complete: function() {
                 location.reload();
@@ -166,7 +172,7 @@ $(document).ready(function() {
             },
             dataType: 'html',
             error: function() {
-                alert('submit form ko');
+                console.log('submit form ko');
             },
             success: function(data) {
                 if(buttonpressed == 'submit'){

@@ -23,29 +23,33 @@ if(!isset($_SESSION['currentDay']) || $_SESSION['currentDay'] == null){
     $_SESSION['currentDay'] = date('Y-m-d');
 }
 $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
-$utility = new Utility($localBD);
+$utility = new Utility($localBD, 'src/views', $parameters);
 
 if (empty($_GET['data']))
      $_GET['data'] = 'home';
 if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
-    echo $utility->login($twig, $parameters['version']);
+    echo $utility->login();
 }else{
     if($_GET['data'] == 'admin'){
         $userId = $_SESSION['USERID'];
         echo $twig->render('admin.html.twig', array(
                 'clients' => $utility->getClients(),
                 'activityTypes' => $utility->getActivityTypes(),
+                'version' => $parameters['dblocal_port'],
+                'fb_app' => $parameters['fb_app']
             ));
     }else{
         $userId = $_SESSION['USERID'];
         echo $twig->render('darim.html.twig', array(
-            'currentDay' => $_SESSION['currentDay'],
-            'clients' => $utility->getClients($userId),
-            'activityTypes' => $utility->getActivityTypes($userId),
-            'todos' => $utility->getTodos($userId),
-            'activities' => $utility->getActivities($userId),
-            'worktimeToday' => $utility->getToDayWorktime($userId)
-        ));
+                'currentDay' => $_SESSION['currentDay'],
+                'clients' => $utility->getClients(),
+                'activityTypes' => $utility->getActivityTypes(),
+                'todos' => $utility->getTodos($userId),
+                'activities' => $utility->getActivities($userId),
+                'worktimeToday' => $utility->getToDayWorktime($userId),
+                'version' => $parameters['version'],
+                'fb_app' => $parameters['fb_app']
+            ));
     }
 }
 

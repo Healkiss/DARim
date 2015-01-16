@@ -15,8 +15,6 @@
 
     $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
     $utility = new Utility($localBD);
-
-
     if(isset($_GET['action'])) {
         $action = $_GET['action'];
         switch ($action) {
@@ -88,13 +86,21 @@
                 echo json_encode($utility->getActivityTypes($_SESSION['USERID']));
                 break;
             case 'change_day':
+<<<<<<< HEAD
                 $_SESSION['currentDay'] = date("Y-m-d", strtotime($_GET['newDay']));
+=======
+                $_SESSION['currentDay'] = date("Y-m-d", strtotime($currentDay));;
+>>>>>>> 20d5cd00d39dc4c4f645b57f46130da51a0d0284
                 break;
             case 'get_csv':
                 return($utility->generateCSV($_SESSION['USERID']));
                 break;
             case 'logout':
                 $utility->logout();
+                return true;
+                break;
+            case 'loginFb':
+                $utility->loginFb($_GET['signed_request'], $_GET['user_name'], $_GET['user_id']);
                 return true;
                 break;
             default:
