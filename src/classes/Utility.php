@@ -33,7 +33,6 @@ class Utility {
     }
 
     function stopRunningActivity($userId) {
-        echo $userId; 
         $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = :end WHERE user_id = :user_id AND end = \'0000-00-00 00:00:00\'');
         $stmt->execute(array(
             'user_id'=> $userId,
@@ -201,7 +200,6 @@ class Utility {
     }
     function change_start_time_activity($activity, $newTime) {
         $newTime = strtotime($newTime);
-        echo $newTime;
         $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET start = FROM_UNIXTIME(:start) WHERE id = :activity_id');
         $stmt->execute(array(
             'activity_id'=> $activity,
@@ -210,7 +208,6 @@ class Utility {
     }
     function change_end_time_activity($activity, $newTime) {
         $newTime = strtotime($newTime);
-        echo $newTime;
         $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET end = FROM_UNIXTIME(:end) WHERE id = :activity_id');
         $stmt->execute(array(
             'activity_id'=> $activity,

@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var editType = '';
-    $('.editable').on('click', function() {
+    $(document).on('click', '.editable', function() {
         $('.edit_block').remove();
         $('.editable').show();
         var self = this;
@@ -44,7 +44,7 @@ $(document).ready(function() {
             if(input_edit === '') {
                 var input_edit = "<"+tag+" class='edit_input' type='"+type+"' style='position:relative;height:40px;"+addedStyle+"'></"+tag+">";
             }
-            var btn_edit = "<button class='btn btn-info btn_edit_activity' style='position:absolute;width:40px;height:40px'><i class='glyphicon glyphicon-pencil'></i></button>"
+            var btn_edit = "<button class='btn btn-info btn_edit_activity' style='z-index:999;position:absolute;width:40px;height:40px'><i class='glyphicon glyphicon-pencil'></i></button>"
             $input_edit = $(input_edit);
             $btn_edit = $(btn_edit);
             $input_edit.val(oldValue);
@@ -180,7 +180,14 @@ $(document).ready(function() {
         return $(elem).data('field');
     }
 
-    function editField(activityId, field, newValue) {
+    function editField(elem, activityId, field, newValue) {
+        if(elem.hasClass('todoInfo')){
+            $('#listActivity tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
+            $('#listActivity').html($('#listActivity').html()+'<img src="public/img/giphy.gif" class="reload">');
+        }else{
+            $('#diary tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
+            $('#diary').html($('#diary').html()+'<img src="public/img/giphy.gif">');
+        }
         $.ajax({
             url: 'src/classes/ajaxActions.php',
             type: 'GET',
@@ -209,13 +216,13 @@ $(document).ready(function() {
         var newTime = oldTime.replace(/\s[0-9]{2}:[0-9]{2}/,' '+value);
         console.log('editer '+ field + ' ' + activityId + ' oldTime ' + oldTime +' newTime ' +newTime);
         $('.btn_etat').html('<img src="http://static.devatics.com/d590/img/spinner.gif"/>');
-        editField(activityId, field, newTime);
+        editField(elem, activityId, field, newTime);
     }
 
     function edit_activity(elem) {
         var activityId = getActivityId(elem);
         var field = getField(elem);
         var newValue = getActivityValue(elem);
-        editField(activityId, field, newValue);
+        editField(elem, activityId, field, newValue);
     }
 });

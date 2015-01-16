@@ -1,7 +1,7 @@
 <div style='border-width:1px;border-color:black;min-height:200px;'>
     <table style='width:100%;'>
         <caption>
-            <h3>
+            <h3 style="height:50px;">
                 <b>
                     <span id='changeDayBefore' title="Jour précédent" class='changeDate glyphicon glyphicon-chevron-left'></span>
                     <span class='preChangeDay' data-day='{{currentDay|date('Y-m-d')}}' >
@@ -11,90 +11,98 @@
                     <span id='changeDayToday' title="Aujourd'hui" class='changeDate glyphicon glyphicon-expand'></span>
                 </b>
             </h3>
-            <h4>
-                <b>
-                    {{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s
-                </b>
-            </h4>
         </caption>
+            <thead>
+            <tr>
+                <th>
+                    <span>Projet</span>
+                </th>
+                <th>
+                </th>
+                <th>
+                    Tache
+                </th>
+                <th>
+                    Commentaire
+                </th>
+                <th>
+                    Debut - Fin
+                </th>
+                <th>
+                    Temps
+                </th>
+                <th width='130px' style='min-width:130px'>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for activity in activities %}
+            {% set isFinish = (activity['end'] != '0000-00-00 00:00:00') %}
+            <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='position:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
+                <td width="240">
+                    <span class='dailyRow_client_name editable' data-type='selectpicker' data-field='client' data-name='clients' data-value='{{activity['client_id']}}' style='font-weight=bold;margin-left: 10px;'>
+                        <span class='activityClientName'>{{ activity['client_name'] }}</span>
+                        ({{activity['client_ref2']}}-{{activity['client_ref']}})
+                    </span>
+                </td>
+                <td width="142">
+                    <span class='label label-{{activity['activityType_color']}} editable' data-type='selectpicker' data-name='activityTypes' data-field='activityType' data-value='{{activity['activityType_id']}}' style="float:right;margin-right:38px;margin-top:2px;">{{activity['activityType_name']}}</span>
+                </td>
+                <td>
+                    <span class='editable activityTask' data-type='string' data-name='task' data-field='task' data-value='{{ activity['task'] }}'>
+                        {% if activity['task'] != '' %}
+                            {{ activity['task'] }}
+                        {% else %}
+                            <span style="font-style: italic;">Ajouter une tache</span>
+                        {% endif %}
+                    </span>
+                </td>
+                <td>
+                    <span class='editable activityComment' data-type='textarea' data-name='commentary' data-field='commentary' data-value='{{ activity['commentary'] }}'>
+                        {% if activity['commentary'] != '' %}
+                            {{ activity['commentary'] }}
+                        {% else %}
+                            <span style="font-style: italic;">Ecrire un commentaire</span>
+                        {% endif %}
+                    </span>
+                </td>
+                <td class='time'>
+                    <span class='editable timebound startTime' data-type='time' data-name='start' data-field='start_time' data-value='{{activity['start']|date('H\\:i')}}'>{{ activity['start']|date('H\\hi') }}</span> -
+                    <span class='editable timebound endTime' data-type='time' data-name='end' data-field='end_time' data-value='{{activity['end']|date('H\\:i')}}'>
+                    {% if activity['end'] != 0 %}
+                        {{ activity['end']|date('H\\hi') }}
+                    {% else %}
+                        n/a
+                    {% endif %}
+                    </span>
+                </td>
+                <td>
+                    {% if  activity['end'] != 0 %}
+                    <span class='activitytimeSpend' data-type='timeRange' data-name='timeRange' data-field='start_time' data-start='{{activity['start']|date('H\\:i')}}' data-end='{{activity['end']|date('H\\:i')}}'>{{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if  activity['end'] != 0 %}
+                        <button class='btn btn-success btn_restart_activity' title="Reprendre"><i class='glyphicon glyphicon-repeat'></i></button>
+                    {% else %}
+                        <button class='btn btn-danger btn_end_activity' title="Stopper"><i class='glyphicon glyphicon-stop'></i></button>
+                    {% endif %}
+                    <button class='btn btn-danger btn_predelete_activity' title="Supprimer" data-activityid='{{ activity["id"] }}'><i class='glyphicon glyphicon-trash'></i></button>
+                    <button class='btn btn-primary btn_todo_activity' title="Todo" data-activityid='{{ activity["id"] }}'><i class='glyphicon glyphicon-time'></i></button>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
         <tr>
-            <th>
-                <span>Projet</span>
-            </th>
-            <th>
-            </th>
-            <th>
-                Tache
-            </th>
-            <th>
-                Commentaire
-            </th>
-            <th>
-                Debut - Fin
-            </th>
-            <th>
-                Temps
-            </th>
-            <th width='130px' style='min-width:130px'>
-                Actions
-            </th>
-        </tr>
-    {% for activity in activities %}
-        {% set isFinish = (activity['end'] != '0000-00-00 00:00:00') %}
-        <tr class='activity dailyRow' data-activityId='{{ activity['id'] }}' data-isfinish='{{isFinish}}' style='position:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
-            <td width="240">
-                <span class='dailyRow_client_name editable' data-type='selectpicker' data-field='client' data-name='clients' data-value='{{activity['client_id']}}' style='font-weight=bold;margin-left: 10px;'>
-                    <span class='activityClientName'>{{ activity['client_name'] }}</span>
-                    ({{activity['client_ref2']}}-{{activity['client_ref']}})
-                </span>
+            <td colspan=4>
             </td>
-            <td width="142">
-                <span class='label label-{{activity['activityType_color']}} editable' data-type='selectpicker' data-name='activityTypes' data-field='activityType' data-value='{{activity['activityType_id']}}' style="float:right;margin-right:38px;margin-top:2px;">{{activity['activityType_name']}}</span>
-            </td>
-            <td>
-                <span class='editable activityTask' data-type='string' data-name='task' data-field='task' data-value='{{ activity['task'] }}'>
-                    {% if activity['task'] != '' %}
-                        {{ activity['task'] }}
-                    {% else %}
-                        <span style="font-style: italic;">Ajouter une tache</span>
-                    {% endif %}
-                </span>
-            </td>
-            <td>
-                <span class='editable activityComment' data-type='textarea' data-name='commentary' data-field='commentary' data-value='{{ activity['commentary'] }}'>
-                    {% if activity['commentary'] != '' %}
-                        {{ activity['commentary'] }}
-                    {% else %}
-                        <span style="font-style: italic;">Ecrire un commentaire</span>
-                    {% endif %}
-                </span>
-            </td>
-            <td class='time'>
-                <span class='editable timebound startTime' data-type='time' data-name='start' data-field='start_time' data-value='{{activity['start']|date('H\\:i')}}'>{{ activity['start']|date('H\\hi') }}</span> -
-                <span class='editable timebound endTime' data-type='time' data-name='end' data-field='end_time' data-value='{{activity['end']|date('H\\:i')}}'>
-                {% if activity['end'] != 0 %}
-                    {{ activity['end']|date('H\\hi') }}
-                {% else %}
-                    n/a
-                {% endif %}
-                </span>
-            </td>
-            <td>
-                {% if activity['timeSpend'] %}
-                <span class='activitytimeSpend' data-type='timeRange' data-name='timeRange' data-field='start_time' data-start='{{activity['start']|date('H\\:i')}}' data-end='{{activity['end']|date('H\\:i')}}'>{{ activity['timeSpend']|date_modify('-1 hour')|date('H\\hi') }}</span>
-                {% endif %}
-            </td>
-            <td>
-                {% if activity['timeSpend'] %}
-                    <button class='btn btn-success btn_restart_activity' title="Reprendre"><i class='glyphicon glyphicon-repeat'></i></button>
-                {% else %}
-                    <button class='btn btn-danger btn_end_activity' title="Stopper"><i class='glyphicon glyphicon-stop'></i></button>
-                {% endif %}
-                <button class='btn btn-danger btn_predelete_activity' title="Supprimer" data-activityid='{{ activity["id"] }}'><i class='glyphicon glyphicon-trash'></i></button>
-                <button class='btn btn-primary btn_todo_activity' title="Todo" data-activityid='{{ activity["id"] }}'><i class='glyphicon glyphicon-time'></i></button>
+            <td  colspan=2>
+                <span style="font-weight:bold">Total : {{ worktimeToday['hour'] }}h{{ worktimeToday['minute'] }}m{{ worktimeToday['second'] }}s</span>
             </td>
         </tr>
-    {% endfor %}
+    </tfoot>
     </table>
     <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
