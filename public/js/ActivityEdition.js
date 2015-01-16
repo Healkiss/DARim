@@ -181,8 +181,6 @@ $(document).ready(function() {
     }
 
     function editField(elem, activityId, field, newValue) {
-        console.log($(elem));
-        console.log(elem);
         if($('.edit_block').parent('td').parent('tr').hasClass('dailyRow')){
             $('#diary tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
             $('#diary').html($('#diary').html()+'<img src="public/img/giphy.gif" class="reload">');
@@ -204,7 +202,13 @@ $(document).ready(function() {
             },
             complete: function() {
                 $('.btn_etat').remove();
-                location.reload();
+                if($('.edit_block').parent('td').parent('tr').hasClass('dailyRow')){
+                    $('#listActivity').css({'opacity': '1','filter': 'alpha(opacity=100)'});
+                    $('#listActivity').html(data);
+                }else{
+                    $('#diary').css({'opacity': '1','filter': 'alpha(opacity=100)'});
+                    $('#diary').html(data);
+                }
             }
         });
     }
