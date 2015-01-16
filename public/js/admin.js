@@ -55,6 +55,6 @@ $(document).ready(function() {
     $('#edit_client').change();
     $('#edit_activitytype').change();
     $('#return').click(function(){
-        window.location.href = "/";
+        window.location.href = "home";
     })
 });

@@ -3,7 +3,9 @@
         <caption><h3><b>TODO</b></h3></caption>
         <tr>
             <th>
-                <span style='margin-left:40px;'>Client</span>
+                <span style='margin-left:40px;'>Projet</span>
+            </th>
+            <th>
             </th>
             <th>
                 Tache
@@ -11,17 +13,19 @@
             <th>
                 Commentaire
             </th>
-            <th width='84px'>
+            <th width='84px' style='min-width:84px'>
                 Actions
             </th>
         </tr>
         {% for todo in todos %}
             <tr class='activity todoRow' data-activityId='{{ todo['id'] }} ' style='psotion:relative;height:41px;border-top: 1px solid grey;font-size:1em;'>
                 <td>
-                    <span class='dailyRow_client_name editable' data-type='selectpicker' data-field='client' data-name='clients' data-value='{{todo['client_id']}}' style='font-weight=bold;margin-left:40px;'>
+                    <span class='dailyRow_client_name editable' data-type='selectpicker' data-field='client' data-name='clients' data-value='{{todo['client_id']}}' style='font-weight=bold;margin-left:10px;'>
                         <span class='activityClientName'>{{ todo['client_name'] }}</span>
                         ({{todo['client_ref2']}}-{{todo['client_ref']}})
                     </span>
+                </td>
+                <td>
                     <span class='label label-{{todo['activityType_color']}} editable' data-type='selectpicker' data-name='activityTypes' data-field='activityType' data-value='{{todo['activityType_id']}}' style="float:right;margin-right:20px;margin-top:2px;">{{todo['activityType_name']}}</span>
                 </td>
                 <td>

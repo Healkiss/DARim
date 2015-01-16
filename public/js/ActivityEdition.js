@@ -20,12 +20,12 @@ $(document).ready(function() {
             var tag="input";
             switch($(self).data('name')) {
                 case 'clients':
-                    input_edit = displaySelect('get_clients', ['name', 'ref2', 'ref'], true, false);
+                    input_edit = displaySelect('get_clients', ['client_name', 'client_ref2', 'client_ref'], 'client_id', true, false);
                     selectPicker = true;
                     btnEditNeeded = false;
                     break;
                 case 'activityTypes':
-                    input_edit = displaySelect('get_activityTypes', ['name'], false, true);
+                    input_edit = displaySelect('get_activityTypes', ['activityType_name'], 'activityType_id', false, true);
                     addedStyle = "float:right;";
                     selectPicker = true;
                     btnEditNeeded = false;
@@ -94,13 +94,6 @@ $(document).ready(function() {
             }
         }, 10);
     });
-    /*$(document).on('click', 'body :not(.edit_block *)', function() {
-        //console.log('click');
-        //console.log('class :'+ $(this).attr("class"));
-        $('.edit_block').remove();
-        $('.editable').show();
-        //$('.edit_box').remove();
-    });*/
     
     $(document).on('click', '.btn_edit_activity', function() {
         edit_activity($(this).siblings('.edit_input'));
@@ -122,9 +115,10 @@ $(document).ready(function() {
         edit_activity(this);
     });
 
-    function displaySelect(ajaxAction, toDisplay, search, label) {
+    function displaySelect(ajaxAction, toDisplay, columnId, search, label) {
         ajaxAction = ajaxAction || 'get_activityTypes';
         toDisplay = toDisplay || ['name'];
+        columnId = columnId || false;
         search = search || false;
         label = label || false;
         input_edit = '';
@@ -138,13 +132,13 @@ $(document).ready(function() {
                 alert('ko');
             },
             complete: function(data) {
-                input_edit = constructSelect(data, ajaxAction, toDisplay, search, label);
+                input_edit = constructSelect(data, ajaxAction, toDisplay, columnId, search, label);
             }
         });
         return input_edit;
     }
     //TODO : passer les valuers a afficher, passer les valeurs des datas
-    function constructSelect(response, ajaxAction, toDisplay, search, label) {
+    function constructSelect(response, ajaxAction, toDisplay, columnId, search, label) {
         lines = JSON.parse(response.responseText);
         input_edit = '<select id="selectEditing" class="selectpicker selectEditing" title="Client" data-style="btn-default" data-live-search="'+search+'" data-width="auto">';
         for(var i = 0; i < lines.length; ++i) {
@@ -158,9 +152,9 @@ $(document).ready(function() {
             }
             var dataContent = '';
             if(label){
-                dataContent += 'data-content="<span class=\'label label-'+line['color']+'\'>'+content+'</span>"';
+                dataContent += 'data-content="<span class=\'label label-'+line['activityType_color']+'\'>'+content+'</span>"';
             }
-            input_edit += '<option value="'+line['id']+'" '+dataContent+'>'+content+'</option>';
+            input_edit += '<option value="'+line[columnId]+'" '+dataContent+'>'+content+'</option>';
         };
         input_edit += '</select>';
         return input_edit;

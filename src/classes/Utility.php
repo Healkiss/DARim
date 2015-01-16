@@ -10,7 +10,7 @@ class Utility {
         $currentTime = $currentTime->format('H:i:s');
         $currentDay = $_SESSION['currentDay'];
         $this->currentDay = date("Y-m-d", strtotime($currentDay));
-        $this->currentDateTime = $currentDay . ' ' . $currentTime;
+        $this->currentDateTime = $this->currentDay . ' ' . $currentTime;
     }
 
     function exportDay() {
@@ -53,21 +53,35 @@ class Utility {
             ));
     }
 
-    function getClients() {
-        $response =  $this->conBdd->connexion->query("SELECT * FROM client");
+    function getClients($userId) {
+        $response =  $this->conBdd->connexion->prepare("SELECT client.id AS client_id, client.name AS client_name,  client.ref AS client_ref, client.ref2 AS client_ref2 FROM client LEFT JOIN user ON (user.id = :user_id) WHERE client.organization_id = user.organization_id");
+        $response->execute(array(
+            'user_id'=> $userId
+            ));
         $clients = $response->fetchAll();
         return $clients;
     }
 
-    function getActivityTypes() {
-        $response =  $this->conBdd->connexion->query("SELECT * FROM activityType");
+    function getUser($userId) {
+        $response =  $this->conBdd->connexion->prepare("SELECT * FROM user WHERE user.id = :user_id");
+        $response->execute(array(
+            'user_id'=> $userId
+            ));
+        $user = $response->fetch();
+        return $user;
+    }
+
+    function getActivityTypes($userId) {
+        $response =  $this->conBdd->connexion->prepare("SELECT activityType.id AS activityType_id, activityType.color AS activityType_color, activityType.name AS activityType_name FROM activityType LEFT JOIN user ON (user.id = :user_id) WHERE activityType.organization_id = user.organization_id");
+        $response->execute(array(
+            'user_id'=> $userId
+            ));
         $activitiesType = $response->fetchAll();
         return $activitiesType;
     }
 
     //get today activities
     function getActivities($userId) {
-        $currentDay = $_SESSION['currentDay'];
         $query = '
             SELECT
                 activity.commentary AS commentary,
@@ -94,7 +108,7 @@ class Utility {
         $activities = $response->fetchAll();
         $diary = array();
         foreach($activities as $activity) {
-            if (date('Ymd', strtotime($currentDay)) == date('Ymd', strtotime($activity['start']))){
+            if (date('Ymd', strtotime($this->currentDay)) == date('Ymd', strtotime($activity['start']))){
                 $diary[] = $activity;
             }
         }
@@ -106,7 +120,7 @@ class Utility {
         $diary = array();
         $worktimeToday = '0';
         foreach($activities as $activity) {
-            if (date('Ymd') == date('Ymd', strtotime($activity['start'])) && $activity['end'] !== "0000-00-00 00:00:00"){
+            if (date('Ymd', strtotime($this->currentDay)) == date('Ymd', strtotime($activity['start'])) && $activity['end'] !== "0000-00-00 00:00:00"){
                 $diary[] = $activity;
             }
         }
@@ -151,7 +165,8 @@ class Utility {
 
     }
     function receiveNewActivity($isTodo, $userId){
-        $this->stopRunningActivity($userId);
+        if(!$isTodo)
+            $this->stopRunningActivity($userId);
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo, start) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo, :start)');
         $stmt->execute(array(
             'client_id'=> $_GET['client'],
@@ -247,17 +262,23 @@ class Utility {
             'color'=> $color
             ));
     }
-    function newClient($name, $ref1, $ref2) {
-        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO client (name, ref, ref2) VALUES (:name, :ref1, :ref2)');
+    function newClient($userId, $name, $ref1, $ref2) {
+        $user = $this->getUser($userId);
+        $organizationId = $user['organization_id'];
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO client (organization_id, name, ref, ref2) VALUES (:organization_id, :name, :ref1, :ref2)');
         $stmt->execute(array(
+            'organization_id'=> $organizationId,
             'name'=> $name,
             'ref1'=> $ref1,
             'ref2'=> $ref2
             ));
     }
-    function newActivityType($name, $color) {
-        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activityType (name, color) VALUES (:name, :color)');
+    function newActivityType($userId, $name, $color) {
+        $user = $this->getUser($userId);
+        $organizationId = $user['organization_id'];
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activityType (organization_id, name, color) VALUES (:organization_id, :name, :color)');
         $stmt->execute(array(
+            'organization_id'=> $organizationId,
             'name'=> $name,
             'color'=> $color
             ));

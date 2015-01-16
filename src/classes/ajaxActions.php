@@ -35,11 +35,11 @@
                 break;
             case 'new_client':
                 echo 'new_client';
-                $utility->newClient($_GET['name'], $_GET['ref1'], $_GET['ref2']);
+                $utility->newClient($_SESSION['USERID'], $_GET['name'], $_GET['ref1'], $_GET['ref2']);
                 break;
             case 'new_activitytype':
                 echo 'new_activitytype';
-                $utility->newActivityType($_GET['name'], $_GET['color']);
+                $utility->newActivityType($_SESSION['USERID'], $_GET['name'], $_GET['color']);
                 break;
             case 'edit_activitytype':
                 echo 'edit_activitytype';
@@ -65,13 +65,13 @@
                 echo 'submitAndBegin';
                 break;
             case 'get_clients':
-                echo json_encode($utility->getClients());
+                echo json_encode($utility->getClients($_SESSION['USERID']));
                 break;
             case 'get_activityTypes':
-                echo json_encode($utility->getActivityTypes());
+                echo json_encode($utility->getActivityTypes($_SESSION['USERID']));
                 break;
             case 'change_day':
-                $_SESSION['currentDay'] = $_GET['newDay'];
+                $_SESSION['currentDay'] = date("Y-m-d", strtotime($_GET['newDay']));
                 break;
             case 'get_csv':
                 return($utility->generateCSV($_SESSION['USERID']));

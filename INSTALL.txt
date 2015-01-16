@@ -1,3 +1,5 @@
 copy app/parameters.yml.dist to parameters.yml - fill it with your own values
 copy composer.phar.dist to composer.phar - php composer.phar selfupdate - php composer.phar update
 copy .htaccess.dist to .htaccess - set your own folder in rewrite rule
+Installer le module php ldap
+sudo apt-get install php5-ldap
