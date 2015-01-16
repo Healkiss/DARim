@@ -1,13 +1,13 @@
 <div>
-	<form id="my-form"  style="margin-top:20px;border: 2px solid black;padding:20px;width:930px;">
+	<form id="my-form"  style="margin-top:20px;border: 2px solid black;padding:20px;width:940px;">
 		<select class="selectpicker" id="form-input-client" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
 			{% for client in clients %}
-			<option value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>
+			<option value="{{ client['client_id'] }}">{{ client['client_name'] }} ({{ client['client_ref2'] }}-{{ client['client_ref'] }})</option>
 			{% endfor %}
 		</select>
 		<select class="selectpicker" id="form-input-activityType" name="activityType" title='Type' data-style="btn-default">
 			{% for activityType in activityTypes %}
-				<option value="{{ activityType['id'] }}" data-content="<span class='label label-{{ activityType['color'] }}'>{{ activityType['name'] }}</span>" data-width="auto">{{ activityType['name'] }}</option>
+				<option value="{{ activityType['activityType_id'] }}" data-content="<span class='label label-{{ activityType['activityType_color'] }}'>{{ activityType['activityType_name'] }}</span>" data-width="auto">{{ activityType['name'] }}</option>
 			{% endfor %}
 		</select>
 		<input type="text" id="form-input-task" name="task" id="task" class="my-input" placeholder="Tache" required>
