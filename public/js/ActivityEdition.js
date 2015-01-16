@@ -181,12 +181,14 @@ $(document).ready(function() {
     }
 
     function editField(elem, activityId, field, newValue) {
-        if(elem.hasClass('todoInfo')){
+        console.log($(elem));
+        console.log(elem);
+        if($('.edit_block').parent('td').parent('tr').hasClass('dailyRow')){
+            $('#diary tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
+            $('#diary').html($('#diary').html()+'<img src="public/img/giphy.gif" class="reload">');
+        }else{
             $('#listActivity tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
             $('#listActivity').html($('#listActivity').html()+'<img src="public/img/giphy.gif" class="reload">');
-        }else{
-            $('#diary tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
-            $('#diary').html($('#diary').html()+'<img src="public/img/giphy.gif">');
         }
         $.ajax({
             url: 'src/classes/ajaxActions.php',

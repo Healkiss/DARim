@@ -148,10 +148,10 @@ $(document).ready(function() {
     $(document).on("click", ".submit", function (event) {
         if(buttonpressed == 'submit'){
             $('#listActivity tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
-            $('#listActivity').html($('#listActivity').html()+'<img src="public/img/giphy.gif" class="reload">');
+            $('#listActivity tbody').html($('#listActivity tbody').html()+'<img src="public/img/giphy.gif" class="reload">');
         }else{
             $('#diary tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
-            $('#diary').html($('#diary').html()+'<img src="public/img/giphy.gif">');
+            $('#diary tbody').html($('#diary tbody').html()+'<img src="public/img/giphy.gif" class="reload">');
         }
         var self = this;
         $.ajax({
