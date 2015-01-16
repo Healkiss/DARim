@@ -38,7 +38,7 @@
                         Editer client :
                         <select class="selectpicker" id="edit_client" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
                             {% for client in clients %}
-                            <option data-id="{{ client['id'] }}" data-name="{{ client['name'] }}" data-ref1="{{ client['ref'] }}" data-ref2="{{ client['ref2'] }}" value="{{ client['id'] }}">{{ client['name'] }} ({{ client['ref2'] }}-{{ client['ref'] }})</option>
+                            <option data-id="{{ client['client_id'] }}" data-name="{{ client['client_name'] }}" data-ref1="{{ client['client_ref'] }}" data-ref2="{{ client['client_ref2'] }}" value="{{ client['id'] }}">{{ client['client_name'] }} ({{ client['client_ref2'] }}-{{ client['client_ref'] }})</option>
                             {% endfor %}
                         </select>
                         <input type="text" id="edit_clientname" name="clientname" class="my-input" placeholder="Nom" required>
@@ -49,7 +49,7 @@
                         Editer type d'activité :
                         <select class="selectpicker" id="edit_activitytype" name="activityType" title='Type' data-style="btn-default">
                             {% for activityType in activityTypes %}
-                                <option data-id="{{ activityType['id'] }}" data-name="{{ activityType['name'] }}" data-color="{{ activityType['color'] }}" value="{{ activityType['id'] }}" data-content="<span class='label label-{{ activityType['color'] }}'>{{ activityType['name'] }}</span>" data-width="auto">{{ activityType['name'] }}</option>
+                                <option data-id="{{ activityType['activityType_id'] }}" data-name="{{ activityType['activityType_name'] }}" data-color="{{ activityType['activityType_color'] }}" value="{{ activityType['activityType_id'] }}" data-content="<span class='label label-{{ activityType['activityType_color'] }}'>{{ activityType['activityType_name'] }}</span>" data-width="auto">{{ activityType['activityType_name'] }}</option>
                             {% endfor %}
                         </select>
                         <input type="text" id="edit_activitytypename" name="activitytypename" class="my-input" placeholder="Nom" required>
