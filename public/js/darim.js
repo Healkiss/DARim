@@ -169,15 +169,13 @@ $(document).ready(function() {
                 alert('submit form ko');
             },
             success: function(data) {
-                setTimeout(function(){ 
-                    if(buttonpressed == 'submit'){
-                        $('#listActivity').css({'opacity': '1','filter': 'alpha(opacity=100)'});
-                        $('#listActivity').html(data);
-                    }else{
-                        $('#diary').css({'opacity': '1','filter': 'alpha(opacity=100)'});
-                        $('#diary').html(data);
-                    }
-                }, 3000);
+                if(buttonpressed == 'submit'){
+                    $('#listActivity').css({'opacity': '1','filter': 'alpha(opacity=100)'});
+                    $('#listActivity').html(data);
+                }else{
+                    $('#diary').css({'opacity': '1','filter': 'alpha(opacity=100)'});
+                    $('#diary').html(data);
+                }
             }
         });
         event.preventDefault();
