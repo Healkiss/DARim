@@ -180,13 +180,15 @@ $(document).ready(function() {
         return $(elem).data('field');
     }
 
-    function editField(elem, activityId, field, newValue) {
+    function editField(activityId, field, newValue) {
+        var todo = false;
         if($('.edit_block').parent('td').parent('tr').hasClass('dailyRow')){
-            $('#diary tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
+            $('#diary tbody').addClass('reloading');
             $('#diary').html($('#diary').html()+'<img src="public/img/giphy.gif" class="reload">');
         }else{
-            $('#listActivity tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
+            $('#listActivity tbody').addClass('reloading');
             $('#listActivity').html($('#listActivity').html()+'<img src="public/img/giphy.gif" class="reload">');
+            todo = true;
         }
         $.ajax({
             url: 'src/classes/ajaxActions.php',
@@ -195,19 +197,20 @@ $(document).ready(function() {
                 action:'edit_activity',
                 activityId:activityId,
                 field:field,
-                newValue:newValue
+                newValue:newValue,
+                todo:todo
             },
             error: function() {
                 alert('editField ko');
             },
-            complete: function() {
+            success: function(data) {
                 $('.btn_etat').remove();
+                $('.reloading').removeClass('reloading');
+                $('.reload').remove();
                 if($('.edit_block').parent('td').parent('tr').hasClass('dailyRow')){
-                    $('#listActivity').css({'opacity': '1','filter': 'alpha(opacity=100)'});
-                    $('#listActivity').html(data);
-                }else{
-                    $('#diary').css({'opacity': '1','filter': 'alpha(opacity=100)'});
                     $('#diary').html(data);
+                }else{
+                    $('#listActivity').html(data);
                 }
             }
         });
@@ -222,13 +225,13 @@ $(document).ready(function() {
         var newTime = oldTime.replace(/\s[0-9]{2}:[0-9]{2}/,' '+value);
         console.log('editer '+ field + ' ' + activityId + ' oldTime ' + oldTime +' newTime ' +newTime);
         $('.btn_etat').html('<img src="http://static.devatics.com/d590/img/spinner.gif"/>');
-        editField(elem, activityId, field, newTime);
+        editField(activityId, field, newTime);
     }
 
     function edit_activity(elem) {
         var activityId = getActivityId(elem);
         var field = getField(elem);
         var newValue = getActivityValue(elem);
-        editField(elem, activityId, field, newValue);
+        editField(activityId, field, newValue);
     }
 });

@@ -16,6 +16,22 @@
     $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
     $utility = new Utility($localBD);
 
+    $userId = $_SESSION['USERID'];
+    function display($utility, $twig, $todo, $userId) {
+        if($todo){
+            echo $twig->render('listTodos.html.twig', array(
+                'todos' => $utility->getTodos($userId),
+            ));
+        }else{
+            echo $twig->render('listActivities.html.twig', array(
+               'currentDay' => $_SESSION['currentDay'],
+               'clients' => $utility->getClients($userId),
+               'activityTypes' => $utility->getActivityTypes($userId),
+               'activities' => $utility->getActivities($userId),
+               'worktimeToday' => $utility->getToDayWorktime($userId)
+           ));
+        }
+    }
 
     if(isset($_GET['action'])) {
         $action = $_GET['action'];
@@ -57,29 +73,24 @@
                 $utility->editClient($_GET['id'], $_GET['name'], $_GET['ref1'], $_GET['ref2']);
                 break;
             case 'edit_activity':
-                echo 'edit_activity';
                 $field = $_GET['field'];
-                echo 'field :  ' . $field . '<br/>';
                 $functionName = 'change_'.$field.'_activity';
                 $utility->$functionName($_GET['activityId'], $_GET['newValue']);
+                $todo = false;
+                if($_GET['todo'] == 'true'){
+                    $todo = true;
+                }
+                display($utility, $twig, $todo, $userId);
                 break;
             case 'submit':
                 $utility->receiveNewActivity(1, $_SESSION['USERID']);
                 $userId = $_SESSION['USERID'];
-                echo $twig->render('listTodos.html.twig', array(
-                    'todos' => $utility->getTodos($userId),
-                ));
+                display($utility, $twig, true, $userId);
                 break;
             case 'submitAndBegin':
                 $utility->receiveNewActivity(0, $_SESSION['USERID']);
                 $userId = $_SESSION['USERID'];
-                echo $twig->render('listActivities.html.twig', array(
-                   'currentDay' => $_SESSION['currentDay'],
-                   'clients' => $utility->getClients($userId),
-                   'activityTypes' => $utility->getActivityTypes($userId),
-                   'activities' => $utility->getActivities($userId),
-                   'worktimeToday' => $utility->getToDayWorktime($userId)
-               ));
+                display($utility, $twig, false, $userId);
                 break;
             case 'get_clients':
                 echo json_encode($utility->getClients($_SESSION['USERID']));

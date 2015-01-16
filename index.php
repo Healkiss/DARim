@@ -3,6 +3,7 @@ ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100);
 ini_set('session.gc_maxlifetime', 60*60*24*31);
 session_start();
+date_default_timezone_set('Europe/Paris');
 require_once 'vendor/autoload.php';
 require_once 'src/classes/conBdd.php';
 require_once 'src/classes/Utility.php';
