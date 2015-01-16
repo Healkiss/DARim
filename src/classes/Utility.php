@@ -4,17 +4,13 @@ require_once 'conBdd.php';
 class Utility {
     protected $conBdd;
 
-    function __construct($conBdd, $views, $parameters){
-        $loader = new Twig_Loader_Filesystem($views);
-        $this->twig = new Twig_Environment($loader);
-        $this->twig->getExtension('core')->setTimezone('Europe/Paris');
+    function __construct($conBdd){
         $this->conBdd = $conBdd;
         $currentTime = new \DateTime();
         $currentTime = $currentTime->format('H:i:s');
         $currentDay = $_SESSION['currentDay'];
         $this->currentDay = date("Y-m-d", strtotime($currentDay));
-        $this->currentDateTime = $currentDay . ' ' . $currentTime;
-        $this->parameters = $parameters;
+        $this->currentDateTime = $this->currentDay . ' ' . $currentTime;
     }
 
     function exportDay() {
