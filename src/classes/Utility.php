@@ -82,7 +82,6 @@ class Utility {
 
     //get today activities
     function getActivities($userId) {
-        $currentDay = $_SESSION['currentDay'];
         $query = '
             SELECT
                 activity.commentary AS commentary,
@@ -109,7 +108,7 @@ class Utility {
         $activities = $response->fetchAll();
         $diary = array();
         foreach($activities as $activity) {
-            if (date('Ymd', strtotime($currentDay)) == date('Ymd', strtotime($activity['start']))){
+            if (date('Ymd', strtotime($this->currentDay)) == date('Ymd', strtotime($activity['start']))){
                 $diary[] = $activity;
             }
         }
@@ -121,7 +120,7 @@ class Utility {
         $diary = array();
         $worktimeToday = '0';
         foreach($activities as $activity) {
-            if (date('Ymd') == date('Ymd', strtotime($activity['start'])) && $activity['end'] !== "0000-00-00 00:00:00"){
+            if (date('Ymd', strtotime($this->currentDay)) == date('Ymd', strtotime($activity['start'])) && $activity['end'] !== "0000-00-00 00:00:00"){
                 $diary[] = $activity;
             }
         }
