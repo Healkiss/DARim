@@ -39,14 +39,13 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
     }else{
         $userId = $_SESSION['USERID'];
         echo $twig->render('darim.html.twig', array(
-                'currentDay' => $_SESSION['currentDay'],
-                'clients' => $utility->getClients($userId),
-                'activityTypes' => $utility->getActivityTypes($userId),
-                'todos' => $utility->getTodos($userId),
-                'activities' => $utility->getActivities($userId),
-                'worktimeToday' => $utility->getToDayWorktime($userId),
-                'version' => $parameters['version']
-            ));
+            'currentDay' => $_SESSION['currentDay'],
+            'clients' => $utility->getClients($userId),
+            'activityTypes' => $utility->getActivityTypes($userId),
+            'todos' => $utility->getTodos($userId),
+            'activities' => $utility->getActivities($userId),
+            'worktimeToday' => $utility->getToDayWorktime($userId)
+        ));
     }
 }
 

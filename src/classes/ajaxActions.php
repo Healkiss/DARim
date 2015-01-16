@@ -1,6 +1,6 @@
 <?php
     session_start();
-    
+    error_reporting (E_ALL);
     require_once '../../vendor/autoload.php';
     require_once 'Utility.php';
     use Symfony\Component\Yaml\Parser;
@@ -8,8 +8,15 @@
     $parameters = $yaml->parse(file_get_contents('../../app/parameters.yml'));
     $parameters = $parameters['parameters'];
 
+    $loader = new Twig_Loader_Filesystem('../views');
+
+    $twig = new Twig_Environment($loader);
+    $twig->getExtension('core')->setTimezone('Europe/Paris');
+
     $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
     $utility = new Utility($localBD);
+
+
     if(isset($_GET['action'])) {
         $action = $_GET['action'];
         switch ($action) {
@@ -58,11 +65,21 @@
                 break;
             case 'submit':
                 $utility->receiveNewActivity(1, $_SESSION['USERID']);
-                echo "submit";
+                $userId = $_SESSION['USERID'];
+                echo $twig->render('listTodos.html.twig', array(
+                    'todos' => $utility->getTodos($userId),
+                ));
                 break;
             case 'submitAndBegin':
                 $utility->receiveNewActivity(0, $_SESSION['USERID']);
-                echo 'submitAndBegin';
+                $userId = $_SESSION['USERID'];
+                echo $twig->render('listActivities.html.twig', array(
+                   'currentDay' => $_SESSION['currentDay'],
+                   'clients' => $utility->getClients($userId),
+                   'activityTypes' => $utility->getActivityTypes($userId),
+                   'activities' => $utility->getActivities($userId),
+                   'worktimeToday' => $utility->getToDayWorktime($userId)
+               ));
                 break;
             case 'get_clients':
                 echo json_encode($utility->getClients($_SESSION['USERID']));

@@ -30,6 +30,12 @@ body{
 .error{
     color:red;
 }
+.reload{
+    position:absolute;
+    top:50%;
+    left:50%;
+    height:50px;
+}
 .text-left{
     display:table-cell;
     max-width:33%;
@@ -53,6 +59,8 @@ body{
 }
 .preChangeDay{
     cursor: pointer;
+    padding-left:15px;
+    padding-right:15px;
 }
 .preChangeDay:hover{
     border-bottom: dashed 1px #0088cc;
