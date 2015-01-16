@@ -322,7 +322,7 @@ class Utility {
         fclose($df);
         return ob_get_clean();
     }
-    function login(){
+    function login($twig, $parameters){
         //after connexion :
         $ds=ldap_connect("pilot.devatics.com");
         ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -360,8 +360,8 @@ class Utility {
                 header("Location: home");
                 exit(0);   
             } else {
-                return $this->twig->render('login.html.twig',array('error' => "bad credentials",
-                'fb_app' => $this->parameters['fb_app']));
+                return $twig->render('login.html.twig',array('error' => "bad credentials",
+                'fb_app' => $parameters['fb_app']));
             }
         }else{
             // Search login entry
@@ -387,8 +387,8 @@ class Utility {
                 ldap_close($ds);*/
             //$bopBD = new conBDD($parameters['dbbop_host'], $parameters['dbbop_port'], $parameters['dbbop_user'],$parameters['dbbop_password'],$parameters['dbbop_name']);
             //$login = new Login($bopBD);
-            return $this->twig->render('login.html.twig',array('error' => "",
-                'fb_app' => $this->parameters['fb_app']));
+            return $twig->render('login.html.twig',array('error' => "",
+                'fb_app' => $parameters['fb_app']));
         }
     }
     function logout(){
