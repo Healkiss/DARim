@@ -18,7 +18,7 @@
     if(isset($_SESSION['USERID'])){
         $userId = $_SESSION['USERID'];
     }else{
-        $userId = $_GET['user_id'];
+        echo "no way, no passare John Doe !";
     }
     function display($utility, $twig, $todo, $userId) {
         if($todo){
