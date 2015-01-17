@@ -155,17 +155,6 @@ $(document).ready(function() {
           buttonpressed = $(this).val()
     })
     $(document).on("click", ".submit", function (event) {
-<<<<<<< HEAD
-        var todo = false;
-        if(buttonpressed == 'submit'){
-            $('#listActivity tbody').addClass('reloading');
-            $('#listActivity').html($('#listActivity').html()+'<img src="public/img/giphy.gif" class="reload">');
-            todo = true;
-        }else{
-            $('#diary tbody').addClass('reloading');
-            $('#diary').html($('#diary').html()+'<img src="public/img/giphy.gif" class="reload">');
-=======
-
         var todo = false;
         if(buttonpressed != 'submit'){
             $('#diary tbody').addClass('reloading');
@@ -174,7 +163,6 @@ $(document).ready(function() {
             $('#listActivity tbody').addClass('reloading');
             $('#listActivity').html($('#listActivity').html()+'<img src="public/img/giphy.gif" class="reload">');
             todo = true;
->>>>>>> master
         }
         var self = this;
         $.ajax({

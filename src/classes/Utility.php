@@ -394,28 +394,35 @@ class Utility {
     function logout(){
         unset($_SESSION['USERID']);
     }
-    function loginFb($signed_request, $user_name, $user_id) {
+    function loginFb($signed_request, $user_name, $fb_id, $parameters) {
         list($encoded_sig, $payload) = explode('.', $signed_request, 2);
-        $sig = base64_decode($encoded_sig);
-        $secret = $this->parameters['fb_secret'];
+        $secret = $parameters['fb_secret'];
+        $sig = base64_decode(strtr($encoded_sig, '-_', '+/'));
+        //$data = json_decode(base64_url_decode($payload), true);
+        echo $sig;
         $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
-        if ($sig == $expected_sig) {
+        if ($sig !== $expected_sig) {
+            echo 'error';
+            return false;
+        } else {
             //check if user exist in localBd
-            $query = 'SELECT * FROM user WHERE user.id = "'.$user_id.'"';
+            $query = 'SELECT * FROM user WHERE user.fb_id = "'.$fb_id.'"';
             $response =  $this->conBdd->connexion->query($query);
             $user = $response->fetchAll();
             if(!$user){
-                $stmt =  $this->conBdd->connexion->prepare('INSERT INTO user (id, login) VALUES (:id, :login)');
-                $stmt->execute(array('id'=> $user_id, 'login'=> $user_name));
+                $response =  $this->conBdd->connexion->prepare("SELECT * FROM organization WHERE organization.name = :organization_name");
+                $response->execute(array(
+                    'organization_name'=> 'facebook'
+                    ));
+                $organization = $response->fetch();
+                $stmt =  $this->conBdd->connexion->prepare('INSERT INTO user (fb_id, login, organization_id) VALUES (:fb_id, :login, :organization)');
+                $stmt->execute(array('fb_id'=> $fb_id, 'login'=> $user_name, 'organization'=>$organization['id']));
             }
-            $_SESSION['USERID'] = $user_id;
+            $_SESSION['USERID'] = $fb_id;
             echo $_SESSION['USERID'];
             $_SESSION['login'] = $user_name;
             echo $_SESSION['login'];
             return true; 
-        } else {
-            echo 'error';
-            return false;
         }
     }
 }
