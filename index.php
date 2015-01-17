@@ -32,6 +32,7 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
 }else{
     if($_GET['data'] == 'admin'){
         $userId = $_SESSION['USERID'];
+        $_SESSION['currentDay'] = date('Y-m-d');
         echo $twig->render('admin.html.twig', array(
             'clients' => $utility->getClients($userId),
             'activityTypes' => $utility->getActivityTypes($userId),
