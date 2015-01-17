@@ -39,7 +39,6 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
             'fb_app' => $parameters['fb_app']
         ));
     }else{
-        $_SESSION['currentDay'] = date('Y-m-d');
         $userId = $_SESSION['USERID'];
         echo $twig->render('darim.html.twig', array(
             'currentDay' => $_SESSION['currentDay'],
