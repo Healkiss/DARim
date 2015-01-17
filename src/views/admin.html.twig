@@ -13,7 +13,7 @@
                     <div class="col-lg-10" id="createBox" style="margin-top:50px;border: 2px solid black;padding:20px;">
                         Creer des entités  : <br/>
                         Nouveau projet :
-                        <input type="text" id="new_clientname" name="clientname" class="my-input" placeholder="Nom" required>
+                        <input type="text" id="new_clientname" name="clientname" class="my-input" placeholder="Nom du projet" required>
                         <input type="text" id="new_clientref1" name="clientref1" class="my-input" placeholder="Ref1(d[1-9]+)" required>
                         <input type="text" id="new_clientref2" name="clientref2" class="my-input" placeholder="Ref2([A-Z]{3})" required>
                         <button name="action" id="addClient" class="btn btn-success" data-type="client">Ajouter</button>
@@ -36,7 +36,7 @@
                     <div class="col-lg-10" id="editBox" style="margin-top:50px;border: 2px solid black;padding:20px;">
                         Modifier des entités  : <br/>
                         Editer projet :
-                        <select class="selectpicker" id="edit_client" name="client" title='Client' data-style="btn-default" data-live-search="true" method="post">
+                        <select class="selectpicker" id="edit_client" name="client" title='Projet' data-style="btn-default" data-live-search="true" method="post">
                             {% for client in clients %}
                             <option data-id="{{ client['client_id'] }}" data-name="{{ client['client_name'] }}" data-ref1="{{ client['client_ref'] }}" data-ref2="{{ client['client_ref2'] }}" value="{{ client['client_id'] }}">{{ client['client_name'] }} ({{ client['client_ref2'] }}-{{ client['client_ref'] }})</option>
                             {% endfor %}
