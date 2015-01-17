@@ -328,27 +328,27 @@ $(document).ready(function() {
             $('[data-id="form-input-client"]').focus().select();
         }
     });
-    //Shift + A aller a aujourd'hui
+    //Ctrl + fleche droite aujourd'hui
     $(document).keyup(function(e) {
         var tag = e.target.tagName.toLowerCase();
         var key = e.which;
-        if(key == 65 && e.shiftKey && tag != 'input' && tag != 'textarea') {
+        if(key == 39 && e.ctrlKey && tag != 'input' && tag != 'textarea') {
             goToToday();
         }
     });
-    //Shift + S jour suivant
+    //Ctrl + fleche haute jour suivant
     $(document).keyup(function(e) {
         var tag = e.target.tagName.toLowerCase();
         var key = e.which;
-        if(key == 83 && e.shiftKey && tag != 'input' && tag != 'textarea') {
+        if(key == 38 && e.ctrlKey && tag != 'input' && tag != 'textarea') {
             goToTomorrow();
         }
     });
-    //Shift + P jour precedent
+    //Ctrl + fleche basse precedent
     $(document).keyup(function(e) {
         var tag = e.target.tagName.toLowerCase();
         var key = e.which;
-        if(key == 80 && e.shiftKey && tag != 'input' && tag != 'textarea') {
+        if(key == 40 && e.ctrlKey && tag != 'input' && tag != 'textarea') {
             goToYesterday();
         }
     });
