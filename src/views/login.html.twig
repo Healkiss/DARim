@@ -4,8 +4,8 @@
     <script>
       // This is called with the results from from FB.getLoginStatus().
     function statusChangeCallback(response) {
-        console.log('statusChangeCallback');
-        console.log(response);
+        // console.log('statusChangeCallback');
+        // console.log(response);
         if (response.status === 'connected') {
           // Logged into your app and Facebook.
           testAPI(response);
@@ -19,8 +19,8 @@
         }
     }
     function statusChangeCallback2(response) {
-        console.log('statusChangeCallback2');
-        console.log(response);
+        // console.log('statusChangeCallback2');
+        // console.log(response);
         if (response.status === 'connected') {
           // Logged into your app and Facebook.
           document.getElementById('status').innerHTML = 'You are logged, Click to enter';
@@ -68,7 +68,7 @@
       // successful.  See statusChangeCallback() for when this call is made.
       function testAPI(firstResponse) {
         FB.api('/me', function(response) {
-          console.log(response);
+          //console.log(response);
           document.getElementById('status').innerHTML =
             'Thanks for logging in, ' + response.name + '!';
             $.ajax({
@@ -77,15 +77,16 @@
                 data: {'action':'loginFb', 'signed_request':firstResponse.authResponse.signedRequest,'user_name' : response.name,'user_id' : response.id}
                 ,
                 success: function(response) {
-                    if(response){
+                    console.log('darim response : ' + response);
+                    if(response !== 'ko'){
                         console.log('testLoginFb ok');
                         window.location.href = "home";
                     }else{
-                        console.log('testLoginFb ko');
+                        console.log('LoginFb ko');
                     }
                 },
                 error: function() {
-                    console.log('testLoginFb ko');
+                    console.log('LoginFb error');
                 }
             });
         });
@@ -121,6 +122,8 @@
                                 <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
                                 </fb:login-button>
                                 <div id="status">
+                                </div>
+                                <div id="fb-root">
                                 </div>
                             </div>
                         </div>
