@@ -19,7 +19,6 @@ $loader = new Twig_Loader_Filesystem('src/views');
 
 $twig = new Twig_Environment($loader);
 $twig->getExtension('core')->setTimezone('Europe/Paris');
-
 if(!isset($_SESSION['currentDay']) || $_SESSION['currentDay'] == null){
     $_SESSION['currentDay'] = date('Y-m-d');
 }
@@ -39,6 +38,7 @@ if(!isset($_SESSION['USERID']) || $_GET['data'] == 'login'){
             'fb_app' => $parameters['fb_app']
         ));
     }else{
+        $_SESSION['currentDay'] = date('Y-m-d');
         $userId = $_SESSION['USERID'];
         echo $twig->render('darim.html.twig', array(
             'currentDay' => $_SESSION['currentDay'],
