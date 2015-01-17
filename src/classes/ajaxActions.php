@@ -15,7 +15,11 @@
 
     $localBD = new conBDD($parameters['dblocal_host'], $parameters['dblocal_port'], $parameters['dblocal_user'],$parameters['dblocal_password'],$parameters['dblocal_name']);
     $utility = new Utility($localBD);
-    $userId = $_SESSION['USERID'];
+    if(isset($_SESSION['USERID'])){
+        $userId = $_SESSION['USERID'];
+    }else{
+        $userId = $_GET['user_id'];
+    }
     function display($utility, $twig, $todo, $userId) {
         if($todo){
             echo $twig->render('listTodos.html.twig', array(
@@ -107,7 +111,7 @@
                 return true;
                 break;
             case 'loginFb':
-                $utility->loginFb($_GET['signed_request'], $_GET['user_name'], $_GET['user_id']);
+                $utility->loginFb($_GET['signed_request'], $_GET['user_name'], $_GET['user_id'], $parameters);
                 return true;
                 break;
             default:
