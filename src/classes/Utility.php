@@ -260,7 +260,11 @@ class Utility {
             ));
     }
     function newClient($userId, $name, $ref1, $ref2) {
+        echo '<br>userid : ' . $userId .'<br>';
         $user = $this->getUser($userId);
+        echo '<br>user : ' ;
+        var_dump($user);
+        echo '<br>';
         $organizationId = $user['organization_id'];
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO client (organization_id, name, ref, ref2) VALUES (:organization_id, :name, :ref1, :ref2)');
         $stmt->execute(array(
@@ -399,7 +403,6 @@ class Utility {
         $secret = $parameters['fb_secret'];
         $sig = base64_decode(strtr($encoded_sig, '-_', '+/'));
         //$data = json_decode(base64_url_decode($payload), true);
-        echo $sig;
         $expected_sig = hash_hmac('sha256', $payload, $secret, $raw = true);
         if ($sig !== $expected_sig) {
             echo 'error';
@@ -417,9 +420,12 @@ class Utility {
                 $organization = $response->fetch();
                 $stmt =  $this->conBdd->connexion->prepare('INSERT INTO user (fb_id, login, organization_id) VALUES (:fb_id, :login, :organization)');
                 $stmt->execute(array('fb_id'=> $fb_id, 'login'=> $user_name, 'organization'=>$organization['id']));
+                $userId = $this->conBdd->connexion->lastInsertId();
+                $_SESSION['USERID'] = $userId;
+            }else{
+                $userId = $user[0]['id'];
+                $_SESSION['USERID'] = $userId;
             }
-            $_SESSION['USERID'] = $fb_id;
-            echo $_SESSION['USERID'];
             $_SESSION['login'] = $user_name;
             echo $_SESSION['login'];
             return true; 

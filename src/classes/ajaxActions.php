@@ -18,7 +18,11 @@
     if(isset($_SESSION['USERID'])){
         $userId = $_SESSION['USERID'];
     }else{
-        echo "no way, no passare John Doe !";
+        if(!isset($_GET['action']) && $_GET['action'] != 'loginFb'){
+            //spoof
+            echo "ko";
+            return false;
+        }
     }
     function display($utility, $twig, $todo, $userId) {
         if($todo){
