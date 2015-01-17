@@ -37,8 +37,8 @@ body{
     height:50px;
 }
 .reloading{
-    'opacity': '0.4';
-    'filter': 'alpha(opacity=40)';
+    opacity: 0.4;
+    filter: alpha(opacity=40);
 }
 .text-left{
     display:table-cell;

@@ -155,12 +155,14 @@ $(document).ready(function() {
           buttonpressed = $(this).val()
     })
     $(document).on("click", ".submit", function (event) {
+        var todo = false;
         if(buttonpressed == 'submit'){
-            $('#listActivity tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
-            $('#listActivity tbody').html($('#listActivity tbody').html()+'<img src="public/img/giphy.gif" class="reload">');
+            $('#listActivity tbody').addClass('reloading');
+            $('#listActivity').html($('#listActivity').html()+'<img src="public/img/giphy.gif" class="reload">');
+            todo = true;
         }else{
-            $('#diary tbody').css({'opacity': '0.4','filter': 'alpha(opacity=40)'});
-            $('#diary tbody').html($('#diary tbody').html()+'<img src="public/img/giphy.gif" class="reload">');
+            $('#diary tbody').addClass('reloading');
+            $('#diary').html($('#diary').html()+'<img src="public/img/giphy.gif" class="reload">');
         }
         var self = this;
         $.ajax({
@@ -178,11 +180,11 @@ $(document).ready(function() {
                 console.log('submit form ko');
             },
             success: function(data) {
+                $('.reloading').removeClass('reloading');
+                $('.reload').remove();
                 if(buttonpressed == 'submit'){
-                    $('#listActivity').css({'opacity': '1','filter': 'alpha(opacity=100)'});
                     $('#listActivity').html(data);
                 }else{
-                    $('#diary').css({'opacity': '1','filter': 'alpha(opacity=100)'});
                     $('#diary').html(data);
                 }
             }
