@@ -186,8 +186,18 @@ class Utility {
     function start_activity($userId) {
         $activityId = $_GET['activityId'];
         $this->stopRunningActivity($userId);
-        $this->copyActivity($activityId, 0);
-        $this->deleteActivity($activity);
+        $isTodo = 0 ;
+        $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity(client_id, activityType_id, user_id, task, commentary, isTodo) SELECT client_id, activityType_id, user_id, task, commentary, '.$isTodo.' FROM activity WHERE id = (:activity_id)');
+        $stmt->execute(array(
+            'activity_id'=> $activityId
+            ));
+        $newActivityId = $this->conBdd->connexion->lastInsertId();
+        $stmt =  $this->conBdd->connexion->prepare('UPDATE activity SET start = :start WHERE id = :activity_id');
+        $stmt->execute(array(
+            'activity_id'=> $newActivityId,
+            'start'=> $this->currentDateTime
+            ));
+        $this->deleteActivity($activityId);
     }
     function restart_activity($activity, $userId) {
         $activityId = $_GET['activityId'];
