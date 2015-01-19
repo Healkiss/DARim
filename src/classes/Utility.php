@@ -164,13 +164,18 @@ class Utility {
 
     }
     function receiveNewActivity($isTodo, $userId){
+        $activityType = $_GET['activityType'];
+        $client = $_GET['client'];
+        if(!$activityType || !$client) {
+            return false;
+        }
         if(!$isTodo)
             $this->stopRunningActivity($userId);
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO activity (client_id, user_id, activityType_id, task, commentary, isTodo, start) VALUES (:client_id, :user_id, :activityType_id, :task, :commentary, :isTodo, :start)');
         $stmt->execute(array(
-            'client_id'=> $_GET['client'],
+            'client_id'=> $client,
             'user_id'=> $userId,
-            'activityType_id'=> $_GET['activityType'],
+            'activityType_id'=> $activityType,
             'task'=> $_GET['task'],
             'commentary'=> $_GET['comment'],
             'isTodo'=> $isTodo,
@@ -266,6 +271,7 @@ class Utility {
         var_dump($user);
         echo '<br>';
         $organizationId = $user['organization_id'];
+        echo '<br>organizationId : ' . $organizationId .'<br>';
         $stmt =  $this->conBdd->connexion->prepare('INSERT INTO client (organization_id, name, ref, ref2) VALUES (:organization_id, :name, :ref1, :ref2)');
         $stmt->execute(array(
             'organization_id'=> $organizationId,
